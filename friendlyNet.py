@@ -30,22 +30,24 @@ class friendlyNet:
 
         self.EdgeList = edges
 
-    def lotka_volterra_system(self,t,s,shift):
-        return s*(1+np.dot(self.Adjacency.T - shift,s))
+    def lotka_volterra_system(self,t,s,shift,self_inhibit):
+        adjc = self.Adjacency.copy().T
+        np.fill_diagonal(adjc,-self_inhibit)
+        return s*(1+np.dot(adjc - shift,s))
 
-    def solve_lotka_volterra(self,s0,T,shift=0):
-        blowup = lambda t,s:sum(s) - 1000
+    def solve_lotka_volterra(self,s0,T,shift=0,bup = 1000,self_inhibit = 0):
+        blowup = lambda t,s:sum(s) - bup
         blowup.terminal = True
-        thefun = lambda t,s: self.lotka_volterra_system(t,s,shift)
+        thefun = lambda t,s: self.lotka_volterra_system(t,s,shift,self_inhibit)
         sln = solve_ivp(thefun,(0,T),s0,dense_output = True,events = blowup)
         return sln
 
-    def lotka_volterra_score_single(self,node,mxTime = 100,shift=0):
+    def lotka_volterra_score_single(self,node,mxTime = 100,shift=0,self_inhibit = 0):
 
         if node in self.NodeNames:
             node = self.NodeNames.index(node)
 
-        long_time = self.solve_lotka_volterra(np.random.rand(self.Adjacency.shape[0]),mxTime,shift=shift)
+        long_time = self.solve_lotka_volterra(np.random.rand(self.Adjacency.shape[0]),mxTime,shift=shift,self_inhibit = self_inhibit)
 
         all_relative = long_time.y/(long_time.y.sum(axis = 0))
         final_relative = all_relative[node,-1]
@@ -67,8 +69,8 @@ class friendlyNet:
         if long_time.status != -1:
             return score/3,long_time.status
 
-    def lotka_volterra_score(self,node,mxTime = 100,numtrials = 1000,nj = -1,shift=0,cntbu = False):
-        trials = Parallel(n_jobs = nj)(delayed(self.lotka_volterra_score_single)(node,mxTime = mxTime,shift=shift) for i in range(numtrials))
+    def lotka_volterra_score(self,node,mxTime = 100,numtrials = 1000,nj = -1,shift=0,self_inhibit = 0,cntbu = False):
+        trials = Parallel(n_jobs = nj)(delayed(self.lotka_volterra_score_single)(node,mxTime = mxTime,shift=shift,self_inhibit = self_inhibit) for i in range(numtrials))
         if cntbu:
             return (np.mean([val[0] for val in trials if val != None]),np.mean([float(val[1]) for val in trials if val != None]))
         else:
@@ -192,11 +194,13 @@ class friendlyNet:
         all_scores = {}
         if isinstance(odeTrials,int):
             all_scores["LV"] = self.lotka_volterra_score(node,numtrials = odeTrials)
-            all_scores["AntLV"] = self.antagonistic_lotka_volterra_score(node,numtrials = odeTrials)
+            all_scores["InhibitLV"] = self.lotka_volterra_score(node,numtrials = odeTrials,self_inhibit=1)
+            all_scores["AntLV"] = self.lotka_volterra_score(node,numtrials = odeTrials,shift = 1)#self.antagonistic_lotka_volterra_score(node,numtrials = odeTrials)
             all_scores["Replicator"] = self.replicator_score(node,numtrials = odeTrials)
         else:
             all_scores["LV"] = self.lotka_volterra_score(node,numtrials = self.Adjacency.shape[0])
-            all_scores["AntLV"] = self.antagonistic_lotka_volterra_score(node,numtrials = self.Adjacency.shape[0])
+            all_scores["InhibitLV"] = self.lotka_volterra_score(node,numtrials = self.Adjacency.shape[0],self_inhibit=1)
+            all_scores["AntLV"] = self.lotka_volterra_score(node,numtrials = self.Adjacency.shape[0],shift=1)#self.antagonistic_lotka_volterra_score(node,numtrials = self.Adjacency.shape[0])
             all_scores["Replicator"] = self.replicator_score(node,numtrials = self.Adjacency.shape[0])
         all_scores["NodeBalance"] = self.node_balanced_score(node)
         all_scores["Stochastic"] = self.stochastic_score(node)
@@ -208,7 +212,7 @@ class friendlyNet:
         if len(self.NodeNames) != self.Adjacency.shape[0]:
             self.NodeNames = list(range(self.Adjacency.shape[0]))
 
-        scores = pd.DataFrame(index = self.NodeNames,columns = ["LV","AntLV","Replicator","NodeBalance","Stochastic","Composite"])
+        scores = pd.DataFrame(index = self.NodeNames,columns = ["LV","AntLV","InhibitLV","Replicator","NodeBalance","Stochastic","Composite"])
         for nd in self.NodeNames:
             scrs = self.score_node(nd)
             scores.loc[nd] = [scrs[col] for col in scores.columns]

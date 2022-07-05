@@ -10,14 +10,14 @@
 ###   If given real number score, Spearman rank correlation of score with friendliness
 ###   If given binary classification, return ROC curve and AUROC
 from friendlyNet import *
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score,roc_curve
 import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr,pearsonr,kendalltau
 
 def score_net(experiment,full_net,target_node,scoretype, min_ra = 10**-6, odeTrials = None):
 
-    net_scores = pd.DataFrame(index = experiment.keys(),columns = ["Score","LV","AntLV","Replicator","NodeBalance","Stochastic","Composite"])
+    net_scores = pd.DataFrame(index = experiment.keys(),columns = ["Score","LV","AntLV","InhibitLV","Replicator","NodeBalance","Stochastic","Composite"])
 
     for ky,sample in experiment.items():
         score = sample[0]
@@ -37,10 +37,12 @@ def score_net(experiment,full_net,target_node,scoretype, min_ra = 10**-6, odeTri
     if scoretype == 'b':
 
         aurocs = {}
+        roc_curves = {}
         for col in net_scores.columns[1:]:
             aurocs[col] = roc_auc_score(net_scores["Score"].values.astype(float),net_scores[col].values.astype(float))
+            roc_curves[col] = roc_curve(net_scores["Score"].values.astype(float),net_scores[col].values.astype(float))
 
-        return net_scores,aurocs,np.mean([val for val in aurocs.values()])
+        return net_scores,aurocs,roc_curves,np.mean([val for val in aurocs.values()])
 
     else:
 
@@ -62,84 +64,108 @@ def score_net(experiment,full_net,target_node,scoretype, min_ra = 10**-6, odeTri
 
         return net_scores,pearsonval,pearsonp,kendallval,kendallp,spearmanval,spearmanp
 
-def score_light(experiment,full_net,fn_index,target_node,scoretype, score_model, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False):
+def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False):
 
-        net_scores = np.empty(len(experiment),dtype = np.float64)
-        net_test_scores = np.empty(len(experiment),dtype = np.float64)
-        indx = 0
+    net_scores = np.empty(len(experiment),dtype = np.float64)
+    net_test_scores = np.empty(len(experiment),dtype = np.float64)
+    indx = 0
 
-        if cntbu:
-            blowupcounts = np.empty(len(experiment),dtype = np.float64)
+    if cntbu:
+        blowupcounts = np.empty(len(experiment),dtype = np.float64)
 
-        for ky,sample in experiment.items():
-            net_scores[indx] = sample[0]
-            data = sample[1]
-            nonzero = [ky for ky,val in data.items() if val > min_ra]
-            if target_node not in nonzero:
-                nonzero += [target_node]
+    for sample in experiment.values():
+        net_scores[indx] = sample[0]
+        data = sample[1]
+        nonzero = [ky for ky,val in data.items() if val > min_ra]
+        if target_node not in nonzero:
+            nonzero += [target_node]
 
-            wh = [np.where(np.array(fn_index) == nd)[0][0] for nd in nonzero]
-            subgraph = full_net[wh][:,wh]
-            friendly = friendlyNet(subgraph)
-            friendly.NodeNames = nonzero
+        subgraph = full_net.loc[nonzero,nonzero]
+        friendly = friendlyNet(subgraph.values)
+        friendly.NodeNames = nonzero
 
-            if score_model == "LV":
-                if cntbu:
-                    if isinstance(odeTrials,int):
-                        r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = lvshift,cntbu=cntbu)
-                        net_test_scores[indx] = r[0]
-                        blowupcounts[indx] = r[1]
-                    else:
-                        r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = lvshift,cntbu=cntbu)
-                        net_test_scores[indx] = r[0]
-                        blowupcounts[indx] = r[1]
-                else:
-                    if isinstance(odeTrials,int):
-                        net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = lvshift)
-                    else:
-                        net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = lvshift)
-            elif score_model == "AntLV":
+        if score_model == "LV":
+            if cntbu:
                 if isinstance(odeTrials,int):
-                    net_test_scores[indx] = friendly.antagonistic_lotka_volterra_score(target_node,numtrials = odeTrials)
+                    r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = lvshift,cntbu=cntbu,self_inhibit=self_inhibit)
+                    net_test_scores[indx] = r[0]
+                    blowupcounts[indx] = r[1]
                 else:
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0])
-            elif score_model == "Replicator":
-                if isinstance(odeTrials,int):
-                    net_test_scores[indx] = friendly.replicator_score(target_node,numtrials = odeTrials)
-                else:
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0])
-            elif score_model == "NodeBalance":
-                net_test_scores[indx] = friendly.node_balanced_score(target_node)
-            elif score_model == "Stochastic":
-                net_test_scores[indx] = friendly.stochastic_score(target_node)
-            elif score_model == "Composite":
-                net_test_scores[indx] = friendly.score_node(target_node,odeTrials = odeTrials)["Composite"]
-            indx += 1
-
-        if cntbu:
-            if scoretype == 'b':
-
-                return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts)
-
+                    r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = lvshift,cntbu=cntbu,self_inhibit=self_inhibit)
+                    net_test_scores[indx] = r[0]
+                    blowupcounts[indx] = r[1]
             else:
+                if isinstance(odeTrials,int):
+                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = lvshift,self_inhibit=self_inhibit)
+                else:
+                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = lvshift,self_inhibit=self_inhibit)
+        elif score_model == "AntLV":
+            if cntbu:
+                if isinstance(odeTrials,int):
+                    r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 1,cntbu=cntbu,self_inhibit=0)
+                    net_test_scores[indx] = r[0]
+                    blowupcounts[indx] = r[1]
+                else:
+                    r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 1,cntbu=cntbu,self_inhibit=0)
+                    net_test_scores[indx] = r[0]
+                    blowupcounts[indx] = r[1]
+            else:
+                if isinstance(odeTrials,int):
+                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 1,self_inhibit=0)
+                else:
+                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 1,self_inhibit=0)
+        elif score_model == "InhibitLV":
+            if cntbu:
+                if isinstance(odeTrials,int):
+                    r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 0,cntbu=cntbu,self_inhibit=1)
+                    net_test_scores[indx] = r[0]
+                    blowupcounts[indx] = r[1]
+                else:
+                    r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 0,cntbu=cntbu,self_inhibit=1)
+                    net_test_scores[indx] = r[0]
+                    blowupcounts[indx] = r[1]
+            else:
+                if isinstance(odeTrials,int):
+                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 0,self_inhibit=1)
+                else:
+                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 0,self_inhibit=1)                
+        elif score_model == "Replicator":
+            if isinstance(odeTrials,int):
+                net_test_scores[indx] = friendly.replicator_score(target_node,numtrials = odeTrials)
+            else:
+                net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0])
+        elif score_model == "NodeBalance":
+            net_test_scores[indx] = friendly.node_balanced_score(target_node)
+        elif score_model == "Stochastic":
+            net_test_scores[indx] = friendly.stochastic_score(target_node)
+        elif score_model == "Composite":
+            net_test_scores[indx] = friendly.score_node(target_node,odeTrials = odeTrials)["Composite"]
+        indx += 1
 
-                kendallval,_ = kendalltau(net_scores,net_test_scores)
-                spearmanval,_ = spearmanr(net_scores,net_test_scores)
+    if cntbu:
+        if scoretype == 'b':
 
+            return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts)
 
-                return kendallval,spearmanval,np.mean(blowupcounts)
         else:
-            if scoretype == 'b':
 
-                return roc_auc_score(net_scores,net_test_scores)
-
-            else:
-
-                kendallval,_ = kendalltau(net_scores,net_test_scores)
-                spearmanval,_ = spearmanr(net_scores,net_test_scores)
+            kendallval,_ = kendalltau(net_scores,net_test_scores)
+            spearmanval,_ = spearmanr(net_scores,net_test_scores)
 
 
-                return kendallval,spearmanval
+            return kendallval,spearmanval,np.mean(blowupcounts)
+    else:
+        if scoretype == 'b':
+
+            return roc_auc_score(net_scores,net_test_scores)
+
+        else:
+
+            kendallval,_ = kendalltau(net_scores,net_test_scores)
+            spearmanval,_ = spearmanr(net_scores,net_test_scores)
+
+
+            return kendallval,spearmanval
 
 def score_binary(experiment,full_net,target_node, score_model, min_ra = 10**-6, odeTrials = None):
 
@@ -193,8 +219,8 @@ def score_single(sample,full_net,target_node, score_model, min_ra = 10**-6, odeT
             nonzero += [target_node]
 
         wh = [np.where(np.array(fn_index) == nd)[0][0] for nd in nonzero]
-        subgraph = full_net[wh][:,wh]
-        friendly = friendlyNet(subgraph)
+        subgraph = full_net.loc[nonzero,nonzero]
+        friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
 

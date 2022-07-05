@@ -31,10 +31,10 @@ def sense_all(t,p,x,net):
     xe = np.concatenate([x(t)[k]*np.eye(net.shape[0])[l] for k in range(net.shape[0]) for l in range(net.shape[0])])
     return xall+jall+xe
 
-def get_all_sensitivity_st(fnet,i,mxTime = 1000):
+def get_all_sensitivity_st(fnet,i,mxTime = 1000,shift=0):
     y0 = np.zeros(fnet.Adjacency.shape[0]**3)
-    soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime)
-    all_sensitivity = solve_ivp(sense_all,(0,soln.t[-1]),y0,args = (soln.sol,fnet.Adjacency.T)).y
+    soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift=shift)
+    all_sensitivity = solve_ivp(sense_all,(0,soln.t[-1]),y0,args = (soln.sol,fnet.Adjacency.T-shift)).y
     wbase = 2
     weights = np.array([wbase**i for i in range(all_sensitivity.shape[1])])
     weights = weights/sum(weights)
@@ -42,9 +42,8 @@ def get_all_sensitivity_st(fnet,i,mxTime = 1000):
     param_senses = weighted_avg.reshape(fnet.Adjacency.shape[0],fnet.Adjacency.shape[0]**2)[i].reshape(fnet.Adjacency.shape).T
     return param_senses
 
-def get_all_sensitivity(target_node,fnet,numtrials = 10000,mxTime=1000,nj = -1):
+def get_all_sensitivity(target_node,fnet,numtrials = 10000,mxTime=1000,nj = -1,shift=0):
     i = fnet.NodeNames.index(target_node)
-    mnsense = sum(Parallel(n_jobs = nj)(delayed(get_all_sensitivity_st)(fnet,i,mxTime=mxTime) for tri in range(numtrials)))/numtrials
-    print(mnsense.shape,np.var(mnsense))
-    sensitivities = pd.DataFrame(mnsense, columns = fnet.NodeNames,index = fnet.NodeNames)
+    mnsense = sum(Parallel(n_jobs = nj)(delayed(get_all_sensitivity_st)(fnet,i,mxTime=mxTime,shift=shift) for tri in range(numtrials)))/numtrials
+    sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
     return sensitivities
