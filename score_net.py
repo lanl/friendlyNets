@@ -64,21 +64,26 @@ def score_net(experiment,full_net,target_node,scoretype, min_ra = 10**-6, odeTri
 
         return net_scores,pearsonval,pearsonp,kendallval,kendallp,spearmanval,spearmanp
 
-def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False):
+def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False,keepscores = False,KO = None):
 
     net_scores = np.empty(len(experiment),dtype = np.float64)
     net_test_scores = np.empty(len(experiment),dtype = np.float64)
     indx = 0
+    sample_order = list(experiment.keys())
 
     if cntbu:
         blowupcounts = np.empty(len(experiment),dtype = np.float64)
 
-    for sample in experiment.values():
+    for key in sample_order:
+        sample = experiment[key]
         net_scores[indx] = sample[0]
         data = sample[1]
         nonzero = [ky for ky,val in data.items() if val > min_ra]
         if target_node not in nonzero:
             nonzero += [target_node]
+        
+        if KO in nonzero:
+            nonzero.remove(KO)
 
         subgraph = full_net.loc[nonzero,nonzero]
         friendly = friendlyNet(subgraph.values)
@@ -142,30 +147,56 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
             net_test_scores[indx] = friendly.score_node(target_node,odeTrials = odeTrials)["Composite"]
         indx += 1
 
-    if cntbu:
-        if scoretype == 'b':
+    if keepscores:
+        if cntbu:
+            if scoretype == 'b':
 
-            return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts)
+                return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts),sample_order,net_test_scores
 
+            else:
+
+                kendallval,_ = kendalltau(net_scores,net_test_scores)
+                spearmanval,_ = spearmanr(net_scores,net_test_scores)
+
+
+                return kendallval,spearmanval,np.mean(blowupcounts),sample_order,net_test_scores
         else:
+            if scoretype == 'b':
 
-            kendallval,_ = kendalltau(net_scores,net_test_scores)
-            spearmanval,_ = spearmanr(net_scores,net_test_scores)
+                return roc_auc_score(net_scores,net_test_scores),sample_order,net_test_scores
+
+            else:
+
+                kendallval,_ = kendalltau(net_scores,net_test_scores)
+                spearmanval,_ = spearmanr(net_scores,net_test_scores)
 
 
-            return kendallval,spearmanval,np.mean(blowupcounts)
+                return kendallval,spearmanval,sample_order,net_test_scores
     else:
-        if scoretype == 'b':
+        if cntbu:
+            if scoretype == 'b':
 
-            return roc_auc_score(net_scores,net_test_scores)
+                return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts)
 
+            else:
+
+                kendallval,_ = kendalltau(net_scores,net_test_scores)
+                spearmanval,_ = spearmanr(net_scores,net_test_scores)
+
+
+                return kendallval,spearmanval,np.mean(blowupcounts)
         else:
+            if scoretype == 'b':
 
-            kendallval,_ = kendalltau(net_scores,net_test_scores)
-            spearmanval,_ = spearmanr(net_scores,net_test_scores)
+                return roc_auc_score(net_scores,net_test_scores)
+
+            else:
+
+                kendallval,_ = kendalltau(net_scores,net_test_scores)
+                spearmanval,_ = spearmanr(net_scores,net_test_scores)
 
 
-            return kendallval,spearmanval
+                return kendallval,spearmanval
 
 def score_binary(experiment,full_net,target_node, score_model, min_ra = 10**-6, odeTrials = None):
 
