@@ -41,7 +41,7 @@ def get_all_sensitivity_single_trajectory(target_node,fnet,mxTime = 1000,shift =
             else:
                 weighted_avg = np.mean(sensitivity.y[i])
             all_sensitivity[k,l] = weighted_avg
-            # print("         {}/{}            ".format(l+k*all_sensitivity.shape[0],all_sensitivity.size),end = '\r')
+            print("{}      {}          {}/{}            ".format(sensitivity.t[-1],weighted_avg,l+k*all_sensitivity.shape[0],all_sensitivity.size),end = '\r')
     return all_sensitivity
 
 def get_all_sensitivity(target_node,fnet,mxTime = 1000,shift = 0,weights = [],nj = 1,numtrials = 100):
