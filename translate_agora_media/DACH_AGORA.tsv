@@ -1,0 +1,92 @@
+	diet	reaction	metabolite	createdDate	updatedDate	fluxValue	g_day	mw	fullName	biggID	keggID	pubChemId	modelSeedID	miriam
+etoh	DACH	EX_etoh[e]	etoh	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0	0.0	46.0684	Ethanol	etoh	C00469	702	cpd00363	http://identifiers.org/vmhmetabolite/etoh
+h2o	DACH	EX_h2o[e]	h2o	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	197316.500215373	3554.712	18.01528	Water	h2o	C00001	962	cpd00001	http://identifiers.org/vmhmetabolite/h2o
+caro	DACH	EX_caro[e]	caro	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0248103553804012	0.01332	536.8726	B-Carotene	caro	C02094	5280489	cpd01420	http://identifiers.org/vmhmetabolite/caro
+retinol	DACH	EX_retinol[e]	retinol	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.90765769854314	0.26	286.4516	Vitamin A	retinol	C00473	445354	cpd00365	http://identifiers.org/vmhmetabolite/retinol
+thm	DACH	EX_thm[e]	thm	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	5.35132988084623	1.42	265.3546	Thiamine	thm	C00378	1130	cpd00305	http://identifiers.org/vmhmetabolite/thm
+adocbl	DACH	EX_adpcbl[e]	adocbl	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	8.05909513518072e-06	1.273e-05	1579.5818	Adenosylcobalamin	adocbl	C00194	5459907	cpd00166	http://identifiers.org/vmhmetabolite/adocbl
+ribflv	DACH	EX_ribflv[e]	ribflv	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.00449033501884745	0.00169	376.3639	Riboflavin	ribflv	C00255	493570	cpd00220	http://identifiers.org/vmhmetabolite/ribflv
+nac	DACH	EX_nac[e]	nac	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.351408459355536	0.0429075	122.1015	Nicotinic acid	nac	C00253	938	cpd00218	http://identifiers.org/vmhmetabolite/nac
+ncam	DACH	EX_ncam[e]	ncam	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.167881819060206	0.0205025	122.1246	Niacinamide	ncam	C00153	936	cpd00133	http://identifiers.org/vmhmetabolite/ncam
+pnto_R	DACH	EX_pnto_R[e]	pnto_R	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0276317779193225	0.00603	218.227	Pantothenic acid	pnto__R	C00864	988	cpd00644	http://identifiers.org/vmhmetabolite/pnto_R
+pydam	DACH	EX_pydam[e]	pydam	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.00468870357346194	0.000793333333333333	169.201	Pyridoxamine	pydam	C00534	1052	cpd00419	http://identifiers.org/vmhmetabolite/pydam
+pydxn	DACH	EX_pydxn[e]	pydxn	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.00468934655334999	0.000793333333333333	169.1778	Pyridoxine	pydxn	C00314	1054	cpd00263	http://identifiers.org/vmhmetabolite/pydxn
+pydx	DACH	EX_pydx[e]	pydx	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.00474589519946718	0.000793333333333333	167.162	Pyridoxal	pydx	C00250	1050	cpd00215	http://identifiers.org/vmhmetabolite/pydx
+btn	DACH	EX_btn[e]	btn	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.000235509100392227	5.73e-05	243.3027	Biotin	btn	C00120	171548	cpd00104	http://identifiers.org/vmhmetabolite/btn
+10fthf	DACH	EX_10fthf[e]	10fthf	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.000222994870428579	0.000105125	471.4234	10-Formyltetrahydrofolate	10fthf	C00234	122347	cpd00201	http://identifiers.org/vmhmetabolite/10fthf
+5mthf	DACH	EX_5mthf[e]	5mthf	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.000229306318122517	0.000105125	458.4479	5-Methyltetrahydrofolic acid	5mthf	C00440	439234	cpd00345	http://identifiers.org/vmhmetabolite/5mthf
+thf	DACH	EX_thf[e]	thf	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.000237081296388719	0.000105125	443.4133	Tetrahydrofolic acid	thf	C00101	91443	cpd00087	http://identifiers.org/vmhmetabolite/thf
+ascb_L	DACH	EX_ascb_L[e]	ascb_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	1.0864214732846	0.19025	175.1162	Ascorbic acid	ascb__L	C00072	54670067	cpd00059	http://identifiers.org/vmhmetabolite/ascb_L
+vitd3	DACH	EX_vitd3[e]	vitd3	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	8.04913298930396e-05	3.096e-05	384.6377	Vitamin D3	vitd3	C05443	10883523		http://identifiers.org/vmhmetabolite/vitd3
+avite1	DACH	EX_avite1[e]	avite1	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0546776560629162	0.02355	430.7061	Alpha-Tocopherol	avite1	C02477	14985		http://identifiers.org/vmhmetabolite/avite1
+phyQ	DACH	EX_phyQ[e]	phyQ	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.000938105244847022	0.0004228	450.6957	Vitamin K1	phyQ	C02059	5280483	cpd01401	http://identifiers.org/vmhmetabolite/phyQ
+ca2	DACH	EX_ca2[e]	ca2	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	41.5414940865313	1.6649	40.078	Calcium	ca2	C00076	271	cpd00063	http://identifiers.org/vmhmetabolite/ca2
+cl	DACH	EX_cl[e]	cl	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	293.805883846219	10.4163	35.453	Chloride ion	cl		24526	cpd00099	http://identifiers.org/vmhmetabolite/cl
+k	DACH	EX_k[e]	k	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	108.441543494218	4.23988	39.0983	Potassium	k	C00238		cpd00205	http://identifiers.org/vmhmetabolite/k
+mg2	DACH	EX_mg2[e]	mg2	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	28.8006583007612	0.7	24.305	Magnesium	mg2			cpd00254	http://identifiers.org/vmhmetabolite/mg2
+na1	DACH	EX_na1[e]	na1	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	190.591299400809	4.38165	22.98976928	Sodium	na1	C01330	923	cpd00971	http://identifiers.org/vmhmetabolite/na1
+pi	DACH	EX_pi[e]	pi	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	21.4483748058175	2.0586	95.9793	Phosphate	pi	C00009	1061	cpd00009	http://identifiers.org/vmhmetabolite/pi
+cu2	DACH	EX_cu2[e]	cu2	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0363044094042111	0.002307	63.546	Cu2+	cu2			cpd00058	http://identifiers.org/vmhmetabolite/cu2
+fe2	DACH	EX_fe2[e]	fe2	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.328964097054347	0.018371	55.845	Fe2+	fe2	C14818	27284	cpd10515	http://identifiers.org/vmhmetabolite/fe2
+fe3	DACH	EX_fe3[e]	fe3	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.328964097054347	0.018371	55.845	Fe3+	fe3	C14819	29936	cpd10516	http://identifiers.org/vmhmetabolite/fe3
+mn2	DACH	EX_mn2(e)	mn2	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.143234073946388	0.007869	54.938045	Mn2+	mn2			cpd00030	http://identifiers.org/vmhmetabolite/mn2
+zn2	DACH	EX_zn2(e)	zn2	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.219027225451208	0.01432	65.38	Zinc (II) ion	zn2	C00038	32051	cpd00034	http://identifiers.org/vmhmetabolite/zn2
+mnl	DACH	EX_mnl(e)	mnl	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.702633448206583	0.128	182.1718	D-Mannitol	mnl			cpd00314	http://identifiers.org/vmhmetabolite/mnl
+xylt	DACH	EX_xylt[e]	xylt	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0262905712809686	0.004	152.1458	D-Xylitol	xylt	C00379	6912	cpd00306	http://identifiers.org/vmhmetabolite/xylt
+lcts	DACH	EX_lcts[e]	lcts	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	10.1561073513752	3.4764	342.2965	Alpha-Lactose	lcts	C00243	84571	cpd00208	http://identifiers.org/vmhmetabolite/lcts
+malt	DACH	EX_malt[e]	malt	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.584288767194523	0.2	342.2965	D-Maltose	malt	C00208	10991489	cpd00179	http://identifiers.org/vmhmetabolite/malt
+sucr	DACH	EX_sucr[e]	sucr	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	137.424718044152	47.04	342.2965	Sucrose	sucr	C00089	5988	cpd00076	http://identifiers.org/vmhmetabolite/sucr
+fru	DACH	EX_fru[e]	fru	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	99.2334972099165	17.8775	180.1559	D-Fructose	fru	C02336	439709	cpd00082	http://identifiers.org/vmhmetabolite/fru
+gal	DACH	EX_gal[e]	gal	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0349697123435869	0.0063	180.1559	D-Galactose	gal	C00984	439357	cpd00108	http://identifiers.org/vmhmetabolite/gal
+cellul	DACH	EX_cellul(e)	cellul	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.105778495560876	8.5774	81088.3153	Cellulose, chain length 500 glc_D assumed, DOI: 10.1002/anie.200460587		G10481	53477911		http://identifiers.org/vmhmetabolite/cellul
+ala_L	DACH	EX_ala_L[e]	ala_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	57.9082354208851	5.15923	89.0932	L-Alanine	ala__L	C00041	5950	cpd00035	http://identifiers.org/vmhmetabolite/ala_L
+arg_L	DACH	EX_arg_L[e]	arg_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	29.8073899214024	5.22252	175.2089	L-Arginine	arg__L	C00062	6322	cpd00051	http://identifiers.org/vmhmetabolite/arg_L
+asp_L	DACH	EX_asp_L[e]	asp_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	68.7675584258869	9.08383	132.0947	L-Aspartic acid	asp__L	C00049	5960	cpd00041	http://identifiers.org/vmhmetabolite/asp_L
+cys_L	DACH	EX_cys_L[e]	cys_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	9.56765617184805	1.1592	121.1582	L-Cysteine	cys__L	C00097	5862	cpd00084	http://identifiers.org/vmhmetabolite/cys_L
+glu_L	DACH	EX_glu_L[e]	glu_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	145.949358512414	21.32631	146.1213	L-Glutamic acid	glu__L	C00025	33032	cpd00023	http://identifiers.org/vmhmetabolite/glu_L
+gly	DACH	EX_gly[e]	gly	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	57.3869070931679	4.30784	75.0666	Glycine	gly	C00037	750	cpd00033	http://identifiers.org/vmhmetabolite/gly
+urate	DACH	EX_urate[e]	urate	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	4.47444326730724	0.7522	168.1103	Uric acid	urate	C00366	1175	cpd00300	http://identifiers.org/vmhmetabolite/urate
+his_L	DACH	EX_his_L[e]	his_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	18.5728299386547	2.88166	155.1546	L-Histidine	his__L	C00135	6274	cpd00119	http://identifiers.org/vmhmetabolite/his_L
+ile_L	DACH	EX_ile_L[e]	ile_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	39.353479262866	5.16211	131.1729	L-Isoleucine	ile__L	C00407	6306	cpd00322	http://identifiers.org/vmhmetabolite/ile_L
+leu_L	DACH	EX_leu_L[e]	leu_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	64.6490243030382	8.4802	131.1729	L-Leucine	leu__L	C00123	6106	cpd00107	http://identifiers.org/vmhmetabolite/leu_L
+lys_L	DACH	EX_lys_L[e]	lys_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	47.4919409900439	6.9906	147.1955	L-Lysine	lys__L	C00047	5962	cpd00039	http://identifiers.org/vmhmetabolite/lys_L
+met_L	DACH	EX_met_L[e]	met_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	15.8498049410467	2.36497	149.2113	L-Methionine	met__L	C00073	6137	cpd00060	http://identifiers.org/vmhmetabolite/met_L
+phe_L	DACH	EX_phe_L[e]	phe_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	26.9572265966701	4.45304	165.1891	L-Phenylalanine	phe__L	C00079	6140	cpd01400	http://identifiers.org/vmhmetabolite/phe_L
+pro_L	DACH	EX_pro_L[e]	pro_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	69.7522376781131	8.03061	115.1305	L-Proline	pro__L	C00148	145742	cpd00129	http://identifiers.org/vmhmetabolite/pro_L
+ser_L	DACH	EX_ser_L[e]	ser_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	49.1331454355492	5.16353	105.0926	L-Serine	ser__L	C00065	5951	cpd00054	http://identifiers.org/vmhmetabolite/ser_L
+thr_L	DACH	EX_thr_L[e]	thr_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	36.4579345730999	4.34284	119.1192	L-Threonine	thr__L	C00188	6288	cpd00161	http://identifiers.org/vmhmetabolite/thr_L
+trp_L	DACH	EX_trp_L[e]	trp_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	5.55107792769942	1.13367	204.2252	L-Tryptophan	trp__L	C00078	6305	cpd00065	http://identifiers.org/vmhmetabolite/trp_L
+tyr_L	DACH	EX_tyr_L[e]	tyr_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	19.1319537387858	3.46649	181.1885	L-Tyrosine	tyr__L	C00082	6057	cpd00069	http://identifiers.org/vmhmetabolite/tyr_L
+val_L	DACH	EX_val_L[e]	val_L	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	50.5274174259025	5.9191	117.1463	L-Valine	val__L	C00183	6287	cpd00156	http://identifiers.org/vmhmetabolite/val_L
+dca	DACH	EX_dca[e]	dca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	3.81649301895926	0.6536	171.2567	Capric acid	dca	C01571	2969		http://identifiers.org/vmhmetabolite/dca
+ddca	DACH	EX_ddca[e]	ddca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	3.95514921995807	0.7883	199.3098	Dodecanoic acid	ddca	C02679	3893	cpd01741	http://identifiers.org/vmhmetabolite/ddca
+ttdca	DACH	EX_ttdca[e]	ttdca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	18.4427545378975	4.1932	227.363	Myristic acid	ttdca	C06424	11005	cpd03847	http://identifiers.org/vmhmetabolite/ttdca
+ttdcea	DACH	EX_ttdcea[e]	ttdcea	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	2.05815828115827	0.4638	225.3471	9E-Tetradecenoic Acid (N-C14:1)	ttdcea		68344	cpd15298	http://identifiers.org/vmhmetabolite/ttdcea
+ptdca	DACH	EX_ptdca[e]	ptdca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	1.66245770323162	0.4013	241.3896	Pentadecanoic acid	ptdca	C16537	13849		http://identifiers.org/vmhmetabolite/ptdca
+hdca	DACH	EX_hdca[e]	hdca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	45.443102451255	11.6069	255.4161	Palmitic acid	hdca	C00249	985	cpd00214	http://identifiers.org/vmhmetabolite/hdca
+hpdca	DACH	EX_hpdca[e]	hpdca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	1.03101698431615	0.2778	269.4427	Heptadecanoic acid	hpdca		10465		http://identifiers.org/vmhmetabolite/hpdca
+ocdca	DACH	EX_ocdca[e]	ocdca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	13.1100616539428	3.7163	283.4693	Stearic acid	ocdca	C01530	5281	cpd01080	http://identifiers.org/vmhmetabolite/ocdca
+ocdcea	DACH	EX_ocdcea[e]	ocdcea	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	58.3496237743086	16.4227	281.4534	Oleic acid	ocdcea	C00712	445639	cpd15269	http://identifiers.org/vmhmetabolite/ocdcea
+lnlc	DACH	EX_lnlc[e]	lnlc	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	52.9635428315813	14.8	279.4375	Linoleic acid	lnlc	C01595	5280450	cpd01122	http://identifiers.org/vmhmetabolite/lnlc
+lnlnca	DACH	EX_lnlnca[e]	lnlnca	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	4.21740620867077	1.17	277.4217	Alpha-Linolenic acid	lnlnca	C06427	5280934	cpd03850	http://identifiers.org/vmhmetabolite/lnlnca
+strdnc	DACH	EX_strdnc[e]	strdnc	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	5.42907956186834	1.4952	275.4058	Stearidonic acid	strdnc	C16300	5312508		http://identifiers.org/vmhmetabolite/strdnc
+arach	DACH	EX_arach[e]	arach	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.48664221685432	0.1516	311.5225	Arachidic acid	arach	C06425	10467	cpd03848	http://identifiers.org/vmhmetabolite/arach
+CE2510	DACH	EX_CE2510[e]	CE2510	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	10.2857257325046	3.1835	309.5066	Eicosenoic acid	CE2510	C16526	5282768	cpd16341	http://identifiers.org/vmhmetabolite/CE2510
+eidi1114ac	DACH	EX_CE4843[e]	eidi1114ac	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.287163156479204	0.0883	307.4907	Eicosadienoic acid		C16525	6439848		http://identifiers.org/vmhmetabolite/eidi1114ac
+arachd	DACH	EX_arachd[e]	arachd	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.261320396271126	0.0793	303.4589	Arachidonic acid	arachd	C00219	444899	cpd00188	http://identifiers.org/vmhmetabolite/arachd
+docosac	DACH	EX_docosac[e]	docosac	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.362216837723323	0.123	339.5756	Behenic acid	docosac	C08281	8215	cpd05196	http://identifiers.org/vmhmetabolite/docosac
+doco13ac	DACH	EX_doco13ac[e]	doco13ac	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	14.0043376030966	4.7273	337.5597	Erucic acid	doco13ac	C08316	5281116	cpd05231	http://identifiers.org/vmhmetabolite/doco13ac
+adrn	DACH	EX_adrn[e]	adrn	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0651559927978496	0.0216	331.5121	Adrenic acid	adrn	C16527	5497181	cpd16342	http://identifiers.org/vmhmetabolite/adrn
+clpnd	DACH	EX_clpnd[e]	clpnd	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.45250901224354	0.1491	329.4962	Docosapentaenoic acid	clpnd	C16513	5497182	cpd16301	http://identifiers.org/vmhmetabolite/clpnd
+crvnc	DACH	EX_crvnc[e]	crvnc	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	2.74001214729558	0.8973	327.4803	Docosahexaenoic acid	crvnc	C06429	445580	cpd03852	http://identifiers.org/vmhmetabolite/crvnc
+but	DACH	EX_but[e]	but	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	10.4951709124978	0.9141	87.0972	Butyric acid	but	C00246	264	cpd00211	http://identifiers.org/vmhmetabolite/but
+octa	DACH	EX_octa[e]	octa	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	2.13123282601333	0.3052	143.2035	Caprylic acid	octa	C06423	379	cpd03846	http://identifiers.org/vmhmetabolite/octa
+chsterol	DACH	EX_chsterol[e]	chsterol	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.513379550424346	0.1985	386.6535	Cholesterol	chsterol	C00187	11025495	cpd00160	http://identifiers.org/vmhmetabolite/chsterol
+sbt_D	DACH	EX_sbt_D[e]	sbt_D	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.334299820279538	0.0609	182.1718	Sorbitol	sbt__D	C00794	5780	cpd00588	http://identifiers.org/vmhmetabolite/sbt_D
+glc_D	DACH	EX_glc_D[e]	glc_D	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	90.0109294227944	16.216	180.1559	D-Glucose	glc__D	C00031	5793	cpd00027	http://identifiers.org/vmhmetabolite/glc_D
+hdcea	DACH	EX_hdcea[e]	hdcea	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	9.20046266717127	2.3314	253.4003	Palmitoleic acid	hdcea	C08362	445638	cpd15237	http://identifiers.org/vmhmetabolite/hdcea
+lgnc	DACH	EX_lgnc[e]	lgnc	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0859562689321403	0.0316	367.6288	Tetracosanoic acid	lgnc	C08320	11197		http://identifiers.org/vmhmetabolite/lgnc
+fol	DACH	EX_fol[e]	fol	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.000238709142702085	0.000105125	440.3895	Folic acid	fol	C00504	6037	cpd00393	http://identifiers.org/vmhmetabolite/fol
+strch1	DACH	EX_strch1[e]	strch1	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	37.5027635742075	67.56355	1801.5619	Starch, Structure 1 (1,6-{7[1,4-Glc], 4[1,4-Glc]})	strch1				http://identifiers.org/vmhmetabolite/strch1
+i	DACH	EX_i[e]	i	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.0043524077599473	0.00055234	126.90447	Iodide	i	C00708	30165		http://identifiers.org/vmhmetabolite/i
+starch1200	DACH	EX_starch1200(e)	starch1200	2018-05-31T15:48:11.460268Z	2018-05-31T15:48:17.338067Z	0.347215599746999	67.56355	194586.7353	Starch n=1200 repeat units (300 repeat units amylose, 900 repeat units amylopectin, corresponds to potatoe starch)	starch1200				http://identifiers.org/vmhmetabolite/starch1200

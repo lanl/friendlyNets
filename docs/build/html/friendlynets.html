@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The FriendlyNets class &mdash; FriendlyNets 0.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Functions to Generate and Evaluate Predictions" href="scoring.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FriendlyNets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The FriendlyNets class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#friendlyNet.friendlyNet"><code class="docutils literal notranslate"><span class="pre">friendlyNet</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency"><code class="docutils literal notranslate"><span class="pre">friendlyNet.Adjacency</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.NodeNames"><code class="docutils literal notranslate"><span class="pre">friendlyNet.NodeNames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.InDegree"><code class="docutils literal notranslate"><span class="pre">friendlyNet.InDegree</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.OutDegree"><code class="docutils literal notranslate"><span class="pre">friendlyNet.OutDegree</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.NodeScores"><code class="docutils literal notranslate"><span class="pre">friendlyNet.NodeScores</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.EdgeList"><code class="docutils literal notranslate"><span class="pre">friendlyNet.EdgeList</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.make_edge_list"><code class="docutils literal notranslate"><span class="pre">friendlyNet.make_edge_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system"><code class="docutils literal notranslate"><span class="pre">friendlyNet.lotka_volterra_system()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.solve_lotka_volterra"><code class="docutils literal notranslate"><span class="pre">friendlyNet.solve_lotka_volterra()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_score_single"><code class="docutils literal notranslate"><span class="pre">friendlyNet.lotka_volterra_score_single()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_score"><code class="docutils literal notranslate"><span class="pre">friendlyNet.lotka_volterra_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.replicator_system"><code class="docutils literal notranslate"><span class="pre">friendlyNet.replicator_system()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.solve_replicator"><code class="docutils literal notranslate"><span class="pre">friendlyNet.solve_replicator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.replicator_score_single"><code class="docutils literal notranslate"><span class="pre">friendlyNet.replicator_score_single()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.replicator_score"><code class="docutils literal notranslate"><span class="pre">friendlyNet.replicator_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.node_balanced_score"><code class="docutils literal notranslate"><span class="pre">friendlyNet.node_balanced_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.node_balanced_system"><code class="docutils literal notranslate"><span class="pre">friendlyNet.node_balanced_system()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.stochastic_score"><code class="docutils literal notranslate"><span class="pre">friendlyNet.stochastic_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.score_node"><code class="docutils literal notranslate"><span class="pre">friendlyNet.score_node()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.score_all_nodes"><code class="docutils literal notranslate"><span class="pre">friendlyNet.score_all_nodes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Parameter Sensitivity Testing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FriendlyNets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The FriendlyNets class</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/friendlynets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-friendlynets-class">
+<h1>The FriendlyNets class<a class="headerlink" href="#the-friendlynets-class" title="Permalink to this heading"></a></h1>
+<p>This is the core class of the method, a network class built from an adjacency matrix that contains methods for measuring friendliness to the nodes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">friendlyNet.</span></span><span class="sig-name descname"><span class="pre">friendlyNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet" title="Permalink to this definition"></a></dt>
+<dd><p>Network class designed for testing how positive a directed network is for a node. Provides several ways to score the network’s friendliness for a given node. By friendliness,
+we mean some measure of how much the network promotes/inhibits a node based on a choice of interaction model represented by the graph (e.g. Lotka-Volterra or Diffusion).
+Rescales the adjacency matrix so that all weights are in <span class="math notranslate nohighlight">\([0,1]\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adj</strong> (<em>(</em><em>N</em><em>,</em><em>N</em><em>) </em><em>array</em><em>[</em><em>float</em><em>]</em>) – Adjacency matrix of the graph.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.Adjacency">
+<span class="sig-name descname"><span class="pre">Adjacency</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.Adjacency" title="Permalink to this definition"></a></dt>
+<dd><p>Network adjacency matrix, rescaled so that all weights are in <span class="math notranslate nohighlight">\([0,1]\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.NodeNames">
+<span class="sig-name descname"><span class="pre">NodeNames</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.NodeNames" title="Permalink to this definition"></a></dt>
+<dd><p>List of names of the nodes, corresponding to ordering of adjacency matrix</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.InDegree">
+<span class="sig-name descname"><span class="pre">InDegree</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.InDegree" title="Permalink to this definition"></a></dt>
+<dd><p>Total weight of edges into each node</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.OutDegree">
+<span class="sig-name descname"><span class="pre">OutDegree</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.OutDegree" title="Permalink to this definition"></a></dt>
+<dd><p>Total weight of edges out of each node</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.NodeScores">
+<span class="sig-name descname"><span class="pre">NodeScores</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.NodeScores" title="Permalink to this definition"></a></dt>
+<dd><p>Pandas DataFrame of friendliness scores for each node for a set of chosen dynamical models.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.EdgeList">
+<span class="sig-name descname"><span class="pre">EdgeList</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.EdgeList" title="Permalink to this definition"></a></dt>
+<dd><p>Pandas DataFrame of edges (with weights) for the network that can be easily saved and loaded into cytoscape. See <a class="reference internal" href="#friendlyNet.friendlyNet.make_edge_list" title="friendlyNet.friendlyNet.make_edge_list"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_edge_list</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.make_edge_list">
+<span class="sig-name descname"><span class="pre">make_edge_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.make_edge_list" title="Permalink to this definition"></a></dt>
+<dd><p>Create a list of edges with columns:</p>
+<ul class="simple">
+<li><p>Source</p></li>
+<li><p>Target</p></li>
+<li><p>Weight</p></li>
+<li><p>ABS_Weight (absolute value)</p></li>
+<li><p>Sign_Weight</p></li>
+</ul>
+<p><strong>Modifies</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#friendlyNet.friendlyNet.EdgeList" title="friendlyNet.friendlyNet.EdgeList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EdgeList</span></code></a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.lotka_volterra_system">
+<span class="sig-name descname"><span class="pre">lotka_volterra_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_inhibit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="Permalink to this definition"></a></dt>
+<dd><p>Right-Hand side of generalized Lotka-Volterra dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions:</p>
+<div class="math notranslate nohighlight">
+\[\dot{x}_i = x_i(1+\sum_{j=1}^N a_{ij} x_j)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>) – time in simulation</p></li>
+<li><p><strong>s</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – State of simulation (species abundance)</p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(a_{ii}\)</span>) will be set to -<code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>value of vector field at t,s</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.solve_lotka_volterra">
+<span class="sig-name descname"><span class="pre">solve_lotka_volterra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_inhibit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.solve_lotka_volterra" title="Permalink to this definition"></a></dt>
+<dd><p>Solves the generalized Lotka-Volterra dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s0</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – Inital state of simulation (species abundance)</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – Simulation length</p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>bup</strong> (<em>float</em>) – maximum abundance to allow in simulation. If any state variable reaches this value, it is assumed that the simulation has exhibited finite-time blowup and the simulation is stopped.</p></li>
+<li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution to the Lotka-Volterra dynamics</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.integrate.solve_ivp solution</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.lotka_volterra_score_single">
+<span class="sig-name descname"><span class="pre">lotka_volterra_score_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_inhibit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.lotka_volterra_score_single" title="Permalink to this definition"></a></dt>
+<dd><p>Uses the Lotka-Volterra dynamical system to determine the network’s friendliness to a particular node. Solves the system using <a class="reference internal" href="#friendlyNet.friendlyNet.solve_lotka_volterra" title="friendlyNet.friendlyNet.solve_lotka_volterra"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve_lotka_volterra</span></code></a>.
+Solves the Lotka-Volterra system with random initial conditions and computes a score. The score is based on final relative abundance, but for finer scoring we also account for time to extinction
+and time to domination (e.g. relative abundance near 1). The score is computed as</p>
+<p>where <span class="math notranslate nohighlight">\(T_e\)</span> is the proportion of the time internal that the species is <em>not</em> extinct, <span class="math notranslate nohighlight">\(T_d\)</span> is the proportion of the time interval that the species <em>is</em> dominant, and <span class="math notranslate nohighlight">\(r\)</span> is the final relative abundance of the species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p></li>
+<li><p><strong>mxTime</strong> (<em>float</em>) – time length of simulations</p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Friendliness of the network to the node, according to the single Lotka-Volterra simulation, and the status of the ODE solution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[float,str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.lotka_volterra_score">
+<span class="sig-name descname"><span class="pre">lotka_volterra_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numtrials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_inhibit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cntbu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.lotka_volterra_score" title="Permalink to this definition"></a></dt>
+<dd><p>Provides a score using repeated trials of the Lotka-Volterra system. Scores using <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_score_single" title="friendlyNet.friendlyNet.lotka_volterra_score_single"><code class="xref py py-func docutils literal notranslate"><span class="pre">lotka_volterra_score_single</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p></li>
+<li><p><strong>mxTime</strong> (<em>float</em>) – time length of simulations</p></li>
+<li><p><strong>numtrials</strong> (<em>int</em>) – Number of ODE solutions and corresponding scores to compute</p></li>
+<li><p><strong>nj</strong> (<em>int</em>) – Number of parrallel simulations to run concurrently (uses joblib)</p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
+<li><p><strong>cntbu</strong> (<em>bool</em>) – Whether or not to count the number of blow-ups in the simulations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>score from <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_score_single" title="friendlyNet.friendlyNet.lotka_volterra_score_single"><code class="xref py py-func docutils literal notranslate"><span class="pre">lotka_volterra_score_single</span></code></a> averaged over all trials, optinoally number of blowups in simulation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float,int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.replicator_system">
+<span class="sig-name descname"><span class="pre">replicator_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.replicator_system" title="Permalink to this definition"></a></dt>
+<dd><p>Right-Hand side of replicator dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions:</p>
+<div class="math notranslate nohighlight">
+\[\dot{x}_i = x_i(\sum_{j=1}^N a_{ij} x_j - x^TAx)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>) – time in simulation</p></li>
+<li><p><strong>s</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – State of simulation (species abundance)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>value of vector field at t,s</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.solve_replicator">
+<span class="sig-name descname"><span class="pre">solve_replicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.solve_replicator" title="Permalink to this definition"></a></dt>
+<dd><p>Solves the replicator dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s0</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – Inital state of simulation (species abundance)</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – Simulation length</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution to the replicator dynamics</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.integrate.solve_ivp solution</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.replicator_score_single">
+<span class="sig-name descname"><span class="pre">replicator_score_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.replicator_score_single" title="Permalink to this definition"></a></dt>
+<dd><p>Uses the replicator dynamical system to determine the network’s friendliness to a particular node. Solves the system using <a class="reference internal" href="#friendlyNet.friendlyNet.solve_replicator" title="friendlyNet.friendlyNet.solve_replicator"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve_replicator</span></code></a>.
+Solves the replicator system with random initial conditions and computes a score. The score is based on final relative abundance, but for finer scoring we also account for time to extinction
+and time to domination (e.g. relative abundance near 1). The score is computed as</p>
+<p>where <span class="math notranslate nohighlight">\(T_e\)</span> is the proportion of the time internal that the species is <em>not</em> extinct, <span class="math notranslate nohighlight">\(T_d\)</span> is the proportion of the time interval that the species <em>is</em> dominant, and <span class="math notranslate nohighlight">\(r\)</span> is the final relative abundance of the species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p></li>
+<li><p><strong>mxTime</strong> (<em>float</em>) – time length of simulations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Friendliness of the network to the node, according to the single replicator simulation, and the status of the ODE solution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[float,str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.replicator_score">
+<span class="sig-name descname"><span class="pre">replicator_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numtrials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.replicator_score" title="Permalink to this definition"></a></dt>
+<dd><p>Provides a score using repeated trials of the replicator system. Scores using <a class="reference internal" href="#friendlyNet.friendlyNet.replicator_score_single" title="friendlyNet.friendlyNet.replicator_score_single"><code class="xref py py-func docutils literal notranslate"><span class="pre">replicator_score_single</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p></li>
+<li><p><strong>mxTime</strong> (<em>float</em>) – time length of simulations</p></li>
+<li><p><strong>numtrials</strong> (<em>int</em>) – Number of ODE solutions and corresponding scores to compute</p></li>
+<li><p><strong>nj</strong> (<em>int</em>) – Number of parrallel simulations to run concurrently (uses joblib)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>score from <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_score_single" title="friendlyNet.friendlyNet.lotka_volterra_score_single"><code class="xref py py-func docutils literal notranslate"><span class="pre">lotka_volterra_score_single</span></code></a> averaged over all trials</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.node_balanced_score">
+<span class="sig-name descname"><span class="pre">node_balanced_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.node_balanced_score" title="Permalink to this definition"></a></dt>
+<dd><p>Provides a score based on the linear system</p>
+<p>where <span class="math notranslate nohighlight">\(L= A^T-D\)</span> is the graph laplance matrix for the graph after weights have been rescaled to the interval <span class="math notranslate nohighlight">\([0,1]\)</span>.
+This dynamical system arises from the notion of node-balancing the graph. Because this is linear, we can use the dominant eigenvector of the
+laplacian to compute equilibrium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value of node in dominant eigenvector (i.e. equilibrium solution)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.node_balanced_system">
+<span class="sig-name descname"><span class="pre">node_balanced_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.node_balanced_system" title="Permalink to this definition"></a></dt>
+<dd><p>Function to provide a simulation for the node-balancing linear system</p>
+<p>where <span class="math notranslate nohighlight">\(L= A^T-D\)</span> is the graph laplance matrix for the graph after weights have been rescaled to the interval <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> (<em>float</em>) – End time of simulation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution to the node balance dynamics</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.integrate.solve_ivp solution</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.stochastic_score">
+<span class="sig-name descname"><span class="pre">stochastic_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.stochastic_score" title="Permalink to this definition"></a></dt>
+<dd><p>Provides a score based on the linear system that simulates concurrent random walks (or, equivalently, diffusion) on the graph.
+We rescale the adjacency matrix to build a stochastic matrix that represents the transition probabilities in a random walk on the graph.
+The eigenvectors of this matrix provide a stationary distribution for the cuncurrent random walks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value of node in stationary distribution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.score_node">
+<span class="sig-name descname"><span class="pre">score_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">odeTrials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.score_node" title="Permalink to this definition"></a></dt>
+<dd><p>Function to score a node using a set of scores. Choose any list of the following:</p>
+<ul class="simple">
+<li><p><strong>LV</strong> The <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="friendlyNet.friendlyNet.lotka_volterra_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">Lotka-Volterra</span> <span class="pre">system</span></code></a></p></li>
+<li><p><strong>InhibitLV</strong> <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="friendlyNet.friendlyNet.lotka_volterra_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">Lotka-Volterra</span> <span class="pre">system</span></code></a> with self inhibition = 1</p></li>
+<li><p><strong>AntLV</strong> The <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="friendlyNet.friendlyNet.lotka_volterra_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">Lotka-Volterra</span> <span class="pre">system</span></code></a> with all interactions shifted by -1 to make them antagonistic.</p></li>
+<li><p><strong>Replicator</strong> The <a class="reference internal" href="#friendlyNet.friendlyNet.replicator_system" title="friendlyNet.friendlyNet.replicator_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">replicator</span> <span class="pre">equation</span> <span class="pre">dynamics</span></code></a></p></li>
+<li><p><strong>NodeBalance</strong> The linear <a class="reference internal" href="#friendlyNet.friendlyNet.node_balanced_score" title="friendlyNet.friendlyNet.node_balanced_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">node</span> <span class="pre">balancing</span> <span class="pre">dynamical</span> <span class="pre">system</span></code></a></p></li>
+<li><p><strong>Stochastic</strong> The linear <a class="reference internal" href="#friendlyNet.friendlyNet.stochastic_score" title="friendlyNet.friendlyNet.stochastic_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">random</span> <span class="pre">walk</span> <span class="pre">dynamical</span> <span class="pre">system</span></code></a></p></li>
+</ul>
+<p>A composite score will be included, which is simply the mean of each score included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>int</em><em> or </em><em>str</em>) – name or index of node</p></li>
+<li><p><strong>scores</strong> (<em>list</em>) – list of score types you wish to use. Leave as None for all 6.</p></li>
+<li><p><strong>odeTrials</strong> (<em>int</em>) – Number of simulations of the Lotka-Volterra and replicator dynamics to use to estimate the score. Leave as None for number of trials equal to number of nodes in the network.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of scores keyed by score type.</p>
+</dd>
+<dt class="field-odd">Trype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str,float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="friendlyNet.friendlyNet.score_all_nodes">
+<span class="sig-name descname"><span class="pre">score_all_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">odeTrials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.score_all_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Function to score all nodes using a set of scores. Choose any list of the following:</p>
+<ul class="simple">
+<li><p><strong>LV</strong> The <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="friendlyNet.friendlyNet.lotka_volterra_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">Lotka-Volterra</span> <span class="pre">system</span></code></a></p></li>
+<li><p><strong>InhibitLV</strong> <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="friendlyNet.friendlyNet.lotka_volterra_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">Lotka-Volterra</span> <span class="pre">system</span></code></a> with self inhibition = 1</p></li>
+<li><p><strong>AntLV</strong> The <a class="reference internal" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="friendlyNet.friendlyNet.lotka_volterra_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">Lotka-Volterra</span> <span class="pre">system</span></code></a> with all interactions shifted by -1 to make them antagonistic.</p></li>
+<li><p><strong>Replicator</strong> The <a class="reference internal" href="#friendlyNet.friendlyNet.replicator_system" title="friendlyNet.friendlyNet.replicator_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">replicator</span> <span class="pre">equation</span> <span class="pre">dynamics</span></code></a></p></li>
+<li><p><strong>NodeBalance</strong> The linear <a class="reference internal" href="#friendlyNet.friendlyNet.node_balanced_score" title="friendlyNet.friendlyNet.node_balanced_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">node</span> <span class="pre">balancing</span> <span class="pre">dynamical</span> <span class="pre">system</span></code></a></p></li>
+<li><p><strong>Stochastic</strong> The linear <a class="reference internal" href="#friendlyNet.friendlyNet.stochastic_score" title="friendlyNet.friendlyNet.stochastic_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">random</span> <span class="pre">walk</span> <span class="pre">dynamical</span> <span class="pre">system</span></code></a></p></li>
+</ul>
+<p>A composite score will be included, which is simply the mean of each score included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scores</strong> (<em>list</em>) – list of score types you wish to use. Leave as None for all 6.</p></li>
+<li><p><strong>odeTrials</strong> (<em>int</em>) – Number of simulations of the Lotka-Volterra and replicator dynamics to use to estimate the score. Leave as None for number of trials equal to number of nodes in the network.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table of scores for each node and score type chosen</p>
+</dd>
+<dt class="field-odd">Trype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas dataframe</p>
+</dd>
+</dl>
+<p><strong>Modifies</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#friendlyNet.friendlyNet.NodeScores" title="friendlyNet.friendlyNet.NodeScores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NodeScores</span></code></a></p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scoring.html" class="btn btn-neutral float-right" title="Functions to Generate and Evaluate Predictions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, James D. Brunner and Nicholas Chia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
