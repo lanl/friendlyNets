@@ -335,7 +335,7 @@ def sx_gurobi(model_params,mu,U,phi,RAC,print_LP = False):#,crossfed = None):
 
 
     for i,mod in enumerate(mod_ordering):
-        S,lb,ub,ex_inds,objective = model_params[mod] 
+        S,lbd,ubd,ex_inds,objective = model_params[mod] 
         V = sx_LP.addMVar(S.shape[1],name = 'V_{}'.format(mod),lb=-gb.GRB.INFINITY, ub = gb.GRB.INFINITY)
         sx_LP.update()
 
@@ -351,22 +351,20 @@ def sx_gurobi(model_params,mu,U,phi,RAC,print_LP = False):#,crossfed = None):
         # #(Eq 3 - upper bounds)
         # sx_LP.addMConstr(np.identity(S.shape[1]),V,"<=",ub,name="Eq3Upper_{}".format(mod))
         # sx_LP.update()
-    
 
         #(Eq 3 - Upper/Lower bounds (Do I need to adjust something here for crossfeeding? Mass balance should take care of that...)
         vars = np.concatenate([[x],np.array(V.tolist())])
         #(Eq 3 - lower bounds)
-        lbC = np.concatenate([np.array([lb]).T,-np.identity(len(lb))], axis = 1)
-        sx_LP.addMConstr(lbC,gb.MVar(vars),"<=",np.zeros(len(lb)),name="Eq3Lower_{}".format(mod))
+        lbC = np.concatenate([np.array([lbd]).T,-np.identity(len(lbd))], axis = 1)
+        sx_LP.addMConstr(lbC,gb.MVar(vars),"<=",np.zeros(len(lbd)),name="Eq3Lower_{}".format(mod))
         sx_LP.update()
         #(Eq 3 - upper bounds)
-        ubC = np.concatenate([-np.array([ub]).T,np.identity(len(lb))], axis = 1)
-        sx_LP.addMConstr(ubC,gb.MVar(vars),"<=",np.zeros(len(lb)),name="Eq3Upper_{}".format(mod))
+        ubC = np.concatenate([-np.array([ubd]).T,np.identity(len(ubd))], axis = 1)
+        sx_LP.addMConstr(ubC,gb.MVar(vars),"<=",np.zeros(len(ubd)),name="Eq3Upper_{}".format(mod))
         sx_LP.update()
         
         #(Eq 4 - growth)
-        scld_objective = mu*np.array(objective)
-        sx_LP.addConstr(x == scld_objective @ V.tolist(),name="Eq4_{}".format(mod))
+        sx_LP.addConstr(mu*x == np.array(objective) @ V.tolist(),name="Eq4_{}".format(mod))
         sx_LP.update()
 
         #(Eq 8 - Resource Allocation)
@@ -379,8 +377,9 @@ def sx_gurobi(model_params,mu,U,phi,RAC,print_LP = False):#,crossfed = None):
             sx_LP.addGenConstrAbs(absV[k],V[inti])
         
         sx_LP.update()
-        sx_LP.addConstr(np.ones_like(absV.tolist()) @ np.array(absV.tolist()) <= RAC*x,name="Eq8[{}]".format(mod))
-        
+        if RAC > 0:
+            sx_LP.addConstr(np.ones_like(absV.tolist()) @ np.array(absV.tolist()) - RAC*x <= 0,name="Eq8[{}]".format(mod))
+                    
         sx_LP.update()
 
     for i in range(len(U)):
@@ -404,6 +403,34 @@ def sx_gurobi(model_params,mu,U,phi,RAC,print_LP = False):#,crossfed = None):
 
     sx_LP.optimize()
     sx_LP.update()
+
+    # for i,mod in enumerate(mod_ordering):
+    #     S,lb,ub,ex_inds,objective = model_params[mod] 
+    #     all_exinds = np.concatenate([ex_inds[0],ex_inds[1]])
+    #     all_exinds = all_exinds[all_exinds != -1]       
+    #     internal_indices = np.array([j for j in range(S.shape[1]) if j not in all_exinds])
+    #     abs_ints = np.array([sx_LP.getVarByName("ABSV_{}[{}]".format(mod,j)).x for j in range(len(internal_indices))])
+    #     xi = sx_LP.getVarByName("X[{}]".format(i)).x
+    #     scld_objective = mu*np.array(objective)
+    #     print("====================")
+    #     print(mod)
+    #     print(mu)
+    #     print(xi*mu)
+    #     print("objective:{}".format(scld_objective))
+    #     all_vi = np.array([sx_LP.getVarByName("V_{}[{}]".format(mod,j)).x for j in range(len(lb))])
+    #     vars = np.concatenate([[2*xi],all_vi])
+    #     lbC = np.concatenate([np.array([lbd]).T,-np.identity(len(lbd))], axis = 1)
+    #     print("LB check:{}".format(np.any(np.dot(lbC,vars) > 0)))
+    #     ubC = np.concatenate([-np.array([ubd]).T,np.identity(len(ubd))], axis = 1)
+    #     print("UB check:{}".format(np.any(np.dot(ubC,vars) > 0)))
+    #     # any_plb = np.any(np.array(lb) > 0)
+    #     # any_nub = np.any(np.array(ub) < 0)
+    #     # print("There are positive lower bounds? {} \nThere are negative upper bounds? {}".format(any_plb,any_nub))
+    #     if xi:
+    #         print("RAC Constraint: {}".format(sum(abs_ints)/xi))
+    #     else:
+    #         print("No biomass, internal sum: {}".format(sum(abs_ints)))
+    #     print("====================")
 
     return sx_LP,mod_ordering
 
@@ -441,6 +468,7 @@ def steadyComXLite(models,**kwargs):
     print_LP = kwargs.get("print_LP",False)
 
     U = kwargs.get("uptake")
+
 
     LP_result,mod_ordering = sx_gurobi(models,mu,U,phi,B,print_LP=print_LP)
 

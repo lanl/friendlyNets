@@ -45,8 +45,14 @@ def cocultures(cobra_models,**kwargs):
 
     Computes steadyComX simulations, including setting media for models, for all pairs of models (optionally only co-occurring models).
     
-    :param models: a dictionary of cobra models
-    :type model: dict[GSM]
+    :param cobra_models: a dictionary of cobra models
+    :type cobra_model: dict[GSM]
+
+    :param rows: list of keys to be used for 1 half of each pair
+    :type rows: list[str]
+
+    :param cols: list of keys to be used for other half of each pair. If either or both is not provided, does allxall
+    :type cols: list[str]
     
     :param media: table including flux bound and modelSEED metabolite ID
     :type media:
@@ -96,6 +102,12 @@ def cocultures(cobra_models,**kwargs):
     fluxcol = kwargs.get("fluxcol","fluxValue")
     compartmenttag = kwargs.get("compartmenttag","_e0")
     target_models = kwargs.get("target_models",[])
+    rows = kwargs.get("rows",[])
+    cols = kwargs.get("cols",[])
+
+    if not len(rows)*len(cols):
+        rows = cobra_models.keys()
+        cols = cobra_models.keys()
 
     if not hasattr(target_models, "__len__"):
         target_models = [target_models]
@@ -107,6 +119,10 @@ def cocultures(cobra_models,**kwargs):
 
     metabolites_l = [m.lower() for m in metabolites]
 
+
+    ##### keep_fluxes????  ####
+
+
     if isinstance(media,numbers.Number):
         U = media*np.ones(len(metabolites))
     elif isinstance(media,dict):
@@ -117,27 +133,39 @@ def cocultures(cobra_models,**kwargs):
         U = def_infl*np.ones(len(metabolites))
         for rw in media.index:
             if media.loc[rw,IDtype].lower() in metabolites_l:
+                # print(media.loc[rw,IDtype].lower(),media.loc[rw,fluxcol])
                 U[list(metabolites_l).index(media.loc[rw,IDtype].lower())] = media.loc[rw,fluxcol]
+            # else:
+            #     print(media.loc[rw,IDtype].lower())
 
     kwargs["uptake"] = U
 
     if isinstance(experiment,pd.DataFrame):
         needmsk = check_co_occ(experiment,min_ra=min_ra)
     else:
-        needmsk = pd.DataFrame(index = cobra_models.keys(),columns = cobra_models.keys()).fillna(True)
+        needmsk = pd.DataFrame(index = rows,columns = cols).fillna(True)
 
     for tg in target_models:
         needmsk.loc[tg] = True
         needmsk[tg] = True
     
-    interaction_parameters = pd.DataFrame(index = cobra_models.keys(),columns = cobra_models.keys()).fillna(0.0)
+    interaction_parameters = pd.DataFrame(index = rows,columns = cols).fillna(0.0)
+    interaction_parameters_T = pd.DataFrame(index = cols,columns = rows).fillna(0.0)
 
-    for col in interaction_parameters.columns:
-        for row in interaction_parameters.index:
+    for col in cols:
+        for row in rows:
             if needmsk.loc[row,col]:
-                biomasses = steadyComXLite({col:model_parameters[col],row:model_parameters[row]},**kwargs)
+                # print("{}/{}".format(row,col))
+                if row == col:
+                    biomasses = steadyComXLite({col:model_parameters[col]},**kwargs)
+                    biomasses[row] = biomasses[col]
+                else:
+                    biomasses = steadyComXLite({col:model_parameters[col],row:model_parameters[row]},**kwargs)
                 interaction_parameters.loc[row,col] = biomasses[row]
-                interaction_parameters.loc[col,row] = biomasses[col]
+                if list(rows) == list(cols):
+                    interaction_parameters.loc[col,row] = biomasses[col]
+                else:
+                    interaction_parameters_T.loc[col,row] = biomasses[col]
                 needmsk.loc[col,row] = False
 
-    return interaction_parameters
+    return interaction_parameters,interaction_parameters_T
