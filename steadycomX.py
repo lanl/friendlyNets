@@ -202,7 +202,7 @@ def format_models(cobra_models,model_extag):
         model = cobra_models[modelkey]
 
         #list all reactions the model claims are exchange.
-        exchng_reactions =[rxn.id for rxn in  model.exchanges]#[rxn.id for rxn in model.reactions if 'EX_' in rxn.id]#
+        exchng_reactions =[rxn.id for rxn in model.exchanges]#[rxn.id for rxn in model.reactions if 'EX_' in rxn.id]#
 
         exchng_metabolite_ids_wrx = [(rx,metab.id) for rx in exchng_reactions for metab in model.reactions.get_by_id(rx).reactants] #
         exrxn_to_met = dict(exchng_metabolite_ids_wrx)# a dictionary keyed by reaction reaction id with value exchanged metabolite id
@@ -257,14 +257,17 @@ def format_models(cobra_models,model_extag):
         else:
             raise ValueError("[format_models] Error: We do not support separated uptake/export exchange reactions.")
 
-        lower_bounds = np.array([model.reactions.get_by_id(rx).lower_bound if rx[:3]!='REV' else model.reactions.get_by_id(rx[3:]).lower_bound for rx in S_df.columns])
+        lower_bounds = np.array([model.reactions.get_by_id(rx).lower_bound if rx[:3]!='REV' else -model.reactions.get_by_id(rx[3:]).upper_bound for rx in S_df.columns])
         upper_bounds = np.array([model.reactions.get_by_id(rx).upper_bound if rx[:3]!='REV' else -model.reactions.get_by_id(rx[3:]).lower_bound for rx in S_df.columns])
 
         # lower_bounds = np.array([model.reactions.get_by_id(rx).lower_bound for rx in S_df.columns])
         # upper_bounds = np.array([model.reactions.get_by_id(rx).upper_bound for rx in S_df.columns])
 
-        lower_bounds[export_indicies[export_indicies != -1]] = 0
-        lower_bounds[uptake_indicies[uptake_indicies != -1]] = 0
+        lower_bounds[np.array(export_indicies)[np.array(export_indicies) != -1]] = 0
+        lower_bounds[np.array(uptake_indicies)[np.array(uptake_indicies) != -1]] = 0
+
+        upper_bounds[np.array(export_indicies)[np.array(export_indicies) != -1]] = 1000
+        upper_bounds[np.array(uptake_indicies)[np.array(uptake_indicies) != -1]] = 1000
 
         growth_col = pd.Series(np.zeros(S_df.shape[1]),index = S_df.columns)
         for rxn in util.solver.linear_reaction_coefficients(model).keys():
@@ -405,7 +408,7 @@ def sx_gurobi(model_params,mu,U,phi,RAC,print_LP = False):#,crossfed = None):
     sx_LP.update()
 
     # for i,mod in enumerate(mod_ordering):
-    #     S,lb,ub,ex_inds,objective = model_params[mod] 
+    #     S,lbd,ubd,ex_inds,objective = model_params[mod] 
     #     all_exinds = np.concatenate([ex_inds[0],ex_inds[1]])
     #     all_exinds = all_exinds[all_exinds != -1]       
     #     internal_indices = np.array([j for j in range(S.shape[1]) if j not in all_exinds])
@@ -414,15 +417,16 @@ def sx_gurobi(model_params,mu,U,phi,RAC,print_LP = False):#,crossfed = None):
     #     scld_objective = mu*np.array(objective)
     #     print("====================")
     #     print(mod)
-    #     print(mu)
-    #     print(xi*mu)
+    #     print("mu: {}".format(mu))
+    #     print("Biomass flux value: {}".format(xi*mu))
+    #     print("Biomass: {}".format(xi))
     #     print("objective:{}".format(scld_objective))
-    #     all_vi = np.array([sx_LP.getVarByName("V_{}[{}]".format(mod,j)).x for j in range(len(lb))])
-    #     vars = np.concatenate([[2*xi],all_vi])
+    #     all_vi = np.array([sx_LP.getVarByName("V_{}[{}]".format(mod,j)).x for j in range(len(lbd))])
+    #     vars = np.concatenate([[xi],all_vi])
     #     lbC = np.concatenate([np.array([lbd]).T,-np.identity(len(lbd))], axis = 1)
-    #     print("LB check:{}".format(np.any(np.dot(lbC,vars) > 0)))
+    #     print("LB check:{}".format(np.max(np.dot(lbC,vars))))
     #     ubC = np.concatenate([-np.array([ubd]).T,np.identity(len(ubd))], axis = 1)
-    #     print("UB check:{}".format(np.any(np.dot(ubC,vars) > 0)))
+    #     print("UB check:{}".format(np.max(np.dot(ubC,vars))))
     #     # any_plb = np.any(np.array(lb) > 0)
     #     # any_nub = np.any(np.array(ub) < 0)
     #     # print("There are positive lower bounds? {} \nThere are negative upper bounds? {}".format(any_plb,any_nub))
@@ -468,7 +472,7 @@ def steadyComXLite(models,**kwargs):
     print_LP = kwargs.get("print_LP",False)
 
     U = kwargs.get("uptake")
-
+    # print("XXXXXXXXXXXX ---- {} --- XXXXXXXXXXXX".format(models.keys()))
 
     LP_result,mod_ordering = sx_gurobi(models,mu,U,phi,B,print_LP=print_LP)
 
