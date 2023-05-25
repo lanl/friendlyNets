@@ -137,7 +137,7 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
             set_media(mod,media=media,keep_fluxes = True) 
             fba_growth.loc[tid] = mod.slim_optimize()
         # chnk_mods.update(target_mods)
-        print("Diagonal chunk {}/{}".format(ci/len(chunks)))
+        print("Diagonal chunk {}/{}".format(ci,len(chunks)))
         diag_blk,_ = cocultures(chnk_mods,**diag_kws)
         pairwise_growth.loc[chnk,chnk] = diag_blk
         for ci2 in range(ci+1,len(chunks)):
