@@ -30,7 +30,7 @@ def nostderr():
     # rows = kwargs.get("rows",[])
     # cols = kwargs.get("cols",[])
 
-def make_gem_network(cobra_model_list,media_fl,**kwargs):
+def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
 
     """
 
@@ -110,7 +110,7 @@ def make_gem_network(cobra_model_list,media_fl,**kwargs):
 
     media = pd.read_csv(media_fl,sep = '\t',index_col= 0)
 
-    interaction_params = pd.DataFrame(index = models_available.index,columns = models_available.index)
+    pairwise_growth = pd.DataFrame(index = models_available.index,columns = models_available.index)
 
     fba_growth = pd.Series(index = models_available.index)
 
@@ -137,8 +137,9 @@ def make_gem_network(cobra_model_list,media_fl,**kwargs):
             set_media(mod,media=media,keep_fluxes = True) 
             fba_growth.loc[tid] = mod.slim_optimize()
         # chnk_mods.update(target_mods)
+        print("Diagonal chunk {}/{}".format(ci/len(chunks)))
         diag_blk,_ = cocultures(chnk_mods,**diag_kws)
-        interaction_params.loc[chnk,chnk] = diag_blk
+        pairwise_growth.loc[chnk,chnk] = diag_blk
         for ci2 in range(ci+1,len(chunks)):
             chnk2 = chunks[ci2]
             chnk2_mods = {}
@@ -150,14 +151,15 @@ def make_gem_network(cobra_model_list,media_fl,**kwargs):
                     chnk2_mods[tid] = cb.io.read_sbml_model(models_available.loc[tid,"ModelPath"])
             off_diag_kws["rows"] = chnk
             off_diag_kws["cols"] = chnk2
+            print("  Off-diagonal chunk {}/{}".format(ci2,len(chunks)))
             offblk,offblk_T = cocultures({**chnk_mods,**chnk2_mods},**off_diag_kws)
-            interaction_params.loc[chnk,chnk2] = offblk
-            interaction_params.loc[chnk2,chnk] = offblk_T
+            pairwise_growth.loc[chnk,chnk2] = offblk
+            pairwise_growth.loc[chnk2,chnk] = offblk_T
 
     metadata = {"Media File":media_fl,"TargetModel":"{}".format(targets)}
     metadata = {**metadata,**kwargs}
 
-    return interaction_params,fba_growth,metadata
+    return pairwise_growth,fba_growth,metadata
 
 
 
@@ -344,10 +346,11 @@ def cocultures(cobra_models,**kwargs):
     interaction_parameters = pd.DataFrame(index = rows,columns = cols).fillna(0.0)
     interaction_parameters_T = pd.DataFrame(index = cols,columns = rows).fillna(0.0)
 
-    for col in cols:
-        for row in rows:
+    for i,col in enumerate(cols):
+        for j,row in enumerate(rows):
+            print("    {}: {}/{}".format(col,i,len(cols)))
             if needmsk.loc[row,col]:
-                # print("{}/{}".format(row,col))
+                print("      {}: {}/{}".format(row,j,len(rows)))
                 if row == col:
                     biomasses = steadyComXLite({col:model_parameters[col]},**kwargs)
                     biomasses[row] = biomasses[col]
