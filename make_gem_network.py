@@ -137,8 +137,8 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
             set_media(mod,media=media,keep_fluxes = True) 
             fba_growth.loc[tid] = mod.slim_optimize()
         # chnk_mods.update(target_mods)
-        print("Diagonal chunk {}/{}".format(ci,len(chunks)))
-        diag_blk,_ = cocultures(chnk_mods,**diag_kws)
+        mes = "Diagonal chunk {}/{}".format(ci,len(chunks))
+        diag_blk,_ = cocultures(chnk_mods,**diag_kws,message = mes)
         pairwise_growth.loc[chnk,chnk] = diag_blk
         for ci2 in range(ci+1,len(chunks)):
             chnk2 = chunks[ci2]
@@ -151,8 +151,8 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
                     chnk2_mods[tid] = cb.io.read_sbml_model(models_available.loc[tid,"ModelPath"])
             off_diag_kws["rows"] = chnk
             off_diag_kws["cols"] = chnk2
-            print("  Off-diagonal chunk {}/{}".format(ci2,len(chunks)))
-            offblk,offblk_T = cocultures({**chnk_mods,**chnk2_mods},**off_diag_kws)
+            mes = "Off-diagonal chunk {}/{}".format(ci2,len(chunks))
+            offblk,offblk_T = cocultures({**chnk_mods,**chnk2_mods},**off_diag_kws,message = mes)
             pairwise_growth.loc[chnk,chnk2] = offblk
             pairwise_growth.loc[chnk2,chnk] = offblk_T
 
@@ -271,6 +271,8 @@ def cocultures(cobra_models,**kwargs):
     rows = kwargs.get("rows",[])
     cols = kwargs.get("cols",[])
 
+    logging = kwargs.get("message","")
+
     if not len(rows)*len(cols):
         rows = cobra_models.keys()
         cols = cobra_models.keys()
@@ -348,9 +350,8 @@ def cocultures(cobra_models,**kwargs):
 
     for i,col in enumerate(cols):
         for j,row in enumerate(rows):
-            print("    {}: {}/{}".format(col,i,len(cols)))
             if needmsk.loc[row,col]:
-                print("      {}: {}/{}".format(row,j,len(rows)))
+                print("{} --- col {}: {}/{} row {}: {}/{}".format(logging,col,i,len(cols),row,j,len(rows)))
                 if row == col:
                     biomasses = steadyComXLite({col:model_parameters[col]},**kwargs)
                     biomasses[row] = biomasses[col]
