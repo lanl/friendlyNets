@@ -24,6 +24,16 @@ You will also need to add the directory to your python path, for example using
 
 where ``location`` is the path to the folder that you cloned friendlyNets into.
 
+**Dependencies**
+
+We use `joblib <https://joblib.readthedocs.io/en/latest/>`_ for parallel computing.
+
+Our implementation of SteadyComX uses `Gurobi <https://www.gurobi.com/documentation/9.5/>`_ and gurobi's python package for joint FBA, and expects `cobrapy <https://opencobra.github.io/cobrapy/>`_ models as input.
+
+.. note::
+
+    Unfortunately, we do not currently have access to a CPLEX license in order to implement CPLEX as a solver option.
+
 Using the Method for a Set of Samples
 ----------------------------------------
 
@@ -31,7 +41,7 @@ Using the Method for a Set of Samples
 
    What follows is a plan of action. At this point, the data formatting and network building steps are incomplete.
 
-FriendlyNets is designed to predict the invasion of a single species into a community. It is designed around microbiome studies, but (hopefully) written more generally so that nodes can be anything as long as interaction parameters between
+FriendlyNets is designed to predict the invasion of a single species into a community. It is designed around microbiome studies, but written more generally so that nodes can be anything as long as interaction parameters between
 the nodes are known. For microbiome studies, we provide a method to generate the set of interaction parameters from a set of genome-scale metabolic models which must be provided by the user.
 
 We assume that the user has a table in .csv format with rows indexed by species of interest and columns indexed by sample name that contains abundance data for each species in each sample (relative or absolute). Additionally, if an assessment of the predictive power of the method is desired (which may indicate
@@ -39,10 +49,6 @@ the extent to which experimental outcome depends network effects), a metadata fi
 
 Creating the full network
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note::
-
-    Not Implemented
 
 .. note::
 
@@ -54,9 +60,9 @@ For microbiome data paired with a set of genome-scale metabolic models, the meth
 
     from make_gem_network import make_gem_network
 
-    full_interaction_network = make_gem_network(path_to_table,path_to_gsm_info) 
+    full_interaction_network = make_gem_network(path_to_gsm_info) 
 
-This function requires the path to the abundance table file (a .csv) and the path to a file containing the paths to each genome-scale model.
+This function requires the path to a file containing the paths to each genome-scale model.
 
 By default, the interaction will be defined by the log-ratio of simulated growth in the pair to simulated growth alone. 
 

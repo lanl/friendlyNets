@@ -151,7 +151,7 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
                     chnk2_mods[tid] = cb.io.read_sbml_model(models_available.loc[tid,"ModelPath"])
             off_diag_kws["rows"] = chnk
             off_diag_kws["cols"] = chnk2
-            mes = "Off-diagonal chunk {}/{}".format(ci2,len(chunks))
+            mes = mes + "(Off-diagonal chunk {}/{})".format(ci2,len(chunks))
             offblk,offblk_T = cocultures({**chnk_mods,**chnk2_mods},**off_diag_kws,message = mes)
             pairwise_growth.loc[chnk,chnk2] = offblk
             pairwise_growth.loc[chnk2,chnk] = offblk_T
