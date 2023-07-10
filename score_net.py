@@ -27,7 +27,7 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
     :type full_net: pandas dataframe
     :param target_node: name of node of interest. (must be in full_net, need not be in sample - will be added to induced subgraph)
     :type target_node: str
-    :param models: list of models you wish to use for scoring. Leave as None for all 6.
+    :param models: list of models you wish to use for scoring. Leave as None for all 6. Options are "LV","InhibitLV","AntLV","Replicator","NodeBalance","Stochastic".
     :type models: list
     :param min_ra: cutoff to use for presence/abscence of a node in a sample. Default 10**-6
     :type min_ra: float
@@ -42,8 +42,9 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
     if models == None:
         models = ["LV","InhibitLV","AntLV","Replicator","NodeBalance","Stochastic"]
         
-    models = models + ["Composite"]
-
+    if "Composite" not in models:
+        models = models + ["Composite"]
+        
     net_scores = pd.DataFrame(index = experiment.keys(),columns = models)
 
     for ky,data in experiment.items():
@@ -54,7 +55,10 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
         if target_node not in nonzero:
             nonzero += [target_node]
 
-        subgraph = full_net.loc[nonzero,nonzero]
+        nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
+        nonzero_cl = np.array(nonzero).astype(full_net.columns.dtype)
+
+        subgraph = full_net.loc[nonzero_rw,nonzero_cl]
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
@@ -78,9 +82,9 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
     :type full_net: pandas dataframe
     :param target_node: name of node of interest. (must be in full_net, need not be in sample - will be added to induced subgraph)
     :type target_node: str
-    :param scoretype: Type of known score (`b` for binary, `c` for continuous)
+    :param scoretype: Type of known score (`b` or `binary` for binary, `c` or `continuous` for continuous)
     :type scoretype: str
-    :param models: list of models you wish to use for scoring. Leave as None for all 6.
+    :param models: list of models you wish to use for scoring. Leave as None for all 6. Options are "LV","InhibitLV","AntLV","Replicator","NodeBalance","Stochastic".
     :type models: list
     :param min_ra: cutoff to use for presence/abscence of a node in a sample. Default 10**-6
     :type min_ra: float
@@ -96,7 +100,8 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
     if models == None:
         models = ["LV","InhibitLV","AntLV","Replicator","NodeBalance","Stochastic"]
         
-    models = models + ["Composite"]
+    if "Composite" not in models:
+        models = models + ["Composite"]
 
     net_scores = pd.DataFrame(index = experiment.keys(),columns = ["KnownScore"] + models)
 
@@ -107,7 +112,10 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
         if target_node not in nonzero:
             nonzero += [target_node]
 
-        subgraph = full_net.loc[nonzero,nonzero]
+        nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
+        nonzero_cl = np.array(nonzero).astype(full_net.columns.dtype)
+
+        subgraph = full_net.loc[nonzero_rw,nonzero_cl]
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
@@ -115,7 +123,7 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
 
         net_scores.loc[ky] = [score] + [fscores[col] for col in net_scores.columns[1:]]
 
-    if scoretype == 'b':
+    if scoretype[0] == 'b':
 
         aurocs = {}
         roc_curves = {}
@@ -204,7 +212,10 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
         if KO in nonzero:
             nonzero.remove(KO)
 
-        subgraph = full_net.loc[nonzero,nonzero]
+        nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
+        nonzero_cl = np.array(nonzero).astype(full_net.columns.dtype)
+
+        subgraph = full_net.loc[nonzero_rw,nonzero_cl]
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 

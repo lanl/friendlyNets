@@ -162,10 +162,6 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
     return pairwise_growth,fba_growth,metadata
 
 
-
-
-
-
 def check_co_occ(experiment,min_ra=10**-6):
     """
 

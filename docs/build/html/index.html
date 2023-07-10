@@ -42,7 +42,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="format.html">Functions for Formatting OTU tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
@@ -76,8 +76,8 @@
   <section id="friendlynets-documentation">
 <h1>FriendlyNets documentation<a class="headerlink" href="#friendlynets-documentation" title="Permalink to this heading"></a></h1>
 <p>FriendlyNets provides a method for assessing the promotion/inhibition effect on a microbe of a microbial community using a network of community interactions. At its core, FriendlyNets judges how much a network
-promotes or inhibits one of its nodes. It does this by assuming a set dynamical system represented by the network, and using the resulting dynamics. FriendlyNets is also packaged with functions for generating
-a network from a set of genome-scale metabolic by simulating pairwise growth using the methods from <span id="id1">[<a class="reference internal" href="#id3" title="Minsuk Kim, Jaeyun Sung, and Nicholas Chia. Resource-allocation constraint governs structure and function of microbial communities in metabolic modeling. Metabolic Engineering, 70:12–22, 2022.">KSC22</a>]</span>.</p>
+promotes or inhibits one of its nodes. It does this by assuming a set of dynamical systems represented by the network and using the resulting dynamics. FriendlyNets is also packaged with functions for generating
+a network from a set of genome-scale metabolic models (commonly called GSMs or GEMs) by simulating pairwise growth using the methods from <span id="id1">[<a class="reference internal" href="#id3" title="Minsuk Kim, Jaeyun Sung, and Nicholas Chia. Resource-allocation constraint governs structure and function of microbial communities in metabolic modeling. Metabolic Engineering, 70:12–22, 2022.">KSC22</a>]</span>.</p>
 <p>Check out the <a class="reference internal" href="usage.html"><span class="doc">Usage</span></a> section for further information, including how to
 <a class="reference internal" href="usage.html#installation"><span class="std std-ref">install</span></a> the project.</p>
 <div class="admonition note">
@@ -92,8 +92,13 @@ a network from a set of genome-scale metabolic by simulating pairwise growth usi
 <li class="toctree-l2"><a class="reference internal" href="usage.html#using-the-method-for-a-set-of-samples">Using the Method for a Set of Samples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="format.html">Functions for Formatting OTU tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="format.html#format_data.format_data"><code class="docutils literal notranslate"><span class="pre">format_data()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="network_build.html#make_gem_network.cocultures"><code class="docutils literal notranslate"><span class="pre">cocultures()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="network_build.html#make_gem_network.get_pairwise_growth"><code class="docutils literal notranslate"><span class="pre">get_pairwise_growth()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="network_build.html#make_gem_network.check_co_occ"><code class="docutils literal notranslate"><span class="pre">check_co_occ()</span></code></a></li>
 </ul>
 </li>

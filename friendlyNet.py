@@ -58,7 +58,7 @@ class friendlyNet:
         for i in range(self.Adjacency.shape[0]):
             for j in range(self.Adjacency.shape[1]):
                 if self.Adjacency[i,j] != 0:
-                    edges.loc[indx] = [self.NodeNames[i],self.NodeNames[j],self.Adjacency[i,j],abs(self.Adjacency[i,j]),np.sign(self.Adjacency[i,j])]
+                    edges.loc[indx] = [self.NodeNames[j],self.NodeNames[i],self.Adjacency[i,j],abs(self.Adjacency[i,j]),np.sign(self.Adjacency[i,j])]
                     indx+=1
 
         self.EdgeList = edges
@@ -85,7 +85,7 @@ class friendlyNet:
         :rtype: array[float]
         """
 
-        adjc = self.Adjacency.copy().T
+        adjc = self.Adjacency.copy()
         np.fill_diagonal(adjc,-self_inhibit)
         return s*(1+np.dot(adjc - shift,s))
 
@@ -217,7 +217,7 @@ class friendlyNet:
         """
 
 
-        return s*(np.dot(self.Adjacency.T,s) - np.dot(s.T,np.dot(self.Adjacency.T,s.T)))
+        return s*(np.dot(self.Adjacency,s) - np.dot(s.T,np.dot(self.Adjacency,s.T)))
 
     def solve_replicator(self,s0,T):
 
@@ -330,7 +330,7 @@ class friendlyNet:
         if node in self.NodeNames:
             node = self.NodeNames.index(node)
 
-        rescld_Adj = (self.Adjacency.T + 1)/2
+        rescld_Adj = (self.Adjacency + 1)/2
         L = rescld_Adj - np.diag(rescld_Adj.sum(axis = 0))
         eigenvalues,eigenvectors = np.linalg.eig(L)
 
@@ -357,7 +357,7 @@ class friendlyNet:
         :rtype: scipy.integrate.solve_ivp solution
         """
 
-        rescld_Adj = (self.Adjacency.T + 1)/2
+        rescld_Adj = (self.Adjacency + 1)/2
         L = rescld_Adj - np.diag(rescld_Adj.sum(axis = 0))
 
         return solve_ivp(lambda t,s: np.dot(L,s), (0,T), [1,1,1])

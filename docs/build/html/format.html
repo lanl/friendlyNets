@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Functions for Formatting OTU tables &mdash; FriendlyNets 0.2 documentation</title>
+  <title>Function for Formatting OTU tables &mdash; FriendlyNets 0.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -43,11 +43,14 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions for Formatting OTU tables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Function for Formatting OTU tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#format_data.format_data"><code class="docutils literal notranslate"><span class="pre">format_data()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNets class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Parameter Sensitivity Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNets class</a></li>
 </ul>
 
         </div>
@@ -64,7 +67,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Functions for Formatting OTU tables</li>
+      <li class="breadcrumb-item active">Function for Formatting OTU tables</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/format.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -74,8 +77,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="functions-for-formatting-otu-tables">
-<h1>Functions for Formatting OTU tables<a class="headerlink" href="#functions-for-formatting-otu-tables" title="Permalink to this heading"></a></h1>
+  <section id="function-for-formatting-otu-tables">
+<h1>Function for Formatting OTU tables<a class="headerlink" href="#function-for-formatting-otu-tables" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="format_data.format_data">
+<span class="sig-prename descclassname"><span class="pre">format_data.</span></span><span class="sig-name descname"><span class="pre">format_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otu_table</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#format_data.format_data" title="Permalink to this definition"></a></dt>
+<dd><p>Formats a dataset (starting with OTU table) into the form <code class="docutils literal notranslate"><span class="pre">dict{samplename:(score,dict{nodename:relative</span> <span class="pre">abundance})}</span></code>. Will also filter out OTUs by ID or name, so that OTUs left out of an interaction network can be removed (e.g. OTUs with no available GSM).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>otu_table</strong> (<em>pandas.DataFrame</em>) – table of count or relative abundance data, index by OTU, columns corresponding to samples.</p></li>
+<li><p><strong>sample_metadata</strong> (<em>pandas.DataFrame</em>) – sample metadata use in determining the known score for a sample. If only predictions are desired, this can be omitted and all scores will be set to 1. Should be a table indexed by sample name (can also be a dict).</p></li>
+<li><p><strong>score_col</strong> (<em>str</em>) – column in sample_metadata indicating known score. Default “Score”</p></li>
+<li><p><strong>node_names</strong> (<em>dict</em>) – map from OTU table index to taxa names that match names in a known master network or match names of cobra models for network building.</p></li>
+<li><p><strong>included_otus</strong> (<em>list</em>) – list of otus to include in the data, all others will be excluded. Can be row names in otu table or corresponding value in name_names. Default include all otus</p></li>
+<li><p><strong>scoretype</strong> (<em>str</em>) – Either <code class="docutils literal notranslate"><span class="pre">binary</span></code> or <code class="docutils literal notranslate"><span class="pre">continuous</span></code> or <code class="docutils literal notranslate"><span class="pre">infer</span></code> for known scores for each sample. Default inferred from the sample metadata. <strong>Will not</strong> edit the scores to fit the given type.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Data formatted for easy use with friendlynet package (especially <a class="reference internal" href="scoring.html#score_net.score_net" title="score_net.score_net"><code class="xref py py-func docutils literal notranslate"><span class="pre">score_net</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

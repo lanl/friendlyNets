@@ -17,8 +17,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="The FriendlyNets class" href="friendlynets.html" />
-    <link rel="prev" title="Functions for Formatting OTU tables" href="format.html" /> 
+    <link rel="next" title="Functions to Generate and Evaluate Predictions" href="scoring.html" />
+    <link rel="prev" title="Function for Formatting OTU tables" href="format.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,14 +43,16 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="format.html">Functions for Formatting OTU tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Functions for Making Interation Networks from GEMs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#make_gem_network.cocultures"><code class="docutils literal notranslate"><span class="pre">cocultures()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#make_gem_network.get_pairwise_growth"><code class="docutils literal notranslate"><span class="pre">get_pairwise_growth()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#make_gem_network.check_co_occ"><code class="docutils literal notranslate"><span class="pre">check_co_occ()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNets class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Parameter Sensitivity Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNets class</a></li>
 </ul>
 
         </div>
@@ -80,13 +82,76 @@
   <section id="functions-for-making-interation-networks-from-gems">
 <h1>Functions for Making Interation Networks from GEMs<a class="headerlink" href="#functions-for-making-interation-networks-from-gems" title="Permalink to this heading"></a></h1>
 <dl class="py function">
+<dt class="sig sig-object py" id="make_gem_network.cocultures">
+<span class="sig-prename descclassname"><span class="pre">make_gem_network.</span></span><span class="sig-name descname"><span class="pre">cocultures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_models</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#make_gem_network.cocultures" title="Permalink to this definition"></a></dt>
+<dd><p>Computes steadyComX simulations, including setting media for models, for all pairs of models (optionally only co-occurring models).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cobra_models</strong> – a dictionary of cobra models</p></li>
+<li><p><strong>rows</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of keys to be used for 1 half of each pair</p></li>
+<li><p><strong>cols</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of keys to be used for other half of each pair. If either or both is not provided, does allxall</p></li>
+<li><p><strong>media</strong> – table including flux bound and modelSEED metabolite ID</p></li>
+<li><p><strong>target_models</strong> (<em>str</em><em> or </em><em>list</em>) – model/models of interest. Computes parameters for all interactions with these models. Must be in cobra_models. Default empty list</p></li>
+<li><p><strong>IDtype</strong> (<em>str</em>) – How the MODEL ids the metabolites. Should be a column of the media table.</p></li>
+<li><p><strong>compartmenttag</strong> (<em>str</em>) – how the MODEl tags exchanged metabolites (e.g. _e0 for a modelSEED model)</p></li>
+<li><p><strong>fluxcol</strong> (<em>str</em>) – column in media table with flux bound</p></li>
+<li><p><strong>keep_fluxes</strong> (<em>bool</em>) – If True, the new media will include the fluxes from the models previous media that do not appear in media. Default True.</p></li>
+<li><p><strong>mu</strong> (<em>float</em>) – specific community growth rate</p></li>
+<li><p><strong>default_inflow</strong> (<em>float</em>) – Default inflow of metabolites not listed in media</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – forced metabolite leak</p></li>
+<li><p><strong>rac</strong> (<em>float</em>) – Intracellular flux budget for RAC</p></li>
+<li><p><strong>experiments</strong> (<em>dict</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>,</em><em>dict</em><em>]</em><em>] or </em><em>list</em><em> of </em><em>same</em>) – (possibly list of) set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by names of models (same as dict keys of models). Used to determine co-occurrence</p></li>
+<li><p><strong>min_ra</strong> (<em>float</em>) – cutoff to use for presence/abscence of a node in a sample. Default 10**-6</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>table of simulated co-culture results. Row/Columns are index so Table.loc[row,col] = growth of row in coculture with col</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas DF</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="make_gem_network.get_pairwise_growth">
+<span class="sig-prename descclassname"><span class="pre">make_gem_network.</span></span><span class="sig-name descname"><span class="pre">get_pairwise_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">media_fl</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#make_gem_network.get_pairwise_growth" title="Permalink to this definition"></a></dt>
+<dd><p>Creates interaction network for list of cobra models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cobra_model_list</strong> – path to .csv file with info on GEM location.</p></li>
+<li><p><strong>media_fl</strong> (<em>str</em>) – path to media .csv</p></li>
+<li><p><strong>experiment</strong> (<em>str</em>) – path .json file containing set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by names of models (same as dict keys of models). Used to determine co-occurrence. All pairs computed if not given.</p></li>
+<li><p><strong>silence_load_error</strong> (<em>bool</em>) – If true, suppresses error output in loading models. Default True.</p></li>
+<li><p><strong>IDtype</strong> (<em>str</em>) – How the MODEL ids the metabolites. Should be a column of the media table. Default “fullName”</p></li>
+<li><p><strong>compartmenttag</strong> (<em>str</em>) – how the MODEl tags exchanged metabolites (e.g. _e0 for a modelSEED model). Default “_e0”</p></li>
+<li><p><strong>fluxcol</strong> (<em>str</em>) – column in media table with flux bound. Default “fluxValue”</p></li>
+<li><p><strong>keep_fluxes</strong> (<em>bool</em>) – If True, the new media will include the fluxes from the models previous media that do not appear in media. Default True.</p></li>
+<li><p><strong>mu</strong> (<em>float</em>) – specific community growth rate. Default 0.4</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – forced metabolite leak. Default 0.1</p></li>
+<li><p><strong>rac</strong> (<em>float</em>) – Intracellular flux budget for RAC. Default 100.</p></li>
+<li><p><strong>min_ra</strong> (<em>float</em>) – cutoff to use for presence/abscence of a node in a sample. Default 10**-6</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>table of simulated co-culture results. Row/Columns are index so Table.loc[row,col] = growth of row in coculture with col as well as FBA solution for each model. Growth of each model with standard FBA. Parameters used.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame, pandas.Series, dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="make_gem_network.check_co_occ">
 <span class="sig-prename descclassname"><span class="pre">make_gem_network.</span></span><span class="sig-name descname"><span class="pre">check_co_occ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_ra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#make_gem_network.check_co_occ" title="Permalink to this definition"></a></dt>
 <dd><p>Check which nodes co-occurr in samples, so that we don’t need to compute an interaction between those that don’t</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>experiment</strong> (<em>dict</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>,</em><em>dict</em><em>]</em><em>]</em>) – set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by node names.</p></li>
+<li><p><strong>experiment</strong> (<em>dict</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>,</em><em>dict</em><em>]</em><em>]</em>) – set of sets of nodes, as a dictionary of tuples with (known score,data) keyed by sample identifier. The data should be a dictionary of abundances keyed by node names.</p></li>
 <li><p><strong>min_ra</strong> (<em>float</em>) – cutoff to use for presence/abscence of a node in a sample. Default 10**-6</p></li>
 </ul>
 </dd>
@@ -105,8 +170,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="format.html" class="btn btn-neutral float-left" title="Functions for Formatting OTU tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="friendlynets.html" class="btn btn-neutral float-right" title="The FriendlyNets class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="format.html" class="btn btn-neutral float-left" title="Function for Formatting OTU tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scoring.html" class="btn btn-neutral float-right" title="Functions to Generate and Evaluate Predictions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

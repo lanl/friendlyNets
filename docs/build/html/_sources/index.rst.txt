@@ -7,8 +7,8 @@ FriendlyNets documentation
 ========================================
 
 FriendlyNets provides a method for assessing the promotion/inhibition effect on a microbe of a microbial community using a network of community interactions. At its core, FriendlyNets judges how much a network
-promotes or inhibits one of its nodes. It does this by assuming a set dynamical system represented by the network, and using the resulting dynamics. FriendlyNets is also packaged with functions for generating 
-a network from a set of genome-scale metabolic by simulating pairwise growth using the methods from :cite:`kim2022resource`.
+promotes or inhibits one of its nodes. It does this by assuming a set of dynamical systems represented by the network and using the resulting dynamics. FriendlyNets is also packaged with functions for generating 
+a network from a set of genome-scale metabolic models (commonly called GSMs or GEMs) by simulating pairwise growth using the methods from :cite:`kim2022resource`.
 
 
 

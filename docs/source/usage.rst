@@ -37,47 +37,22 @@ Our implementation of SteadyComX uses `Gurobi <https://www.gurobi.com/documentat
 Using the Method for a Set of Samples
 ----------------------------------------
 
-.. note::
-
-   What follows is a plan of action. At this point, the data formatting and network building steps are incomplete.
 
 FriendlyNets is designed to predict the invasion of a single species into a community. It is designed around microbiome studies, but written more generally so that nodes can be anything as long as interaction parameters between
 the nodes are known. For microbiome studies, we provide a method to generate the set of interaction parameters from a set of genome-scale metabolic models which must be provided by the user.
 
 We assume that the user has a table in .csv format with rows indexed by species of interest and columns indexed by sample name that contains abundance data for each species in each sample (relative or absolute). Additionally, if an assessment of the predictive power of the method is desired (which may indicate
-the extent to which experimental outcome depends network effects), a metadata file must be provided as .csv with rows indexed by sample name and a column indicating experimental outcome of an invasion experiment
-
-Creating the full network
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note::
-
-    Optional: A network can instead be loaded as pandas DataFrame with nodes and columns being names of the species in the data, formatted  as ``Network.loc[m_1,m_2]`` contains the interaction with source ``m_1`` and target ``m_2``.
-
-For microbiome data paired with a set of genome-scale metabolic models, the method creates network of interactions for all co-occurring taxa that have an associated user-provided genome-scale model. 
-
-.. code-block:: python
-
-    from make_gem_network import make_gem_network
-
-    full_interaction_network = make_gem_network(path_to_gsm_info) 
-
-This function requires the path to a file containing the paths to each genome-scale model.
-
-By default, the interaction will be defined by the log-ratio of simulated growth in the pair to simulated growth alone. 
+the extent to which experimental outcome depends on network effects), a metadata file must be provided as .csv with rows indexed by sample name and a column indicating experimental outcome of an invasion experiment
 
 Formatting the data
 ^^^^^^^^^^^^^^^^^^^^^^
 
+We need to format the samples into a specific (not very user-friendly) form for use with the method. We provide :doc:`format` so that the user can provide data in an easier way.
+
 .. note::
 
-    Not Implemented
-
-.. warning::
-
-    Removes any species from the data that do not have interaction parameters in the full interaction network.
-
-We need to format the samples into a dict of dicts, or dict of tuples if predicitive power is to be assessed. 
+    Often, a significant amount of pre-processing is required to arrange the data into the required format for our formatting function (e.g. splitting into seperate experiments, etc.). We have provided three examples in the in 
+    ``Example`` folder.
 
 To format the data to compute friendliness scores with no known outcomes:
 
@@ -85,21 +60,21 @@ To format the data to compute friendliness scores with no known outcomes:
 
     from format_data import format_data
 
-    experiment,scoretype = format_data(path_to_table,full_interaction_network,nodes_of_interest)
+    experiment,scoretype,coverage = format_data(otu_dataframe)
 
-The function requires the path to the table of abundances and the full interaction network so that species missing can be removed, and the name of the node(s) that we wish to assess for network friendliness. 
+The function requires the abundance data table (as pandas dataframe) and returns a set of samples formatted for use in downstream analysis. It also returns two variables that are not relevant if called as above. 
 
 Without known outcomes, ``experiment`` will be a dict (keyed by sample name - the column headers of the abundance table)
-of dicts (keyed by species), and ``scoretype`` will be None
+of dicts (keyed by species), and ``scoretype`` will be None. Coverage will be a dictionary simply indicating that the entire index of the abundance data table is included.
 
-For assessment of the predictive power of the method, the path to a metadata file with known outcomes for each sample is required, as is the name of the known outcome column in that file (default ``Score``):
+For assessment of the predictive power of the method, the path to a metadata file with known outcomes for each sample is required, as is the name of the known outcome column in that file (default ``Score``). Furthermore, 
+the function can filter the data, including only a subset of the index of the abundance table. This can be used to filter out taxa for which no genome scale model is available.
 
 .. code-block:: python
 
     from format_data import format_data
 
-    experiment,scoretype = format_data(path_to_table,full_interaction_network,nodes_of_interest,known_scores = path_to_metadata,score_column = column_of_score,scoretype = score_type)
-
+    experiment,scoretype,coverage = format_data(otu_dataframe,sample_metadata = metadata_dataframe,score_col = "Score",included_otus = taxa_with_models)
 
 
 If the known outcome file is given, along with the name of the column of known outcome scores, ``experiment`` will be a dict (keyed by sample name - the column headers of the abundance table) of 
@@ -107,6 +82,46 @@ tuples with (known outcome score, dict of abundances). The dict of abundances is
 scoretype is given. If the scoretype is given as binary and the data are continuous, the function binarizes the data.
 
 The second return value, ``scoretype`` indicates the type of known outcome scores, either binary or continuous.
+
+The third return value, ``coverage`` is a dict of dicts indicating the coverage of the samples by the included otus. For each sample, the corresponding dictionary has the keys:
+
+ - *Coverage* : The total relative abundance of the otus included.
+ - *NumberMissing* : The number of otus not included.
+ - *MajorMissing* : The otus not included with the highest relative abundance (any otus with :math:`\geq 80%` of the highest missing relative abundance)
+ - *AllMissing* : List of all the otus not included.
+
+
+Creating the full network
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+    Optional: A network can instead be loaded as a pandas DataFrame with nodes and columns being names of the species in the data, formatted  
+    as ``Network.loc[m_1,m_2]`` contains the interaction with source ``m_1`` and target ``m_2``.
+
+.. note::
+
+    This guide assumes that the user has GSMs corresponding to the organisms in their samples. In the ``Examples``, we provide examples of how one might construct these models (``make_models.py``) using `modelSEED <https://modelseed.org/>`_.
+
+For microbiome data paired with a set of genome-scale metabolic models, the method creates network of interactions for all co-occurring taxa that have an associated user-provided genome-scale model. 
+
+.. code-block:: python
+
+    from make_gem_network import make_gem_network
+
+    pair_growth,fba_growth,metadata = get_pairwise_growth(model_list,media_pth)
+
+This function requires the path to a file containing the paths to each genome-scale model, as well as the path to a media file. Media files
+can be found in the ``translate_agora_media`` directory, and updated by running the script ``get_agora_media.py``. Media needs to have a column containing
+metabolite IDs matching those found in the GSMs, and a column containing the flux bounds for the media (both column names can be set by the user).
+
+See :py:func:`make_gem_network.get_pairwise_growth` for a full list of the options available. If the experiments as created above
+are passed, then the function skips pairwise growth experiments for any pair that does not co-occur in the dataset.
+
+The result is a set of simulated pairwise growth experiment results, with ``pair_growth[i,j]`` being the growth of ``i`` when paired with ``j``. To create an interaction network, we can use these results in a few ways.
+The simplest is to use the log-ratio of growth alone with growth in the pair as the Lotka-Volterra parameter for the partners influence on growth.
+
+
 
 Computing Friendliness Scores and Assessing Predictive Power
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -132,6 +147,8 @@ To assess the predictive power of the method (for friendliness on a single ``tar
     friendliness,predictive_power = score_net(experiment,full_interaction_network,target_node,scoretype)
 
 ``predictive_power`` is a dictionary of predictive power metrics, which depend on if the scoring is binary (in which case the ROC is used) or continuous (in which case correlation is used). 
+
+
 
 Plotting the Results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
