@@ -44,7 +44,7 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
         
     if "Composite" not in models:
         models = models + ["Composite"]
-        
+
     net_scores = pd.DataFrame(index = experiment.keys(),columns = models)
 
     for ky,data in experiment.items():
@@ -52,7 +52,9 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
             data = data[1]
 
         nonzero = [kyy for kyy,val in data.items() if val > min_ra]
-        if target_node not in nonzero:
+
+
+        if str(target_node) not in np.array(nonzero).astype(str):
             nonzero += [target_node]
 
         nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
@@ -109,8 +111,10 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
         score = sample[0]
         data = sample[1]
         nonzero = [kyy for kyy,val in data.items() if val > min_ra]
-        if target_node not in nonzero:
+
+        if str(target_node) not in np.array(nonzero).astype(str):
             nonzero += [target_node]
+
 
         nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
         nonzero_cl = np.array(nonzero).astype(full_net.columns.dtype)

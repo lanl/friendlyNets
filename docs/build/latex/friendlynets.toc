@@ -2,16 +2,16 @@
 \contentsline {chapter}{\numberline {1}Usage}{3}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Installation}{3}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Using the Method for a Set of Samples}{3}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Creating the full network}{4}{subsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.2.2}Formatting the data}{4}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.1}Formatting the data}{4}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Creating the full network}{5}{subsection.1.2.2}%
 \contentsline {subsection}{\numberline {1.2.3}Computing Friendliness Scores and Assessing Predictive Power}{5}{subsection.1.2.3}%
-\contentsline {subsection}{\numberline {1.2.4}Plotting the Results}{5}{subsection.1.2.4}%
-\contentsline {subsection}{\numberline {1.2.5}Sensitivity to Parameters}{5}{subsection.1.2.5}%
-\contentsline {chapter}{\numberline {2}Functions for Formatting OTU tables}{7}{chapter.2}%
+\contentsline {subsection}{\numberline {1.2.4}Plotting the Results}{6}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Sensitivity to Parameters}{6}{subsection.1.2.5}%
+\contentsline {chapter}{\numberline {2}Function for Formatting OTU tables}{7}{chapter.2}%
 \contentsline {chapter}{\numberline {3}Functions for Making Interation Networks from GEMs}{9}{chapter.3}%
 \contentsline {chapter}{\numberline {4}Functions to Generate and Evaluate Predictions}{11}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Functions for Sensitivity Testing}{15}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Functions for Lotka\sphinxhyphen {}Volterra Interaction Parameter Sensitivity Testing}{15}{section.5.1}%
-\contentsline {chapter}{\numberline {6}The FriendlyNets class}{19}{chapter.6}%
-\contentsline {chapter}{Bibliography}{25}{chapter*.33}%
-\contentsline {chapter}{Index}{27}{section*.34}%
+\contentsline {chapter}{\numberline {6}The FriendlyNet class}{19}{chapter.6}%
+\contentsline {chapter}{Bibliography}{25}{chapter*.36}%
+\contentsline {chapter}{Index}{27}{section*.37}%

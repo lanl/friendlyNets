@@ -116,6 +116,76 @@ class friendlyNet:
         sln = solve_ivp(thefun,(0,T),s0,dense_output = True,events = blowup)
         return sln
 
+    # def sample_lotka_volterra_unif(self,g,node,dist_params,shift=0,self_inhibit=0):
+
+    #     """
+    #     Sample :math:`f_i(s)` for node i 
+    #     """
+    #     s = dist_params[0] + (dist_params[1]-dist_params[0])*g.random(self.Adjacency.shape[0])
+    #     dsdt = self.lotka_volterra_system(0,s,shift,self_inhibit)
+    #     return dsdt[node]
+
+    # def sample_lotka_volterra_lognorm(self,g,node,dist_params,shift=0,self_inhibit=0):
+
+    #     """
+    #     Sample :math:`f_i(s)` for node i 
+    #     """
+    #     logs = g.multivariate_normal(dist_params[0],dist_params[1])
+    #     s = np.exp(logs)
+    #     dsdt = self.lotka_volterra_system(0,s,shift,self_inhibit)
+    #     return dsdt[node]
+
+    # def sample_lotka_volterra_poisson(self,g,node,dist_params,shift=0,self_inhibit=0):
+
+    #     """
+    #     Sample :math:`f_i(s)` for node i 
+    #     """
+    #     s = g.poisson(lam = dist_params,size = self.Adjacency.shape[0])
+    #     dsdt = self.lotka_volterra_system(0,s,shift,self_inhibit)
+    #     return dsdt[node]
+
+    # def lotka_volterra_score(self,node,numSamples,shift=0,self_inhibit=0,distr = "uniform", dist_params = None,nj=1):
+
+    #     """
+    #     Sample 1/|s|f_i(s) from the LV system for node i
+
+    #     :param node: name or index of node
+    #     :type node: str or int
+    #     :param shift: Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be :py:obj:`Adjacency <friendlyNet.friendlyNet.Adjacency>` - ``shift``
+    #     :type shift: float
+    #     :param self_inhibit: extent to which the model should include self inhibition - self interaction terms (:math:`A_{ii}`) will be set to negative ``self_inhibit``
+    #     :type self_inhibit: float
+    #     :param distr:
+    #     :type distr: str
+    #     :param dist_params:
+    #     type dist_params: list[float]
+
+    #     :return: expecation of :math:`\\frac{1}{\|s\|}f_i(s)` from given distribution
+    #     :rtype:  float
+    #     """
+
+    #     g = np.random.default_rng()
+
+    #     if distr.lower() == "uniform":
+    #         if dist_params == None:
+    #             dist_params = (0,1)
+    #         samples = Parallel(n_jobs = nj)(delayed(self.sample_lotka_volterra_unif)(g,node,dist_params,shift=shift,self_inhibit=self_inhibit) for i in range(numSamples))
+
+    #     elif distr.lower() == "lognormal":
+    #         if dist_params == None:
+    #             dist_params = (np.zeros(self.Adjacency.shape[0]),np.eye(self.Adjacency.shape[0]))
+    #         samples = Parallel(n_jobs = nj)(delayed(self.sample_lotka_volterra_lognorm)(g,node,dist_params,shift=shift,self_inhibit=self_inhibit) for i in range(numSamples))
+        
+    #     elif distr.lower() == "poisson":
+    #         if dist_params == None:
+    #             dist_params = 1
+    #         samples = Parallel(n_jobs = nj)(delayed(self.sample_lotka_volterra_poisson)(g,node,dist_params,shift=shift,self_inhibit=self_inhibit) for i in range(numSamples))
+
+
+    #     return np.mean(samples)
+
+
+
     def lotka_volterra_score_single(self,node,mxTime = 100,shift=0,self_inhibit = 0):
 
         """

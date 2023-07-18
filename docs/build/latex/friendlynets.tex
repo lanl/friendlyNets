@@ -64,9 +64,9 @@
 
 
 \title{FriendlyNets}
-\date{Jun 29, 2023}
+\date{Jul 11, 2023}
 \release{0.2}
-\author{James D.\@{} Brunner and Nicholas Chia}
+\author{James D.\@{} Brunner}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
 \makeindex
@@ -87,8 +87,8 @@
 
 \sphinxAtStartPar
 FriendlyNets provides a method for assessing the promotion/inhibition effect on a microbe of a microbial community using a network of community interactions. At its core, FriendlyNets judges how much a network
-promotes or inhibits one of its nodes. It does this by assuming a set dynamical system represented by the network, and using the resulting dynamics. FriendlyNets is also packaged with functions for generating
-a network from a set of genome\sphinxhyphen{}scale metabolic by simulating pairwise growth using the methods from {[}\hyperlink{cite.index:id3}{KSC22}{]}.
+promotes or inhibits one of its nodes. It does this by assuming a set of dynamical systems represented by the network and using the resulting dynamics. FriendlyNets is also packaged with functions for generating
+a network from a set of genome\sphinxhyphen{}scale metabolic models (commonly called GSMs or GEMs) by simulating pairwise growth using the methods from {[}\hyperlink{cite.index:id3}{KSC22}{]}.
 
 \sphinxAtStartPar
 Check out the {\hyperref[\detokenize{usage::doc}]{\sphinxcrossref{\DUrole{doc}{Usage}}}} section for further information, including how to
@@ -146,57 +146,25 @@ Unfortunately, we do not currently have access to a CPLEX license in order to im
 
 \section{Using the Method for a Set of Samples}
 \label{\detokenize{usage:using-the-method-for-a-set-of-samples}}
-\begin{sphinxadmonition}{note}{Note:}
-\sphinxAtStartPar
-What follows is a plan of action. At this point, the data formatting and network building steps are incomplete.
-\end{sphinxadmonition}
-
 \sphinxAtStartPar
 FriendlyNets is designed to predict the invasion of a single species into a community. It is designed around microbiome studies, but written more generally so that nodes can be anything as long as interaction parameters between
 the nodes are known. For microbiome studies, we provide a method to generate the set of interaction parameters from a set of genome\sphinxhyphen{}scale metabolic models which must be provided by the user.
 
 \sphinxAtStartPar
 We assume that the user has a table in .csv format with rows indexed by species of interest and columns indexed by sample name that contains abundance data for each species in each sample (relative or absolute). Additionally, if an assessment of the predictive power of the method is desired (which may indicate
-the extent to which experimental outcome depends network effects), a metadata file must be provided as .csv with rows indexed by sample name and a column indicating experimental outcome of an invasion experiment
-
-
-\subsection{Creating the full network}
-\label{\detokenize{usage:creating-the-full-network}}
-\begin{sphinxadmonition}{note}{Note:}
-\sphinxAtStartPar
-Optional: A network can instead be loaded as pandas DataFrame with nodes and columns being names of the species in the data, formatted  as \sphinxcode{\sphinxupquote{Network.loc{[}m\_1,m\_2{]}}} contains the interaction with source \sphinxcode{\sphinxupquote{m\_1}} and target \sphinxcode{\sphinxupquote{m\_2}}.
-\end{sphinxadmonition}
-
-\sphinxAtStartPar
-For microbiome data paired with a set of genome\sphinxhyphen{}scale metabolic models, the method creates network of interactions for all co\sphinxhyphen{}occurring taxa that have an associated user\sphinxhyphen{}provided genome\sphinxhyphen{}scale model.
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{from} \PYG{n+nn}{make\PYGZus{}gem\PYGZus{}network} \PYG{k+kn}{import} \PYG{n}{make\PYGZus{}gem\PYGZus{}network}
-
-\PYG{n}{full\PYGZus{}interaction\PYGZus{}network} \PYG{o}{=} \PYG{n}{make\PYGZus{}gem\PYGZus{}network}\PYG{p}{(}\PYG{n}{path\PYGZus{}to\PYGZus{}gsm\PYGZus{}info}\PYG{p}{)}
-\end{sphinxVerbatim}
-
-\sphinxAtStartPar
-This function requires the path to a file containing the paths to each genome\sphinxhyphen{}scale model.
-
-\sphinxAtStartPar
-By default, the interaction will be defined by the log\sphinxhyphen{}ratio of simulated growth in the pair to simulated growth alone.
+the extent to which experimental outcome depends on network effects), a metadata file must be provided as .csv with rows indexed by sample name and a column indicating experimental outcome of an invasion experiment
 
 
 \subsection{Formatting the data}
 \label{\detokenize{usage:formatting-the-data}}
+\sphinxAtStartPar
+We need to format the samples into a specific (not very user\sphinxhyphen{}friendly) form for use with the method. We provide {\hyperref[\detokenize{format::doc}]{\sphinxcrossref{\DUrole{doc}{Function for Formatting OTU tables}}}} so that the user can provide data in an easier way.
+
 \begin{sphinxadmonition}{note}{Note:}
 \sphinxAtStartPar
-Not Implemented
+Often, a significant amount of pre\sphinxhyphen{}processing is required to arrange the data into the required format for our formatting function (e.g. splitting into seperate experiments, etc.). We have provided three examples in the in
+\sphinxcode{\sphinxupquote{Example}} folder.
 \end{sphinxadmonition}
-
-\begin{sphinxadmonition}{warning}{Warning:}
-\sphinxAtStartPar
-Removes any species from the data that do not have interaction parameters in the full interaction network.
-\end{sphinxadmonition}
-
-\sphinxAtStartPar
-We need to format the samples into a dict of dicts, or dict of tuples if predicitive power is to be assessed.
 
 \sphinxAtStartPar
 To format the data to compute friendliness scores with no known outcomes:
@@ -204,23 +172,24 @@ To format the data to compute friendliness scores with no known outcomes:
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{from} \PYG{n+nn}{format\PYGZus{}data} \PYG{k+kn}{import} \PYG{n}{format\PYGZus{}data}
 
-\PYG{n}{experiment}\PYG{p}{,}\PYG{n}{scoretype} \PYG{o}{=} \PYG{n}{format\PYGZus{}data}\PYG{p}{(}\PYG{n}{path\PYGZus{}to\PYGZus{}table}\PYG{p}{,}\PYG{n}{full\PYGZus{}interaction\PYGZus{}network}\PYG{p}{,}\PYG{n}{nodes\PYGZus{}of\PYGZus{}interest}\PYG{p}{)}
+\PYG{n}{experiment}\PYG{p}{,}\PYG{n}{scoretype}\PYG{p}{,}\PYG{n}{coverage} \PYG{o}{=} \PYG{n}{format\PYGZus{}data}\PYG{p}{(}\PYG{n}{otu\PYGZus{}dataframe}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-The function requires the path to the table of abundances and the full interaction network so that species missing can be removed, and the name of the node(s) that we wish to assess for network friendliness.
+The function requires the abundance data table (as pandas dataframe) and returns a set of samples formatted for use in downstream analysis. It also returns two variables that are not relevant if called as above.
 
 \sphinxAtStartPar
 Without known outcomes, \sphinxcode{\sphinxupquote{experiment}} will be a dict (keyed by sample name \sphinxhyphen{} the column headers of the abundance table)
-of dicts (keyed by species), and \sphinxcode{\sphinxupquote{scoretype}} will be None
+of dicts (keyed by species), and \sphinxcode{\sphinxupquote{scoretype}} will be None. Coverage will be a dictionary simply indicating that the entire index of the abundance data table is included.
 
 \sphinxAtStartPar
-For assessment of the predictive power of the method, the path to a metadata file with known outcomes for each sample is required, as is the name of the known outcome column in that file (default \sphinxcode{\sphinxupquote{Score}}):
+For assessment of the predictive power of the method, the path to a metadata file with known outcomes for each sample is required, as is the name of the known outcome column in that file (default \sphinxcode{\sphinxupquote{Score}}). Furthermore,
+the function can filter the data, including only a subset of the index of the abundance table. This can be used to filter out taxa for which no genome scale model is available.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{from} \PYG{n+nn}{format\PYGZus{}data} \PYG{k+kn}{import} \PYG{n}{format\PYGZus{}data}
 
-\PYG{n}{experiment}\PYG{p}{,}\PYG{n}{scoretype} \PYG{o}{=} \PYG{n}{format\PYGZus{}data}\PYG{p}{(}\PYG{n}{path\PYGZus{}to\PYGZus{}table}\PYG{p}{,}\PYG{n}{full\PYGZus{}interaction\PYGZus{}network}\PYG{p}{,}\PYG{n}{nodes\PYGZus{}of\PYGZus{}interest}\PYG{p}{,}\PYG{n}{known\PYGZus{}scores} \PYG{o}{=} \PYG{n}{path\PYGZus{}to\PYGZus{}metadata}\PYG{p}{,}\PYG{n}{score\PYGZus{}column} \PYG{o}{=} \PYG{n}{column\PYGZus{}of\PYGZus{}score}\PYG{p}{,}\PYG{n}{scoretype} \PYG{o}{=} \PYG{n}{score\PYGZus{}type}\PYG{p}{)}
+\PYG{n}{experiment}\PYG{p}{,}\PYG{n}{scoretype}\PYG{p}{,}\PYG{n}{coverage} \PYG{o}{=} \PYG{n}{format\PYGZus{}data}\PYG{p}{(}\PYG{n}{otu\PYGZus{}dataframe}\PYG{p}{,}\PYG{n}{sample\PYGZus{}metadata} \PYG{o}{=} \PYG{n}{metadata\PYGZus{}dataframe}\PYG{p}{,}\PYG{n}{score\PYGZus{}col} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Score}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{included\PYGZus{}otus} \PYG{o}{=} \PYG{n}{taxa\PYGZus{}with\PYGZus{}models}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
@@ -230,6 +199,63 @@ scoretype is given. If the scoretype is given as binary and the data are continu
 
 \sphinxAtStartPar
 The second return value, \sphinxcode{\sphinxupquote{scoretype}} indicates the type of known outcome scores, either binary or continuous.
+
+\sphinxAtStartPar
+The third return value, \sphinxcode{\sphinxupquote{coverage}} is a dict of dicts indicating the coverage of the samples by the included otus. For each sample, the corresponding dictionary has the keys:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleemphasis{Coverage} : The total relative abundance of the otus included.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleemphasis{NumberMissing} : The number of otus not included.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleemphasis{MajorMissing} : The otus not included with the highest relative abundance (any otus with \(\geq 80%\) of the highest missing relative abundance)
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleemphasis{AllMissing} : List of all the otus not included.
+
+\end{itemize}
+
+
+\subsection{Creating the full network}
+\label{\detokenize{usage:creating-the-full-network}}
+\begin{sphinxadmonition}{note}{Note:}
+\sphinxAtStartPar
+Optional: A network can instead be loaded as a pandas DataFrame with nodes and columns being names of the species in the data, formatted
+as \sphinxcode{\sphinxupquote{Network.loc{[}m\_1,m\_2{]}}} contains the interaction with source \sphinxcode{\sphinxupquote{m\_1}} and target \sphinxcode{\sphinxupquote{m\_2}}.
+\end{sphinxadmonition}
+
+\begin{sphinxadmonition}{note}{Note:}
+\sphinxAtStartPar
+This guide assumes that the user has GSMs corresponding to the organisms in their samples. In the \sphinxcode{\sphinxupquote{Examples}}, we provide examples of how one might construct these models (\sphinxcode{\sphinxupquote{make\_models.py}}) using \sphinxhref{https://modelseed.org/}{modelSEED}.
+\end{sphinxadmonition}
+
+\sphinxAtStartPar
+For microbiome data paired with a set of genome\sphinxhyphen{}scale metabolic models, the method creates network of interactions for all co\sphinxhyphen{}occurring taxa that have an associated user\sphinxhyphen{}provided genome\sphinxhyphen{}scale model.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{make\PYGZus{}gem\PYGZus{}network} \PYG{k+kn}{import} \PYG{n}{make\PYGZus{}gem\PYGZus{}network}
+
+\PYG{n}{pair\PYGZus{}growth}\PYG{p}{,}\PYG{n}{fba\PYGZus{}growth}\PYG{p}{,}\PYG{n}{metadata} \PYG{o}{=} \PYG{n}{get\PYGZus{}pairwise\PYGZus{}growth}\PYG{p}{(}\PYG{n}{model\PYGZus{}list}\PYG{p}{,}\PYG{n}{media\PYGZus{}pth}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+This function requires the path to a file containing the paths to each genome\sphinxhyphen{}scale model, as well as the path to a media file. Media files
+can be found in the \sphinxcode{\sphinxupquote{translate\_agora\_media}} directory, and updated by running the script \sphinxcode{\sphinxupquote{get\_agora\_media.py}}. Media needs to have a column containing
+metabolite IDs matching those found in the GSMs, and a column containing the flux bounds for the media (both column names can be set by the user).
+
+\sphinxAtStartPar
+See {\hyperref[\detokenize{network_build:make_gem_network.get_pairwise_growth}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{make\_gem\_network.get\_pairwise\_growth()}}}}} for a full list of the options available. If the experiments as created above
+are passed, then the function skips pairwise growth experiments for any pair that does not co\sphinxhyphen{}occur in the dataset.
+
+\sphinxAtStartPar
+The result is a set of simulated pairwise growth experiment results, with \sphinxcode{\sphinxupquote{pair\_growth{[}i,j{]}}} being the growth of \sphinxcode{\sphinxupquote{i}} when paired with \sphinxcode{\sphinxupquote{j}}. To create an interaction network, we can use these results in a few ways.
+The simplest is to use the log\sphinxhyphen{}ratio of growth alone with growth in the pair as the Lotka\sphinxhyphen{}Volterra parameter for the partners influence on growth.
 
 
 \subsection{Computing Friendliness Scores and Assessing Predictive Power}
@@ -283,13 +309,216 @@ The second is sensitivity to the interaction parameter values. We test this usin
 \sphinxstepscope
 
 
-\chapter{Functions for Formatting OTU tables}
-\label{\detokenize{format:functions-for-formatting-otu-tables}}\label{\detokenize{format::doc}}
+\chapter{Function for Formatting OTU tables}
+\label{\detokenize{format:function-for-formatting-otu-tables}}\label{\detokenize{format::doc}}\index{format\_data() (in module format\_data)@\spxentry{format\_data()}\spxextra{in module format\_data}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{format:format_data.format_data}}
+\pysigstartsignatures
+\pysiglinewithargsret{\sphinxcode{\sphinxupquote{format\_data.}}\sphinxbfcode{\sphinxupquote{format\_data}}}{\emph{\DUrole{n}{otu\_table}}, \emph{\DUrole{o}{**}\DUrole{n}{kwargs}}}{}
+\pysigstopsignatures
+\sphinxAtStartPar
+Formats a dataset (starting with OTU table) into the form \sphinxcode{\sphinxupquote{dict\{samplename:(score,dict\{nodename:relative abundance\})\}}}. Will also filter out OTUs by ID or name, so that OTUs left out of an interaction network can be removed (e.g. OTUs with no available GSM).
+\begin{quote}\begin{description}
+\sphinxlineitem{Parameters}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{otu\_table}} (\sphinxstyleliteralemphasis{\sphinxupquote{pandas.DataFrame}}) \textendash{} table of count or relative abundance data, index by OTU, columns corresponding to samples.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{sample\_metadata}} (\sphinxstyleliteralemphasis{\sphinxupquote{pandas.DataFrame}}) \textendash{} sample metadata use in determining the known score for a sample. If only predictions are desired, this can be omitted and all scores will be set to 1. Should be a table indexed by sample name (can also be a dict).
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{score\_col}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} column in sample\_metadata indicating known score. Default “Score”
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{node\_names}} (\sphinxstyleliteralemphasis{\sphinxupquote{dict}}) \textendash{} map from OTU table index to taxa names that match names in a known master network or match names of cobra models for network building.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{included\_otus}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}) \textendash{} list of otus to include in the data, all others will be excluded. Can be row names in otu table or corresponding value in name\_names. Default include all otus
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{scoretype}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Either \sphinxcode{\sphinxupquote{binary}} or \sphinxcode{\sphinxupquote{continuous}} or \sphinxcode{\sphinxupquote{infer}} for known scores for each sample. Default inferred from the sample metadata. \sphinxstylestrong{Will not} edit the scores to fit the given type.
+
+\end{itemize}
+
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+Data formatted for easy use with friendlynet package (especially {\hyperref[\detokenize{scoring:score_net.score_net}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{score\_net}}}}})
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
 \sphinxstepscope
 
 
 \chapter{Functions for Making Interation Networks from GEMs}
-\label{\detokenize{network_build:functions-for-making-interation-networks-from-gems}}\label{\detokenize{network_build::doc}}\index{check\_co\_occ() (in module make\_gem\_network)@\spxentry{check\_co\_occ()}\spxextra{in module make\_gem\_network}}
+\label{\detokenize{network_build:functions-for-making-interation-networks-from-gems}}\label{\detokenize{network_build::doc}}\index{cocultures() (in module make\_gem\_network)@\spxentry{cocultures()}\spxextra{in module make\_gem\_network}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{network_build:make_gem_network.cocultures}}
+\pysigstartsignatures
+\pysiglinewithargsret{\sphinxcode{\sphinxupquote{make\_gem\_network.}}\sphinxbfcode{\sphinxupquote{cocultures}}}{\emph{\DUrole{n}{cobra\_models}}, \emph{\DUrole{o}{**}\DUrole{n}{kwargs}}}{}
+\pysigstopsignatures
+\sphinxAtStartPar
+Computes steadyComX simulations, including setting media for models, for all pairs of models (optionally only co\sphinxhyphen{}occurring models).
+\begin{quote}\begin{description}
+\sphinxlineitem{Parameters}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{cobra\_models}} \textendash{} a dictionary of cobra models
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{rows}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{str}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}) \textendash{} list of keys to be used for 1 half of each pair
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{cols}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{str}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}) \textendash{} list of keys to be used for other half of each pair. If either or both is not provided, does allxall
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{media}} \textendash{} table including flux bound and modelSEED metabolite ID
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{target\_models}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{list}}) \textendash{} model/models of interest. Computes parameters for all interactions with these models. Must be in cobra\_models. Default empty list
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{IDtype}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} How the MODEL ids the metabolites. Should be a column of the media table.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{compartmenttag}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} how the MODEl tags exchanged metabolites (e.g. \_e0 for a modelSEED model)
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{fluxcol}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} column in media table with flux bound
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{keep\_fluxes}} (\sphinxstyleliteralemphasis{\sphinxupquote{bool}}) \textendash{} If True, the new media will include the fluxes from the models previous media that do not appear in media. Default True.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{mu}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} specific community growth rate
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{default\_inflow}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Default inflow of metabolites not listed in media
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{phi}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} forced metabolite leak
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{rac}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Intracellular flux budget for RAC
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{experiments}} (\sphinxstyleliteralemphasis{\sphinxupquote{dict}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{tuple}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{dict}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}\sphinxstyleliteralemphasis{\sphinxupquote{{]} or }}\sphinxstyleliteralemphasis{\sphinxupquote{list}}\sphinxstyleliteralemphasis{\sphinxupquote{ of }}\sphinxstyleliteralemphasis{\sphinxupquote{same}}) \textendash{} (possibly list of) set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by names of models (same as dict keys of models). Used to determine co\sphinxhyphen{}occurrence
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{min\_ra}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} cutoff to use for presence/abscence of a node in a sample. Default 10**\sphinxhyphen{}6
+
+\end{itemize}
+
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+table of simulated co\sphinxhyphen{}culture results. Row/Columns are index so Table.loc{[}row,col{]} = growth of row in coculture with col
+
+\sphinxlineitem{Return type}
+\sphinxAtStartPar
+pandas DF
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_pairwise\_growth() (in module make\_gem\_network)@\spxentry{get\_pairwise\_growth()}\spxextra{in module make\_gem\_network}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{network_build:make_gem_network.get_pairwise_growth}}
+\pysigstartsignatures
+\pysiglinewithargsret{\sphinxcode{\sphinxupquote{make\_gem\_network.}}\sphinxbfcode{\sphinxupquote{get\_pairwise\_growth}}}{\emph{\DUrole{n}{cobra\_model\_list}}, \emph{\DUrole{n}{media\_fl}}, \emph{\DUrole{o}{**}\DUrole{n}{kwargs}}}{}
+\pysigstopsignatures
+\sphinxAtStartPar
+Creates interaction network for list of cobra models
+\begin{quote}\begin{description}
+\sphinxlineitem{Parameters}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{cobra\_model\_list}} \textendash{} path to .csv file with info on GEM location.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{media\_fl}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} path to media .csv
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{experiment}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} path .json file containing set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by names of models (same as dict keys of models). Used to determine co\sphinxhyphen{}occurrence. All pairs computed if not given.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{silence\_load\_error}} (\sphinxstyleliteralemphasis{\sphinxupquote{bool}}) \textendash{} If true, suppresses error output in loading models. Default True.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{IDtype}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} How the MODEL ids the metabolites. Should be a column of the media table. Default “fullName”
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{compartmenttag}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} how the MODEl tags exchanged metabolites (e.g. \_e0 for a modelSEED model). Default “\_e0”
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{fluxcol}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} column in media table with flux bound. Default “fluxValue”
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{keep\_fluxes}} (\sphinxstyleliteralemphasis{\sphinxupquote{bool}}) \textendash{} If True, the new media will include the fluxes from the models previous media that do not appear in media. Default True.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{mu}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} specific community growth rate. Default 0.4
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{phi}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} forced metabolite leak. Default 0.1
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{rac}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Intracellular flux budget for RAC. Default 100.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{min\_ra}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} cutoff to use for presence/abscence of a node in a sample. Default 10**\sphinxhyphen{}6
+
+\end{itemize}
+
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+table of simulated co\sphinxhyphen{}culture results. Row/Columns are index so Table.loc{[}row,col{]} = growth of row in coculture with col as well as FBA solution for each model. Growth of each model with standard FBA. Parameters used.
+
+\sphinxlineitem{Return type}
+\sphinxAtStartPar
+pandas.DataFrame, pandas.Series, dict
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{check\_co\_occ() (in module make\_gem\_network)@\spxentry{check\_co\_occ()}\spxextra{in module make\_gem\_network}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{network_build:make_gem_network.check_co_occ}}
@@ -352,7 +581,7 @@ This method computes the extent to which a set of sets of nodes are friendly to 
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{models}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}) \textendash{} list of models you wish to use for scoring. Leave as None for all 6.
+\sphinxstyleliteralstrong{\sphinxupquote{models}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}) \textendash{} list of models you wish to use for scoring. Leave as None for all 6. Options are “LV”,”InhibitLV”,”AntLV”,”Replicator”,”NodeBalance”,”Stochastic”.
 
 \item {} 
 \sphinxAtStartPar
@@ -402,11 +631,11 @@ and \sphinxstylestrong{compares} this with a known effect of the community, whic
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{scoretype}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Type of known score (\sphinxtitleref{b} for binary, \sphinxtitleref{c} for continuous)
+\sphinxstyleliteralstrong{\sphinxupquote{scoretype}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Type of known score (\sphinxtitleref{b} or \sphinxtitleref{binary} for binary, \sphinxtitleref{c} or \sphinxtitleref{continuous} for continuous)
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{models}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}) \textendash{} list of models you wish to use for scoring. Leave as None for all 6.
+\sphinxstyleliteralstrong{\sphinxupquote{models}} (\sphinxstyleliteralemphasis{\sphinxupquote{list}}) \textendash{} list of models you wish to use for scoring. Leave as None for all 6. Options are “LV”,”InhibitLV”,”AntLV”,”Replicator”,”NodeBalance”,”Stochastic”.
 
 \item {} 
 \sphinxAtStartPar
@@ -779,8 +1008,8 @@ array{[}float{]}
 \sphinxstepscope
 
 
-\chapter{The FriendlyNets class}
-\label{\detokenize{friendlynets:the-friendlynets-class}}\label{\detokenize{friendlynets::doc}}
+\chapter{The FriendlyNet class}
+\label{\detokenize{friendlynets:the-friendlynet-class}}\label{\detokenize{friendlynets::doc}}
 \sphinxAtStartPar
 This is the core class of the method, a network class built from an adjacency matrix that contains methods for measuring friendliness to the nodes.
 \index{friendlyNet (class in friendlyNet)@\spxentry{friendlyNet}\spxextra{class in friendlyNet}}

@@ -9,7 +9,8 @@
 
   \indexspace
   \bigletter C
-  \item \spxentry{check\_co\_occ()}\spxextra{in module make\_gem\_network}, \hyperpage{9}
+  \item \spxentry{check\_co\_occ()}\spxextra{in module make\_gem\_network}, \hyperpage{10}
+  \item \spxentry{cocultures()}\spxextra{in module make\_gem\_network}, \hyperpage{9}
   \item \spxentry{compute\_j()}\spxextra{in module sensitivity}, \hyperpage{17}
 
   \indexspace
@@ -18,6 +19,7 @@
 
   \indexspace
   \bigletter F
+  \item \spxentry{format\_data()}\spxextra{in module format\_data}, \hyperpage{7}
   \item \spxentry{friendlyNet}\spxextra{class in friendlyNet}, \hyperpage{19}
 
   \indexspace
@@ -25,6 +27,7 @@
   \item \spxentry{get\_all\_sensitivity()}\spxextra{in module sensitivity}, \hyperpage{15}
   \item \spxentry{get\_all\_sensitivity\_single\_trajectory()}\spxextra{in module sensitivity}, 
 		\hyperpage{15}
+  \item \spxentry{get\_pairwise\_growth()}\spxextra{in module make\_gem\_network}, \hyperpage{9}
   \item \spxentry{get\_sensitivity\_single\_trajectory()}\spxextra{in module sensitivity}, 
 		\hyperpage{16}
 

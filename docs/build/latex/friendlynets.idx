@@ -1,4 +1,7 @@
-\indexentry{check\_co\_occ() (in module make\_gem\_network)@\spxentry{check\_co\_occ()}\spxextra{in module make\_gem\_network}|hyperpage}{9}
+\indexentry{format\_data() (in module format\_data)@\spxentry{format\_data()}\spxextra{in module format\_data}|hyperpage}{7}
+\indexentry{cocultures() (in module make\_gem\_network)@\spxentry{cocultures()}\spxextra{in module make\_gem\_network}|hyperpage}{9}
+\indexentry{get\_pairwise\_growth() (in module make\_gem\_network)@\spxentry{get\_pairwise\_growth()}\spxextra{in module make\_gem\_network}|hyperpage}{9}
+\indexentry{check\_co\_occ() (in module make\_gem\_network)@\spxentry{check\_co\_occ()}\spxextra{in module make\_gem\_network}|hyperpage}{10}
 \indexentry{network\_friendliness() (in module score\_net)@\spxentry{network\_friendliness()}\spxextra{in module score\_net}|hyperpage}{11}
 \indexentry{score\_net() (in module score\_net)@\spxentry{score\_net()}\spxextra{in module score\_net}|hyperpage}{11}
 \indexentry{score\_light() (in module score\_net)@\spxentry{score\_light()}\spxextra{in module score\_net}|hyperpage}{12}

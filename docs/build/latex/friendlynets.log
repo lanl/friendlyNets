@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.6.29)  29 JUN 2023 11:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.6.29)  11 JUL 2023 08:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -857,28 +857,54 @@ File: t1txtt.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `T1/txtt/b/n' in size <10> not available
 (Font)              Font shape `T1/txtt/bx/n' tried instead on input line 114.
- [3] [4]
-[5] [6
+ [3]
+LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 2
+06.
 
-]
-Chapter 2.
-[7] [8
-
-]
-Chapter 3.
-LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 3
-03.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/tex-gyre/ts1qtm.fd
 File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 )
+! Missing $ inserted.
+<inserted text> 
+                $
+l.217 
+      
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+l.217 
+      
+? 
+! Extra }, or forgotten \endgroup.
+\par ...m \@noitemerr {\@@par }\fi \else {\@@par }
+                                                  \fi 
+l.217 
+      
+? 
+[4]
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 305.
- [9] [10
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 253.
+ [5] [6]
+Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 319--322
+\T1/qtm/m/n/10 For-mats a dataset (start-ing with OTU ta-ble) into the form \T1
+/txtt/m/n/10 dict{samplename:(score,
+ []
+
+[7
+
+] [8
 
 ]
+Chapter 3.
+[9] [10]
 Chapter 4.
-[11]
-Underfull \hbox (badness 10000) in paragraph at lines 426--428
+[11
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 655--657
 \T1/qtm/m/n/10 tu-ple of pan-das dataframe, {dict, dict, float} OR tu-ple of pa
 n-das dataframe,
  []
@@ -892,7 +918,7 @@ Chapter 5.
 ]
 Chapter 6.
 [19] [20]
-Underfull \hbox (badness 10000) in paragraph at lines 1064--1067
+Underfull \hbox (badness 10000) in paragraph at lines 1293--1296
 \T1/qtm/m/n/10 Pro-vides a score us-ing re-peated tri-als of the Lotka-Volterra
  sys-tem. Scores us-ing
  []
@@ -903,49 +929,55 @@ Underfull \hbox (badness 10000) in paragraph at lines 1064--1067
 ] [26
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 26--28
+Underfull \hbox (badness 10000) in paragraph at lines 28--30
 []\T1/txtt/m/n/10 get_all_sensitivity_single_trajectory() \T1/qtm/m/n/10 (\T1/q
 tm/m/it/10 in
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--39
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+[]\T1/txtt/m/n/10 get_pairwise_growth() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 in mod-
+ule
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 40--42
 []\T1/txtt/m/n/10 lotka_volterra_score() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 friend
 -lyNet.friendlyNet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 39--41
+Underfull \hbox (badness 10000) in paragraph at lines 42--44
 []\T1/txtt/m/n/10 lotka_volterra_score_single() \T1/qtm/m/n/10 (\T1/qtm/m/it/10
  friend-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--43
+Underfull \hbox (badness 10000) in paragraph at lines 44--46
 []\T1/txtt/m/n/10 lotka_volterra_system() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 frien
 d-lyNet.friendlyNet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--52
+Underfull \hbox (badness 10000) in paragraph at lines 54--55
 []\T1/txtt/m/n/10 node_balanced_score() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 friend-
 lyNet.friendlyNet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--54
+Underfull \hbox (badness 10000) in paragraph at lines 55--57
 []\T1/txtt/m/n/10 node_balanced_system() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 friend
 -lyNet.friendlyNet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 66--67
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 []\T1/txtt/m/n/10 replicator_system() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 friend-ly
 Net.friendlyNet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 75--77
+Underfull \hbox (badness 10000) in paragraph at lines 78--80
 []\T1/txtt/m/n/10 solve_lotka_volterra() \T1/qtm/m/n/10 (\T1/qtm/m/it/10 friend
 -lyNet.friendlyNet
  []
@@ -954,16 +986,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--77
 
 ]) (./friendlynets.aux)
 Package rerunfilecheck Info: File `friendlynets.out' has not changed.
-(rerunfilecheck)             Checksum: 72CFEB6FCB4A57218F0E6C8FCC1485EB;3346.
+(rerunfilecheck)             Checksum: 4084A25BC7D71737787D720E20CDEE37;3336.
  ) 
 Here is how much of TeX's memory you used:
- 15540 strings out of 478268
- 257187 string characters out of 5846347
- 577518 words of memory out of 5000000
- 33291 multiletter control sequences out of 15000+600000
+ 15546 strings out of 478268
+ 257345 string characters out of 5846347
+ 577685 words of memory out of 5000000
+ 33294 multiletter control sequences out of 15000+600000
  520945 words of font info for 70 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 70i,16n,76p,814b,699s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 70i,16n,76p,932b,699s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/tex-gyre/q-ec.enc}{/usr/l
 ocal/texlive/2022/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}</usr/local/tex
 live/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texl
@@ -982,10 +1014,10 @@ ic/tex-gyre/qtmr.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/tex
 -gyre/qtmri.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/txfonts/
 t1xbtt.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt
 .pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb>
-Output written on friendlynets.pdf (31 pages, 280858 bytes).
+Output written on friendlynets.pdf (31 pages, 290671 bytes).
 PDF statistics:
- 426 PDF objects out of 1000 (max. 8388607)
- 364 compressed objects within 4 object streams
- 79 named destinations out of 1000 (max. 500000)
+ 436 PDF objects out of 1000 (max. 8388607)
+ 374 compressed objects within 4 object streams
+ 82 named destinations out of 1000 (max. 500000)
  149 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -18,8 +18,8 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 # -- Project information -----------------------------------------------------
 
 project = 'FriendlyNets'
-copyright = '2023, James D. Brunner and Nicholas Chia'
-author = 'James D. Brunner and Nicholas Chia'
+copyright = '2023, James D. Brunner'
+author = 'James D. Brunner'
 release = '0.2'
 
 
