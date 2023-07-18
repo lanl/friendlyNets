@@ -107,6 +107,9 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
 
     net_scores = pd.DataFrame(index = experiment.keys(),columns = ["KnownScore"] + models)
 
+    full_net.columns = full_net.columns.astype(str)
+    full_net.index = full_net.index.astype(str)
+
     for ky,sample in experiment.items():
         score = sample[0]
         data = sample[1]
@@ -114,16 +117,15 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
 
         if str(target_node) not in np.array(nonzero).astype(str):
             nonzero += [target_node]
+        
+        nonzero = np.array(nonzero).astype(str)
 
 
-        nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
-        nonzero_cl = np.array(nonzero).astype(full_net.columns.dtype)
-
-        subgraph = full_net.loc[nonzero_rw,nonzero_cl]
+        subgraph = full_net.loc[nonzero,nonzero]
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
-        fscores = friendly.score_node(target_node,odeTrials = odeTrials,scores=models)
+        fscores = friendly.score_node(str(target_node),odeTrials = odeTrials,scores=models)
 
         net_scores.loc[ky] = [score] + [fscores[col] for col in net_scores.columns[1:]]
 
