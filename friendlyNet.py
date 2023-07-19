@@ -212,7 +212,7 @@ class friendlyNet:
         """
 
         if node in self.NodeNames:
-            node = self.NodeNames.index(node)
+            node = list(self.NodeNames).index(node)
 
         long_time = self.solve_lotka_volterra(np.random.rand(self.Adjacency.shape[0]),mxTime,shift=shift,self_inhibit = self_inhibit)
 
