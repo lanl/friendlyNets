@@ -333,7 +333,7 @@ class friendlyNet:
 
 
         if node in self.NodeNames:
-            node = self.NodeNames.index(node)
+            node = list(self.NodeNames).index(node)
 
         long_time = self.solve_replicator(np.random.rand(self.Adjacency.shape[0]),mxTime)
 
@@ -398,7 +398,7 @@ class friendlyNet:
         """
 
         if node in self.NodeNames:
-            node = self.NodeNames.index(node)
+            node = list(self.NodeNames).index(node)
 
         rescld_Adj = (self.Adjacency + 1)/2
         L = rescld_Adj - np.diag(rescld_Adj.sum(axis = 0))
@@ -447,7 +447,7 @@ class friendlyNet:
         """
 
         if node in self.NodeNames:
-            node = self.NodeNames.index(node)
+            node = list(self.NodeNames).index(node)
 
         rescld_Adj = (self.Adjacency + 1)/2
         stoch_matrix = (rescld_Adj.T/rescld_Adj.sum(axis = 1))
