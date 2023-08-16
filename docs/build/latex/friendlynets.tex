@@ -64,7 +64,7 @@
 
 
 \title{FriendlyNets}
-\date{Jul 11, 2023}
+\date{Aug 03, 2023}
 \release{0.2}
 \author{James D.\@{} Brunner}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -261,7 +261,7 @@ The simplest is to use the log\sphinxhyphen{}ratio of growth alone with growth i
 \subsection{Computing Friendliness Scores and Assessing Predictive Power}
 \label{\detokenize{usage:computing-friendliness-scores-and-assessing-predictive-power}}
 \sphinxAtStartPar
-To compute friendliness scores for each sample on a node(s) of interest
+To compute friendliness scores for each sample on a node(s) of interest use {\hyperref[\detokenize{scoring:score_net.network_friendliness}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{score\_net.network\_friendliness()}}}}}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{from} \PYG{n+nn}{score\PYGZus{}net} \PYG{k+kn}{import} \PYG{n}{network\PYGZus{}friendliness}
@@ -275,7 +275,7 @@ To compute friendliness scores for each sample on a node(s) of interest
 The return value is a pandas dataframe that can be saved as a .csv file.
 
 \sphinxAtStartPar
-To assess the predictive power of the method (for friendliness on a single \sphinxcode{\sphinxupquote{target\_node}} in \sphinxcode{\sphinxupquote{nodes\_of\_interest}})
+To assess the predictive power of the method (for friendliness on a single \sphinxcode{\sphinxupquote{target\_node}} in \sphinxcode{\sphinxupquote{nodes\_of\_interest}}) use py:func:\sphinxtitleref{score\_net.score\_net}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{from} \PYG{n+nn}{score\PYGZus{}net} \PYG{k+kn}{import} \PYG{n}{score\PYGZus{}net}

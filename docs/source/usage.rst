@@ -126,7 +126,7 @@ The simplest is to use the log-ratio of growth alone with growth in the pair as 
 Computing Friendliness Scores and Assessing Predictive Power
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To compute friendliness scores for each sample on a node(s) of interest
+To compute friendliness scores for each sample on a node(s) of interest use :py:func:`score_net.network_friendliness`
 
 .. code-block:: python
 
@@ -138,7 +138,7 @@ To compute friendliness scores for each sample on a node(s) of interest
 
 The return value is a pandas dataframe that can be saved as a .csv file.
 
-To assess the predictive power of the method (for friendliness on a single ``target_node`` in ``nodes_of_interest``)
+To assess the predictive power of the method (for friendliness on a single ``target_node`` in ``nodes_of_interest``) use py:func:`score_net.score_net`
 
 .. code-block:: python
 

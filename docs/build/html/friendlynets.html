@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The FriendlyNets class &mdash; FriendlyNets 0.2 documentation</title>
+  <title>The FriendlyNet class &mdash; FriendlyNets 0.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,8 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Functions to Generate and Evaluate Predictions" href="scoring.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="prev" title="Functions for Sensitivity Testing" href="sensit.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,7 +43,11 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">The FriendlyNets class</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The FriendlyNet class</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#friendlyNet.friendlyNet"><code class="docutils literal notranslate"><span class="pre">friendlyNet</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency"><code class="docutils literal notranslate"><span class="pre">friendlyNet.Adjacency</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.NodeNames"><code class="docutils literal notranslate"><span class="pre">friendlyNet.NodeNames</span></code></a></li>
@@ -70,8 +73,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Parameter Sensitivity Testing</a></li>
 </ul>
 
         </div>
@@ -88,7 +89,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">The FriendlyNets class</li>
+      <li class="breadcrumb-item active">The FriendlyNet class</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/friendlynets.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -98,8 +99,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="the-friendlynets-class">
-<h1>The FriendlyNets class<a class="headerlink" href="#the-friendlynets-class" title="Permalink to this heading"></a></h1>
+  <section id="the-friendlynet-class">
+<h1>The FriendlyNet class<a class="headerlink" href="#the-friendlynet-class" title="Permalink to this heading"></a></h1>
 <p>This is the core class of the method, a network class built from an adjacency matrix that contains methods for measuring friendliness to the nodes.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="friendlyNet.friendlyNet">
@@ -482,14 +483,13 @@ The eigenvectors of this matrix provide a stationary distribution for the cuncur
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="scoring.html" class="btn btn-neutral float-right" title="Functions to Generate and Evaluate Predictions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sensit.html" class="btn btn-neutral float-left" title="Functions for Sensitivity Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, James D. Brunner and Nicholas Chia.</p>
+    <p>&#169; Copyright 2023, James D. Brunner.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

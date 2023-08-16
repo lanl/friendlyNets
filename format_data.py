@@ -57,14 +57,20 @@ def format_data(otu_table,**kwargs):
         smpdata = {}
         missing = []
         for rw in otu_table.index:
+            rwab = otu_table.loc[rw,smp]
+            try:
+                nmin = rwab.shape[0]
+                print("{} appears {} times in table. Averaging.".format(rw,nmin))
+            except:
+                pass
             if (rw in included_otus) or (node_name[rw] in included_otus):
                 if rw in node_name.keys():
-                    smpdata[node_name[rw]] = otu_table.loc[rw,smp]
+                    smpdata[node_name[rw]] = rwab.mean()
                 else:
-                    smpdata[rw] = otu_table.loc[rw,smp]
+                    smpdata[rw] = rwab.mean()
             else:
-                if otu_table.loc[rw,smp] > 0:
-                    missing += [(rw,otu_table.loc[rw,smp])]
+                if rwab.mean() > 0:
+                    missing += [(rw,rwab.mean())]
         
         missing_arr = np.array([m[1] for m in missing])
         coverage[smp] = {"Coverage":1-sum(missing_arr), "NumberMissing":len(missing_arr),"MajorMissing":[m for m in missing if m[1]>0.8*max(missing_arr)],"AllMissing":missing}

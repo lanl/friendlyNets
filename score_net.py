@@ -47,6 +47,9 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
 
     net_scores = pd.DataFrame(index = experiment.keys(),columns = models)
 
+    full_net.columns = full_net.columns.astype(str)
+    full_net.index = full_net.index.astype(str)
+
     for ky,data in experiment.items():
         if not isinstance(data,dict): #in case it gets a tuple of (known score, data dict), we need to remove the known score part.
             data = data[1]
@@ -57,16 +60,16 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
         if str(target_node) not in np.array(nonzero).astype(str):
             nonzero += [target_node]
 
-        nonzero_rw = np.array(nonzero).astype(full_net.index.dtype)
-        nonzero_cl = np.array(nonzero).astype(full_net.columns.dtype)
+        nonzero = np.array(nonzero).astype(str)
 
-        subgraph = full_net.loc[nonzero_rw,nonzero_cl]
+
+        subgraph = full_net.loc[nonzero,nonzero]
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
-        fscores = friendly.score_node(target_node,odeTrials = odeTrials,scores=models)
+        fscores = friendly.score_node(str(target_node),odeTrials = odeTrials,scores=models)
 
-        net_scores.loc[ky] = [fscores[col] for col in net_scores.columns[1:]]
+        net_scores.loc[ky] = [fscores[col] for col in net_scores.columns]
 
     return net_scores
 

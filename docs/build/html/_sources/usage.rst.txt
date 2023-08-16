@@ -118,10 +118,15 @@ metabolite IDs matching those found in the GSMs, and a column containing the flu
 See :py:func:`make_gem_network.get_pairwise_growth` for a full list of the options available. If the experiments as created above
 are passed, then the function skips pairwise growth experiments for any pair that does not co-occur in the dataset.
 
+The result is a set of simulated pairwise growth experiment results, with ``pair_growth[i,j]`` being the growth of ``i`` when paired with ``j``. To create an interaction network, we can use these results in a few ways.
+The simplest is to use the log-ratio of growth alone with growth in the pair as the Lotka-Volterra parameter for the partners influence on growth.
+
+
+
 Computing Friendliness Scores and Assessing Predictive Power
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To compute friendliness scores for each sample on a node(s) of interest
+To compute friendliness scores for each sample on a node(s) of interest use :py:func:`score_net.network_friendliness`
 
 .. code-block:: python
 
@@ -133,7 +138,7 @@ To compute friendliness scores for each sample on a node(s) of interest
 
 The return value is a pandas dataframe that can be saved as a .csv file.
 
-To assess the predictive power of the method (for friendliness on a single ``target_node`` in ``nodes_of_interest``)
+To assess the predictive power of the method (for friendliness on a single ``target_node`` in ``nodes_of_interest``) use py:func:`score_net.score_net`
 
 .. code-block:: python
 
@@ -142,6 +147,8 @@ To assess the predictive power of the method (for friendliness on a single ``tar
     friendliness,predictive_power = score_net(experiment,full_interaction_network,target_node,scoretype)
 
 ``predictive_power`` is a dictionary of predictive power metrics, which depend on if the scoring is binary (in which case the ROC is used) or continuous (in which case correlation is used). 
+
+
 
 Plotting the Results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

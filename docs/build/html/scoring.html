@@ -44,7 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="format.html">Functions for Formatting OTU tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Functions to Generate and Evaluate Predictions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#score_net.network_friendliness"><code class="docutils literal notranslate"><span class="pre">network_friendliness()</span></code></a></li>
@@ -53,7 +53,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNets class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNet class</a></li>
 </ul>
 
         </div>
@@ -92,7 +92,7 @@
 <li><p><strong>experiment</strong> (<em>dict</em><em>[</em><em>dict</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Dictionary of samples. Each should be a dictionary of abundances keyed by node names. (Also supports dict of tuples as in <a class="reference internal" href="#score_net.score_net" title="score_net.score_net"><code class="xref py py-func docutils literal notranslate"><span class="pre">score_net</span></code></a></p></li>
 <li><p><strong>full_net</strong> (<em>pandas dataframe</em>) – Adjacency matrix of all interaction parameters between pairs of nodes in the entire experiment set.</p></li>
 <li><p><strong>target_node</strong> (<em>str</em>) – name of node of interest. (must be in full_net, need not be in sample - will be added to induced subgraph)</p></li>
-<li><p><strong>models</strong> (<em>list</em>) – list of models you wish to use for scoring. Leave as None for all 6.</p></li>
+<li><p><strong>models</strong> (<em>list</em>) – list of models you wish to use for scoring. Leave as None for all 6. Options are “LV”,”InhibitLV”,”AntLV”,”Replicator”,”NodeBalance”,”Stochastic”.</p></li>
 <li><p><strong>min_ra</strong> (<em>float</em>) – cutoff to use for presence/abscence of a node in a sample. Default 10**-6</p></li>
 <li><p><strong>odeTrials</strong> (<em>int</em>) – number of ODE simulations in score estimation. If None, equal to number of non-zero taxa in a sample. Default None</p></li>
 </ul>
@@ -117,8 +117,8 @@ and <strong>compares</strong> this with a known effect of the community, which c
 <li><p><strong>experiment</strong> (<em>dict</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>,</em><em>dict</em><em>]</em><em>]</em>) – Dictionary of samples, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by node names.</p></li>
 <li><p><strong>full_net</strong> (<em>pandas dataframe</em>) – Adjacency matrix of all interaction parameters between pairs of nodes in the entire experiment set.</p></li>
 <li><p><strong>target_node</strong> (<em>str</em>) – name of node of interest. (must be in full_net, need not be in sample - will be added to induced subgraph)</p></li>
-<li><p><strong>scoretype</strong> (<em>str</em>) – Type of known score (<cite>b</cite> for binary, <cite>c</cite> for continuous)</p></li>
-<li><p><strong>models</strong> (<em>list</em>) – list of models you wish to use for scoring. Leave as None for all 6.</p></li>
+<li><p><strong>scoretype</strong> (<em>str</em>) – Type of known score (<cite>b</cite> or <cite>binary</cite> for binary, <cite>c</cite> or <cite>continuous</cite> for continuous)</p></li>
+<li><p><strong>models</strong> (<em>list</em>) – list of models you wish to use for scoring. Leave as None for all 6. Options are “LV”,”InhibitLV”,”AntLV”,”Replicator”,”NodeBalance”,”Stochastic”.</p></li>
 <li><p><strong>min_ra</strong> (<em>float</em>) – cutoff to use for presence/abscence of a node in a sample. Default 10**-6</p></li>
 <li><p><strong>odeTrials</strong> (<em>int</em>) – number of ODE simulations in score estimation. If None, equal to number of non-zero taxa in a sample. Default None</p></li>
 </ul>
@@ -177,7 +177,7 @@ only computes a score for a single type of model, but offers more parameter flex
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, James D. Brunner and Nicholas Chia.</p>
+    <p>&#169; Copyright 2023, James D. Brunner.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

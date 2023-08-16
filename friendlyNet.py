@@ -17,7 +17,10 @@ class friendlyNet:
 
     def __init__(self,adj):
 
-        self.Adjacency = np.array(adj)/abs(np.array(adj)).max()
+        if abs(np.array(adj)).max():
+            self.Adjacency = np.array(adj)/abs(np.array(adj)).max()
+        else:
+            self.Adjacency = np.array(adj)
         """Network adjacency matrix, rescaled so that all weights are in :math:`[0,1]`"""
         self.NodeNames = []
         """List of names of the nodes, corresponding to ordering of adjacency matrix"""

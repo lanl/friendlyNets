@@ -59,7 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNets class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="friendlynets.html">The FriendlyNet class</a></li>
 </ul>
 
         </div>
@@ -176,10 +176,12 @@ can be found in the <code class="docutils literal notranslate"><span class="pre"
 metabolite IDs matching those found in the GSMs, and a column containing the flux bounds for the media (both column names can be set by the user).</p>
 <p>See <a class="reference internal" href="network_build.html#make_gem_network.get_pairwise_growth" title="make_gem_network.get_pairwise_growth"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_gem_network.get_pairwise_growth()</span></code></a> for a full list of the options available. If the experiments as created above
 are passed, then the function skips pairwise growth experiments for any pair that does not co-occur in the dataset.</p>
+<p>The result is a set of simulated pairwise growth experiment results, with <code class="docutils literal notranslate"><span class="pre">pair_growth[i,j]</span></code> being the growth of <code class="docutils literal notranslate"><span class="pre">i</span></code> when paired with <code class="docutils literal notranslate"><span class="pre">j</span></code>. To create an interaction network, we can use these results in a few ways.
+The simplest is to use the log-ratio of growth alone with growth in the pair as the Lotka-Volterra parameter for the partners influence on growth.</p>
 </section>
 <section id="computing-friendliness-scores-and-assessing-predictive-power">
 <h3>Computing Friendliness Scores and Assessing Predictive Power<a class="headerlink" href="#computing-friendliness-scores-and-assessing-predictive-power" title="Permalink to this heading"></a></h3>
-<p>To compute friendliness scores for each sample on a node(s) of interest</p>
+<p>To compute friendliness scores for each sample on a node(s) of interest use <a class="reference internal" href="scoring.html#score_net.network_friendliness" title="score_net.network_friendliness"><code class="xref py py-func docutils literal notranslate"><span class="pre">score_net.network_friendliness()</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">score_net</span> <span class="kn">import</span> <span class="n">network_friendliness</span>
 
 <span class="n">friendliness</span> <span class="o">=</span> <span class="p">{}</span>
@@ -188,7 +190,7 @@ are passed, then the function skips pairwise growth experiments for any pair tha
 </pre></div>
 </div>
 <p>The return value is a pandas dataframe that can be saved as a .csv file.</p>
-<p>To assess the predictive power of the method (for friendliness on a single <code class="docutils literal notranslate"><span class="pre">target_node</span></code> in <code class="docutils literal notranslate"><span class="pre">nodes_of_interest</span></code>)</p>
+<p>To assess the predictive power of the method (for friendliness on a single <code class="docutils literal notranslate"><span class="pre">target_node</span></code> in <code class="docutils literal notranslate"><span class="pre">nodes_of_interest</span></code>) use py:func:<cite>score_net.score_net</cite></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">score_net</span> <span class="kn">import</span> <span class="n">score_net</span>
 
 <span class="n">friendliness</span><span class="p">,</span><span class="n">predictive_power</span> <span class="o">=</span> <span class="n">score_net</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span><span class="n">full_interaction_network</span><span class="p">,</span><span class="n">target_node</span><span class="p">,</span><span class="n">scoretype</span><span class="p">)</span>
@@ -223,7 +225,7 @@ are passed, then the function skips pairwise growth experiments for any pair tha
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, James D. Brunner and Nicholas Chia.</p>
+    <p>&#169; Copyright 2023, James D. Brunner.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

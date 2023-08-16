@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.6.29)  11 JUL 2023 08:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.6.29)  3 AUG 2023 10:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1014,10 +1014,10 @@ ic/tex-gyre/qtmr.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/tex
 -gyre/qtmri.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/txfonts/
 t1xbtt.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt
 .pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb>
-Output written on friendlynets.pdf (31 pages, 290671 bytes).
+Output written on friendlynets.pdf (31 pages, 290803 bytes).
 PDF statistics:
- 436 PDF objects out of 1000 (max. 8388607)
- 374 compressed objects within 4 object streams
+ 437 PDF objects out of 1000 (max. 8388607)
+ 375 compressed objects within 4 object streams
  82 named destinations out of 1000 (max. 500000)
  149 words of extra memory for PDF output out of 10000 (max. 10000000)
 
