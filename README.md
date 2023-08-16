@@ -16,7 +16,7 @@ Kim, Minsuk, Jaeyun Sung, and Nicholas Chia. "Resource-allocation constraint gov
 
 ## Copywrite 
 
-C# O4648
+LANL open source approval reference O4648
 
 © 2023. Triad National Security, LLC. All rights reserved.
 This program was produced under U.S. Government contract 89233218CNA000001 for Los Alamos
