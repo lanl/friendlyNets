@@ -39,7 +39,7 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
     :param cobra_model_list: path to .csv file with info on GEM location. 
     :type cobra_model: str
 
-    :param media_fl: path to media .csv
+    :param media_fl: path to media .csv OR media object (number for uniform complete media.)
     :type media_fl: str
 
     :param experiment: path .json file containing set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by names of models (same as dict keys of models). Used to determine co-occurrence. All pairs computed if not given.
@@ -107,8 +107,10 @@ def get_pairwise_growth(cobra_model_list,media_fl,**kwargs):
     chsize = kwargs.get("chunk_size",100)
     chunks = [models_available.index[i*chsize:i*chsize+chsize] for i in range(int(len(models_available)/chsize)+1)]
 
-
-    media = pd.read_csv(media_fl,sep = '\t',index_col= 0)
+    if isinstance(media_fl,str):
+        media = pd.read_csv(media_fl,sep = '\t',index_col= 0)
+    else:
+        media = media_fl
 
     pairwise_growth = pd.DataFrame(index = models_available.index,columns = models_available.index)
 
