@@ -139,20 +139,30 @@ def set_media(model,**kwargs):
     keep_fluxes = kwargs.get("keep_fluxes",False)
 
     new_media = {}
-    for rw in media.index:
-        ### Check if the metabolite is exchanged by the model
-        exchng_rxn = "EX_{}{}".format(media.loc[rw,IDtype],compartmenttag)
-        # print(exchng_rxn)
+    if isinstance(media,pd.DataFrame):
+        for rw in media.index:
+            ### Check if the metabolite is exchanged by the model
+            exchng_rxn = "EX_{}{}".format(media.loc[rw,IDtype],compartmenttag)
+            # print(exchng_rxn)
 
-        if exchng_rxn in model.reactions:
-            #if it is, add it to the new media
-            new_media[exchng_rxn] = media.loc[rw,fluxcol]
+            if exchng_rxn in model.reactions:
+                #if it is, add it to the new media
+                new_media[exchng_rxn] = media.loc[rw,fluxcol]
 
-    if keep_fluxes:
+        if keep_fluxes:
+            old_media = model.medium
+            for ky in old_media.keys():
+                if ky not in new_media.keys():
+                    new_media[ky] = old_media[ky]
+
+
+    elif isinstance(media,numbers.Number):
         old_media = model.medium
         for ky in old_media.keys():
-            if ky not in new_media.keys():
-                new_media[ky] = old_media[ky]
+            new_media[ky] = media
+
+
+
 
     model.medium = new_media
 
