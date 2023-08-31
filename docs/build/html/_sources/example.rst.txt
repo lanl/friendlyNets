@@ -1,0 +1,4 @@
+Example
+========
+
+We provide a walk-through tutorial of our analysis using data from :cite:`maldonado2016stable`.

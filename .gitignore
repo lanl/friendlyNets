@@ -4,4 +4,11 @@
 
 __pycache__/
 
-Examples/
+Examples/dsouza_etal
+
+Examples/huang_etal
+
+Examples/subset_example
+
+*.ipynb
+

@@ -44,6 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Functions to Generate and Evaluate Predictions</a><ul>
@@ -149,7 +150,7 @@ only computes a score for a single type of model, but offers more parameter flex
 <li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code>. Default 0</p></li>
 <li><p><strong>min_ra</strong> (<em>float</em>) – cutoff to use for presence/abscence of a node in a sample. Default 10**-6</p></li>
 <li><p><strong>odeTrials</strong> (<em>int</em>) – number of ODE simulations in score estimation. If None, equal to number of non-zero taxa in a sample. Default None</p></li>
-<li><p><strong>lvshift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="friendlynets.html#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code>. Default 0</p></li>
+<li><p><strong>lvshift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> - <code class="docutils literal notranslate"><span class="pre">shift</span></code>. Default 0</p></li>
 <li><p><strong>cntbu</strong> (<em>bool</em>) – Whether or not to count the number of blow-ups in the simulations. Default False</p></li>
 <li><p><strong>keepscores</strong> (<em>bool</em>) – Wether or not to return the friendliness scores. If False, only returns the predictive performance.</p></li>
 <li><p><strong>KO</strong> (<em>str</em>) – Knockout nodes to remove from data</p></li>

@@ -43,6 +43,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Functions for Making Interation Networks from GEMs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#make_gem_network.cocultures"><code class="docutils literal notranslate"><span class="pre">cocultures()</span></code></a></li>
@@ -122,7 +123,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cobra_model_list</strong> – path to .csv file with info on GEM location.</p></li>
-<li><p><strong>media_fl</strong> (<em>str</em>) – path to media .csv</p></li>
+<li><p><strong>media_fl</strong> (<em>str</em>) – path to media .csv OR media object (number for uniform complete media.)</p></li>
 <li><p><strong>experiment</strong> (<em>str</em>) – path .json file containing set of sets of nodes, each a tuple with (known score,data). The data should be a dictionary of abundances keyed by names of models (same as dict keys of models). Used to determine co-occurrence. All pairs computed if not given.</p></li>
 <li><p><strong>silence_load_error</strong> (<em>bool</em>) – If true, suppresses error output in loading models. Default True.</p></li>
 <li><p><strong>IDtype</strong> (<em>str</em>) – How the MODEL ids the metabolites. Should be a column of the media table. Default “fullName”</p></li>

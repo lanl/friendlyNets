@@ -43,13 +43,13 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format.html">Function for Formatting OTU tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="network_build.html">Functions for Making Interation Networks from GEMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Functions to Generate and Evaluate Predictions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sensit.html">Functions for Sensitivity Testing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The FriendlyNet class</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#friendlyNet.friendlyNet"><code class="docutils literal notranslate"><span class="pre">friendlyNet</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency"><code class="docutils literal notranslate"><span class="pre">friendlyNet.Adjacency</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.NodeNames"><code class="docutils literal notranslate"><span class="pre">friendlyNet.NodeNames</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.InDegree"><code class="docutils literal notranslate"><span class="pre">friendlyNet.InDegree</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#friendlyNet.friendlyNet.OutDegree"><code class="docutils literal notranslate"><span class="pre">friendlyNet.OutDegree</span></code></a></li>
@@ -114,12 +114,6 @@ Rescales the adjacency matrix so that all weights are in <span class="math notra
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="friendlyNet.friendlyNet.Adjacency">
-<span class="sig-name descname"><span class="pre">Adjacency</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.Adjacency" title="Permalink to this definition"></a></dt>
-<dd><p>Network adjacency matrix, rescaled so that all weights are in <span class="math notranslate nohighlight">\([0,1]\)</span></p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="friendlyNet.friendlyNet.NodeNames">
 <span class="sig-name descname"><span class="pre">NodeNames</span></span><a class="headerlink" href="#friendlyNet.friendlyNet.NodeNames" title="Permalink to this definition"></a></dt>
 <dd><p>List of names of the nodes, corresponding to ordering of adjacency matrix</p>
@@ -174,7 +168,7 @@ Rescales the adjacency matrix so that all weights are in <span class="math notra
 <dl class="py method">
 <dt class="sig sig-object py" id="friendlyNet.friendlyNet.lotka_volterra_system">
 <span class="sig-name descname"><span class="pre">lotka_volterra_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_inhibit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.lotka_volterra_system" title="Permalink to this definition"></a></dt>
-<dd><p>Right-Hand side of generalized Lotka-Volterra dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions:</p>
+<dd><p>Right-Hand side of generalized Lotka-Volterra dynamical system, using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> for interactions:</p>
 <div class="math notranslate nohighlight">
 \[\dot{x}_i = x_i(1+\sum_{j=1}^N a_{ij} x_j)\]</div>
 <dl class="field-list simple">
@@ -182,7 +176,7 @@ Rescales the adjacency matrix so that all weights are in <span class="math notra
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t</strong> (<em>float</em>) – time in simulation</p></li>
 <li><p><strong>s</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – State of simulation (species abundance)</p></li>
-<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
 <li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(a_{ii}\)</span>) will be set to -<code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
 </ul>
 </dd>
@@ -198,13 +192,13 @@ Rescales the adjacency matrix so that all weights are in <span class="math notra
 <dl class="py method">
 <dt class="sig sig-object py" id="friendlyNet.friendlyNet.solve_lotka_volterra">
 <span class="sig-name descname"><span class="pre">solve_lotka_volterra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_inhibit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.solve_lotka_volterra" title="Permalink to this definition"></a></dt>
-<dd><p>Solves the generalized Lotka-Volterra dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions</p>
+<dd><p>Solves the generalized Lotka-Volterra dynamical system, using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> for interactions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>s0</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – Inital state of simulation (species abundance)</p></li>
 <li><p><strong>T</strong> (<em>float</em>) – Simulation length</p></li>
-<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
 <li><p><strong>bup</strong> (<em>float</em>) – maximum abundance to allow in simulation. If any state variable reaches this value, it is assumed that the simulation has exhibited finite-time blowup and the simulation is stopped.</p></li>
 <li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
 </ul>
@@ -230,7 +224,7 @@ and time to domination (e.g. relative abundance near 1). The score is computed a
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>node</strong> (<em>str</em><em> or </em><em>int</em>) – name or index of node</p></li>
 <li><p><strong>mxTime</strong> (<em>float</em>) – time length of simulations</p></li>
-<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
 <li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
 </ul>
 </dd>
@@ -254,7 +248,7 @@ and time to domination (e.g. relative abundance near 1). The score is computed a
 <li><p><strong>mxTime</strong> (<em>float</em>) – time length of simulations</p></li>
 <li><p><strong>numtrials</strong> (<em>int</em>) – Number of ODE solutions and corresponding scores to compute</p></li>
 <li><p><strong>nj</strong> (<em>int</em>) – Number of parrallel simulations to run concurrently (uses joblib)</p></li>
-<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> - <code class="docutils literal notranslate"><span class="pre">shift</span></code></p></li>
 <li><p><strong>self_inhibit</strong> (<em>float</em>) – extent to which the model should include self inhibition - self interaction terms (<span class="math notranslate nohighlight">\(A_{ii}\)</span>) will be set to negative <code class="docutils literal notranslate"><span class="pre">self_inhibit</span></code></p></li>
 <li><p><strong>cntbu</strong> (<em>bool</em>) – Whether or not to count the number of blow-ups in the simulations</p></li>
 </ul>
@@ -271,7 +265,7 @@ and time to domination (e.g. relative abundance near 1). The score is computed a
 <dl class="py method">
 <dt class="sig sig-object py" id="friendlyNet.friendlyNet.replicator_system">
 <span class="sig-name descname"><span class="pre">replicator_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.replicator_system" title="Permalink to this definition"></a></dt>
-<dd><p>Right-Hand side of replicator dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions:</p>
+<dd><p>Right-Hand side of replicator dynamical system, using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> for interactions:</p>
 <div class="math notranslate nohighlight">
 \[\dot{x}_i = x_i(\sum_{j=1}^N a_{ij} x_j - x^TAx)\]</div>
 <dl class="field-list simple">
@@ -293,7 +287,7 @@ and time to domination (e.g. relative abundance near 1). The score is computed a
 <dl class="py method">
 <dt class="sig sig-object py" id="friendlyNet.friendlyNet.solve_replicator">
 <span class="sig-name descname"><span class="pre">solve_replicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#friendlyNet.friendlyNet.solve_replicator" title="Permalink to this definition"></a></dt>
-<dd><p>Solves the replicator dynamical system, using <a class="reference internal" href="#friendlyNet.friendlyNet.Adjacency" title="friendlyNet.friendlyNet.Adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code></a> for interactions</p>
+<dd><p>Solves the replicator dynamical system, using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjacency</span></code> for interactions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

@@ -51,7 +51,7 @@ We need to format the samples into a specific (not very user-friendly) form for 
 
 .. note::
 
-    Often, a significant amount of pre-processing is required to arrange the data into the required format for our formatting function (e.g. splitting into seperate experiments, etc.). We have provided three examples in the in 
+    Often, a significant amount of pre-processing is required to arrange the data into the required format for our formatting function (e.g. splitting into seperate experiments, etc.). We have provided an example in the in 
     ``Example`` folder.
 
 To format the data to compute friendliness scores with no known outcomes:

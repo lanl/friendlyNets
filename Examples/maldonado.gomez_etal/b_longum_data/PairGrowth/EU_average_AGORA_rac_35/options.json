@@ -1,0 +1,1 @@
+{"Media File": "/Users/jdbrunner/Documents/probiotic_design/friendlyNets/translate_agora_media/EU_average_AGORA.tsv", "TargetModel": "[216816]", "experiment": "b_longum_data/Formatted/friendlySamples.json", "rac": 35, "mu": 0.04, "phi": 0.1, "default_inflow": 10, "chunk_size": 100, "silence_load_error": true}
