@@ -74,7 +74,7 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
     return net_scores
 
 
-def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 10**-6, odeTrials = None):
+def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 10**-6, odeTrials = None,track_samples = False):
 
     """
 
@@ -95,6 +95,8 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
     :type min_ra: float
     :param odeTrials: number of ODE simulations in score estimation. If None, equal to number of non-zero taxa in a sample. Default None
     :type odeTrials: int
+    :param track_samples: Whether or not to print name of sample being scored. Default False.
+    :type track_samples: bool
 
     :return: friendliness scores, predictive performance dictionary. If binary scoring, predictive performance is AUROC, ROC curves, and the mean AUROC.If continuous scoring, this is pearson correlation between friendliness score and known score, pearson p valule, kendall correlation, and kendall p value,spearman correlation, spearman p value. Correlation values are rescaled to [0,1] (from [-1,1]) to better match AUCROC scores.
 
@@ -114,6 +116,10 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
     full_net.index = full_net.index.astype(str)
 
     for ky,sample in experiment.items():
+
+        if track_samples:
+            print("Scoring Sample {}".format(ky))
+
         score = sample[0]
         data = sample[1]
         nonzero = [kyy for kyy,val in data.items() if val > min_ra]
@@ -288,7 +294,7 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
 
     if keepscores:
         if cntbu:
-            if scoretype == 'b':
+            if scoretype[0] == 'b':
 
                 return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts),sample_order,net_test_scores
 
@@ -300,7 +306,7 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
 
                 return kendallval,spearmanval,np.mean(blowupcounts),sample_order,net_test_scores
         else:
-            if scoretype == 'b':
+            if scoretype[0] == 'b':
 
                 return roc_auc_score(net_scores,net_test_scores),sample_order,net_test_scores
 
@@ -313,7 +319,7 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
                 return kendallval,spearmanval,sample_order,net_test_scores
     else:
         if cntbu:
-            if scoretype == 'b':
+            if scoretype[0] == 'b':
 
                 return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts)
 
@@ -325,7 +331,7 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
 
                 return kendallval,spearmanval,np.mean(blowupcounts)
         else:
-            if scoretype == 'b':
+            if scoretype[0] == 'b':
 
                 return roc_auc_score(net_scores,net_test_scores)
 

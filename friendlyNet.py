@@ -66,7 +66,7 @@ class friendlyNet:
 
         self.EdgeList = edges
 
-    def lotka_volterra_system(self,t,s,shift,self_inhibit):
+    def lotka_volterra_system(self,t,s,adjc):
 
         """
         Right-Hand side of generalized Lotka-Volterra dynamical system, using :py:obj:`Adjacency <friendlyNet.friendlyNet.Adjacency>` for interactions:
@@ -87,10 +87,7 @@ class friendlyNet:
         :return: value of vector field at t,s
         :rtype: array[float]
         """
-
-        adjc = self.Adjacency.copy()
-        np.fill_diagonal(adjc,-self_inhibit)
-        return s*(1+np.dot(adjc - shift,s))
+        return s*(1+np.dot(adjc,s))
 
     def solve_lotka_volterra(self,s0,T,shift=0,bup = 1000,self_inhibit = 0):
 
@@ -115,77 +112,12 @@ class friendlyNet:
 
         blowup = lambda t,s:sum(s) - bup
         blowup.terminal = True
-        thefun = lambda t,s: self.lotka_volterra_system(t,s,shift,self_inhibit)
-        sln = solve_ivp(thefun,(0,T),s0,dense_output = True,events = blowup)
+        adjc = self.Adjacency.copy() - shift
+        np.fill_diagonal(adjc,-self_inhibit)
+        thefun = lambda t,s: self.lotka_volterra_system(t,s,adjc)
+        sln = solve_ivp(thefun,(0,T),s0,dense_output = False,events = blowup)
         return sln
 
-    # def sample_lotka_volterra_unif(self,g,node,dist_params,shift=0,self_inhibit=0):
-
-    #     """
-    #     Sample :math:`f_i(s)` for node i 
-    #     """
-    #     s = dist_params[0] + (dist_params[1]-dist_params[0])*g.random(self.Adjacency.shape[0])
-    #     dsdt = self.lotka_volterra_system(0,s,shift,self_inhibit)
-    #     return dsdt[node]
-
-    # def sample_lotka_volterra_lognorm(self,g,node,dist_params,shift=0,self_inhibit=0):
-
-    #     """
-    #     Sample :math:`f_i(s)` for node i 
-    #     """
-    #     logs = g.multivariate_normal(dist_params[0],dist_params[1])
-    #     s = np.exp(logs)
-    #     dsdt = self.lotka_volterra_system(0,s,shift,self_inhibit)
-    #     return dsdt[node]
-
-    # def sample_lotka_volterra_poisson(self,g,node,dist_params,shift=0,self_inhibit=0):
-
-    #     """
-    #     Sample :math:`f_i(s)` for node i 
-    #     """
-    #     s = g.poisson(lam = dist_params,size = self.Adjacency.shape[0])
-    #     dsdt = self.lotka_volterra_system(0,s,shift,self_inhibit)
-    #     return dsdt[node]
-
-    # def lotka_volterra_score(self,node,numSamples,shift=0,self_inhibit=0,distr = "uniform", dist_params = None,nj=1):
-
-    #     """
-    #     Sample 1/|s|f_i(s) from the LV system for node i
-
-    #     :param node: name or index of node
-    #     :type node: str or int
-    #     :param shift: Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be :py:obj:`Adjacency <friendlyNet.friendlyNet.Adjacency>` - ``shift``
-    #     :type shift: float
-    #     :param self_inhibit: extent to which the model should include self inhibition - self interaction terms (:math:`A_{ii}`) will be set to negative ``self_inhibit``
-    #     :type self_inhibit: float
-    #     :param distr:
-    #     :type distr: str
-    #     :param dist_params:
-    #     type dist_params: list[float]
-
-    #     :return: expecation of :math:`\\frac{1}{\|s\|}f_i(s)` from given distribution
-    #     :rtype:  float
-    #     """
-
-    #     g = np.random.default_rng()
-
-    #     if distr.lower() == "uniform":
-    #         if dist_params == None:
-    #             dist_params = (0,1)
-    #         samples = Parallel(n_jobs = nj)(delayed(self.sample_lotka_volterra_unif)(g,node,dist_params,shift=shift,self_inhibit=self_inhibit) for i in range(numSamples))
-
-    #     elif distr.lower() == "lognormal":
-    #         if dist_params == None:
-    #             dist_params = (np.zeros(self.Adjacency.shape[0]),np.eye(self.Adjacency.shape[0]))
-    #         samples = Parallel(n_jobs = nj)(delayed(self.sample_lotka_volterra_lognorm)(g,node,dist_params,shift=shift,self_inhibit=self_inhibit) for i in range(numSamples))
-        
-    #     elif distr.lower() == "poisson":
-    #         if dist_params == None:
-    #             dist_params = 1
-    #         samples = Parallel(n_jobs = nj)(delayed(self.sample_lotka_volterra_poisson)(g,node,dist_params,shift=shift,self_inhibit=self_inhibit) for i in range(numSamples))
-
-
-    #     return np.mean(samples)
 
 
 
@@ -213,6 +145,7 @@ class friendlyNet:
         :return: Friendliness of the network to the node, according to the single Lotka-Volterra simulation, and the status of the ODE solution
         :rtype:  tuple[float,str]
         """
+
 
         if node in self.NodeNames:
             node = list(self.NodeNames).index(node)
@@ -263,7 +196,7 @@ class friendlyNet:
         :return: score from :py:func:`lotka_volterra_score_single <friendlyNet.friendlyNet.lotka_volterra_score_single>` averaged over all trials, optinoally number of blowups in simulation
         :rtype: float,int
         """
-
+        # print("Antagonistic Shift: {}, Self-Inhibition: {}".format(shift,self_inhibit))
 
         trials = Parallel(n_jobs = nj)(delayed(self.lotka_volterra_score_single)(node,mxTime = mxTime,shift=shift,self_inhibit = self_inhibit) for i in range(numtrials))
         if cntbu:
@@ -309,7 +242,7 @@ class friendlyNet:
 
         blowup = lambda t,s:sum(s) - 1000
         blowup.terminal = True
-        sln = solve_ivp(self.replicator_system,(0,T),s0,dense_output = True,events = blowup)
+        sln = solve_ivp(self.replicator_system,(0,T),s0,dense_output = False,events = blowup)
         return sln
 
     def replicator_score_single(self,node,mxTime = 100):
@@ -497,12 +430,16 @@ class friendlyNet:
         all_scores = {}
         if isinstance(odeTrials,int):
             if "LV" in scores:
+                # print("scoring LV")
                 all_scores["LV"] = self.lotka_volterra_score(node,numtrials = odeTrials)
             if "InhibitLV" in scores:
+                # print("scoring InhibitLV")
                 all_scores["InhibitLV"] = self.lotka_volterra_score(node,numtrials = odeTrials,self_inhibit=1)
             if "AntLV" in scores:
+                # print("scoring AntLV")
                 all_scores["AntLV"] = self.lotka_volterra_score(node,numtrials = odeTrials,shift = 1)
             if "Replicator" in scores:
+                # print("Scoring Replicator")
                 all_scores["Replicator"] = self.replicator_score(node,numtrials = odeTrials)
         else:
             if "LV" in scores:
@@ -514,8 +451,10 @@ class friendlyNet:
             if "Replicator" in scores:
                 all_scores["Replicator"] = self.replicator_score(node,numtrials = self.Adjacency.shape[0])
         if "NodeBalance" in scores:
+            # print("scoring NodeBalance")
             all_scores["NodeBalance"] = self.node_balanced_score(node)
         if "Stochastic" in scores:
+            # print("scoring Stochastic")
             all_scores["Stochastic"] = self.stochastic_score(node)
         all_scores["Composite"] = np.mean(list(all_scores.values()))
         

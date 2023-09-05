@@ -12,3 +12,5 @@ Examples/subset_example
 
 *.ipynb
 
+.jovianrc
+
