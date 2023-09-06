@@ -112,8 +112,9 @@ class friendlyNet:
 
         blowup = lambda t,s:sum(s) - bup
         blowup.terminal = True
-        adjc = self.Adjacency.copy() - shift
+        adjc = self.Adjacency.copy()
         np.fill_diagonal(adjc,-self_inhibit)
+        adjc = adjc - shift
         thefun = lambda t,s: self.lotka_volterra_system(t,s,adjc)
         sln = solve_ivp(thefun,(0,T),s0,dense_output = False,events = blowup)
         return sln

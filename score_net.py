@@ -161,7 +161,7 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
             kendallval_r[col],kendallp[col] = kendalltau(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
             spearmanval_r[col],spearmanp[col] = spearmanr(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
 
-        pearsonval = dict([(ky,(val+1)/2) for ky,val in pearsonval_r.items()])
+        pearsonval = dict([(ky,(val+1)/2) for ky,val in pearsonval_r.items()])#readjust so that correlations are in [0,1] to match AUCROC
         kendallval = dict([(ky,(val+1)/2) for ky,val in kendallval_r.items()])
         spearmanval = dict([(ky,(val+1)/2) for ky,val in spearmanval_r.items()])
 
