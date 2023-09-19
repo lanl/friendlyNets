@@ -397,7 +397,7 @@ class friendlyNet:
 
         return np.real(stationary_distribution)[node]
 
-    def score_node(self,node,scores = None,odeTrials = None):
+    def score_node(self,node,scores = None,odeTrials = None,cntbu=False):
 
         """
         Function to score a node using a set of scores. Choose any list of the following:
@@ -429,16 +429,33 @@ class friendlyNet:
 
 
         all_scores = {}
+        if cntbu:
+            all_blowups = {}
         if isinstance(odeTrials,int):
             if "LV" in scores:
                 # print("scoring LV")
-                all_scores["LV"] = self.lotka_volterra_score(node,numtrials = odeTrials)
+                scr = self.lotka_volterra_score(node,numtrials = odeTrials,cntbu=cntbu)
+                if cntbu:
+                    all_scores["LV"] = scr[0]
+                    all_blowups["LV"] = scr[1]
+                else:
+                    all_scores["LV"] = scr
             if "InhibitLV" in scores:
                 # print("scoring InhibitLV")
-                all_scores["InhibitLV"] = self.lotka_volterra_score(node,numtrials = odeTrials,self_inhibit=1)
+                scr = self.lotka_volterra_score(node,numtrials = odeTrials,self_inhibit=1,cntbu=cntbu)
+                if cntbu:
+                    all_scores["InhibitLV"] = scr[0]
+                    all_blowups["InhibitLV"] = scr[1]
+                else:
+                    all_scores["InhibitLV"] = scr
             if "AntLV" in scores:
                 # print("scoring AntLV")
-                all_scores["AntLV"] = self.lotka_volterra_score(node,numtrials = odeTrials,shift = 1)
+                scr = self.lotka_volterra_score(node,numtrials = odeTrials,shift = 1,cntbu=cntbu)
+                if cntbu:
+                    all_scores["AntLV"] = scr[0]
+                    all_blowups["AntLV"] = scr[1]
+                else:
+                    all_scores["AntLV"] = scr
             if "Replicator" in scores:
                 # print("Scoring Replicator")
                 all_scores["Replicator"] = self.replicator_score(node,numtrials = odeTrials)
@@ -457,9 +474,13 @@ class friendlyNet:
         if "Stochastic" in scores:
             # print("scoring Stochastic")
             all_scores["Stochastic"] = self.stochastic_score(node)
+
         all_scores["Composite"] = np.mean(list(all_scores.values()))
         
-        return all_scores
+        if cntbu:
+            return all_scores,all_blowups
+        else:
+            return all_scores
 
     def score_all_nodes(self,scores = None,odeTrials = None):
 

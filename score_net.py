@@ -150,25 +150,25 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
 
     else:
 
-        pearsonval_r = {}
-        kendallval_r = {}
-        spearmanval_r = {}
+        pearsonval = {}
+        kendallval = {}
+        spearmanval = {}
         pearsonp = {}
         kendallp = {}
         spearmanp = {}
         for col in net_scores.columns[1:]:
-            pearsonval_r[col],pearsonp[col] = pearsonr(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
-            kendallval_r[col],kendallp[col] = kendalltau(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
-            spearmanval_r[col],spearmanp[col] = spearmanr(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
+            pearsonval[col],pearsonp[col] = pearsonr(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
+            kendallval[col],kendallp[col] = kendalltau(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
+            spearmanval[col],spearmanp[col] = spearmanr(net_scores["KnownScore"].values.astype(float),net_scores[col].values.astype(float))
 
-        pearsonval = dict([(ky,(val+1)/2) for ky,val in pearsonval_r.items()])#readjust so that correlations are in [0,1] to match AUCROC
-        kendallval = dict([(ky,(val+1)/2) for ky,val in kendallval_r.items()])
-        spearmanval = dict([(ky,(val+1)/2) for ky,val in spearmanval_r.items()])
+        # pearsonval = dict([(ky,(val+1)/2) for ky,val in pearsonval.items()])#readjust so that correlations are in [0,1] to match AUCROC
+        # kendallval = dict([(ky,(val+1)/2) for ky,val in kendallval.items()])
+        # spearmanval = dict([(ky,(val+1)/2) for ky,val in spearmanval.items()])
 
 
         return net_scores,{"Pearson":pearsonval,"PearsonP":pearsonp,"Kendall":kendallval,"KendallP":kendallp,"Spearman":spearmanval,"SpearmanP":spearmanp}
 
-def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False,keepscores = False,KO = None):
+def score_light(experiment,full_net,target_node,scoretype, score_model=None,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False,keepscores = False,KO = None):
 
     """
 
@@ -207,16 +207,24 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
     """
 
 
+    if score_model == None:
+        score_model = ["LV","InhibitLV","AntLV","Replicator","NodeBalance","Stochastic","Composite"]
 
     net_scores = np.empty(len(experiment),dtype = np.float64)
-    net_test_scores = np.empty(len(experiment),dtype = np.float64)
-    indx = 0
+    net_test_scores = dict([(mod,np.empty(len(experiment),dtype = np.float64)) for mod in score_model])
     sample_order = list(experiment.keys())
 
     if cntbu:
-        blowupcounts = np.empty(len(experiment),dtype = np.float64)
+        blowupcounts = {}
+        if "LV" in score_model:
+            blowupcounts["LV"] = np.empty(len(experiment),dtype = np.float64)
+        if "InhibitLV" in score_model:
+            blowupcounts["InhibitLV"] = np.empty(len(experiment),dtype = np.float64)
+        if "AntLV" in score_model:
+            blowupcounts["AntLV"] = np.empty(len(experiment),dtype = np.float64)
 
-    for key in sample_order:
+
+    for indx,key in enumerate(sample_order):
         sample = experiment[key]
         net_scores[indx] = sample[0]
         data = sample[1]
@@ -234,111 +242,91 @@ def score_light(experiment,full_net,target_node,scoretype, score_model,self_inhi
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
-        if score_model == "LV":
-            if cntbu:
-                if isinstance(odeTrials,int):
-                    r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = lvshift,cntbu=cntbu,self_inhibit=self_inhibit)
-                    net_test_scores[indx] = r[0]
-                    blowupcounts[indx] = r[1]
-                else:
-                    r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = lvshift,cntbu=cntbu,self_inhibit=self_inhibit)
-                    net_test_scores[indx] = r[0]
-                    blowupcounts[indx] = r[1]
-            else:
-                if isinstance(odeTrials,int):
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = lvshift,self_inhibit=self_inhibit)
-                else:
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = lvshift,self_inhibit=self_inhibit)
-        elif score_model == "AntLV":
-            if cntbu:
-                if isinstance(odeTrials,int):
-                    r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 1,cntbu=cntbu,self_inhibit=0)
-                    net_test_scores[indx] = r[0]
-                    blowupcounts[indx] = r[1]
-                else:
-                    r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 1,cntbu=cntbu,self_inhibit=0)
-                    net_test_scores[indx] = r[0]
-                    blowupcounts[indx] = r[1]
-            else:
-                if isinstance(odeTrials,int):
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 1,self_inhibit=0)
-                else:
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 1,self_inhibit=0)
-        elif score_model == "InhibitLV":
-            if cntbu:
-                if isinstance(odeTrials,int):
-                    r = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 0,cntbu=cntbu,self_inhibit=1)
-                    net_test_scores[indx] = r[0]
-                    blowupcounts[indx] = r[1]
-                else:
-                    r = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 0,cntbu=cntbu,self_inhibit=1)
-                    net_test_scores[indx] = r[0]
-                    blowupcounts[indx] = r[1]
-            else:
-                if isinstance(odeTrials,int):
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = odeTrials,shift = 0,self_inhibit=1)
-                else:
-                    net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0],shift = 0,self_inhibit=1)                
-        elif score_model == "Replicator":
-            if isinstance(odeTrials,int):
-                net_test_scores[indx] = friendly.replicator_score(target_node,numtrials = odeTrials)
-            else:
-                net_test_scores[indx] = friendly.lotka_volterra_score(target_node,numtrials = friendly.Adjacency.shape[0])
-        elif score_model == "NodeBalance":
-            net_test_scores[indx] = friendly.node_balanced_score(target_node)
-        elif score_model == "Stochastic":
-            net_test_scores[indx] = friendly.stochastic_score(target_node)
-        elif score_model == "Composite":
-            net_test_scores[indx] = friendly.score_node(target_node,odeTrials = odeTrials)["Composite"]
-        indx += 1
+        ##
+        if cntbu:
+            rdict,blups = friendly.score_node(target_node,odeTrials = odeTrials,scores=score_model,cntbu = True)
+        else:
+            rdict = friendly.score_node(target_node,odeTrials = odeTrials,scores=score_model,cntbu = False)
+
+        for mod in score_model:
+            net_test_scores[mod][indx] = rdict[mod]
+        if cntbu:
+            for mod in blowupcounts.keys():
+                blowupcounts[mod][indx] = blups[mod]
+        ###
 
     if keepscores:
         if cntbu:
-            if scoretype[0] == 'b':
 
-                return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts),sample_order,net_test_scores
+            mean_blups = {}
+            for ky in blowupcounts.keys():
+                mean_blups[ky] = np.mean(blowupcounts[ky])
+
+            if scoretype[0] == 'b':
+                roc_scrs = {}
+                for mod in score_model:
+                    roc_scrs[mod] = roc_auc_score(net_scores,net_test_scores[mod])
+
+                return roc_scrs,mean_blups,sample_order,net_test_scores
 
             else:
+                kendallval = {}
+                spearmanval = {}
+                for mod in score_model:
+                    kendallval[mod] = kendalltau(net_scores,net_test_scores[mod])[0]
+                    spearmanval[mod] = spearmanr(net_scores,net_test_scores[mod])[0]
 
-                kendallval,_ = kendalltau(net_scores,net_test_scores)
-                spearmanval,_ = spearmanr(net_scores,net_test_scores)
-
-
-                return kendallval,spearmanval,np.mean(blowupcounts),sample_order,net_test_scores
+                return kendallval,spearmanval,mean_blups,sample_order,net_test_scores
         else:
             if scoretype[0] == 'b':
-
-                return roc_auc_score(net_scores,net_test_scores),sample_order,net_test_scores
+                roc_scrs = {}
+                for mod in score_model:
+                    roc_scrs[mod] = roc_auc_score(net_scores,net_test_scores[mod])
+                return roc_scrs,sample_order,net_test_scores
 
             else:
-
-                kendallval,_ = kendalltau(net_scores,net_test_scores)
-                spearmanval,_ = spearmanr(net_scores,net_test_scores)
-
+                kendallval = {}
+                spearmanval = {}
+                for mod in score_model:
+                    kendallval[mod] = kendalltau(net_scores,net_test_scores[mod])[0]
+                    spearmanval[mod] = spearmanr(net_scores,net_test_scores[mod])[0]
 
                 return kendallval,spearmanval,sample_order,net_test_scores
     else:
         if cntbu:
-            if scoretype[0] == 'b':
 
-                return roc_auc_score(net_scores,net_test_scores),np.mean(blowupcounts)
+            mean_blups = {}
+            for ky in blowupcounts.keys():
+                mean_blups[ky] = np.mean(blowupcounts[ky])
+
+
+            if scoretype[0] == 'b':
+                roc_scrs = {}
+                for mod in score_model:
+                    roc_scrs[mod] = roc_auc_score(net_scores,net_test_scores[mod])
+                return roc_scrs,mean_blups
 
             else:
+                kendallval = {}
+                spearmanval = {}
+                for mod in score_model:
+                    kendallval[mod] = kendalltau(net_scores,net_test_scores[mod])[0]
+                    spearmanval[mod] = spearmanr(net_scores,net_test_scores[mod])[0]
 
-                kendallval,_ = kendalltau(net_scores,net_test_scores)
-                spearmanval,_ = spearmanr(net_scores,net_test_scores)
 
-
-                return kendallval,spearmanval,np.mean(blowupcounts)
+                return kendallval,spearmanval,mean_blups
         else:
             if scoretype[0] == 'b':
-
-                return roc_auc_score(net_scores,net_test_scores)
-
+                roc_scrs = {}
+                for mod in score_model:
+                    roc_scrs[mod] = roc_auc_score(net_scores,net_test_scores[mod])
+                return roc_scrs
             else:
-
-                kendallval,_ = kendalltau(net_scores,net_test_scores)
-                spearmanval,_ = spearmanr(net_scores,net_test_scores)
+                kendallval = {}
+                spearmanval = {}
+                for mod in score_model:
+                    kendallval[mod] = kendalltau(net_scores,net_test_scores[mod])[0]
+                    spearmanval[mod] = spearmanr(net_scores,net_test_scores[mod])[0]
 
 
                 return kendallval,spearmanval
