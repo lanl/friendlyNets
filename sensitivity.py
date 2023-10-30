@@ -214,7 +214,10 @@ def get_all_sensitivity(target_node,fnet,entries = 'all',shift = 0,self_inhibit=
     i = fnet.NodeNames.index(target_node)
     pars = [(fnet.NodeNames.index(ent[0]),fnet.NodeNames.index(ent[1])) for ent in entries]
     mnsense = sum(Parallel(n_jobs = nj)(delayed(get_all_sensitivity_single_trajectory)(fnet,i,pars=pars,mxTime = mxTime,shift = shift,weights = weights,self_inhibit=self_inhibit) for tri in range(numtrials)))/numtrials
-    sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
+    if entries == 'all':
+        sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
+    else:
+        sensitivities = dict([(entries[i],mnsense[i]) for i in range(len(entries))])
 
 
     return sensitivities
