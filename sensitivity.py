@@ -50,7 +50,7 @@ def sense_kl(t,ps,x,k,l,net):
 def get_sensitivity_single_trajectory(fnet,i,k,l,soln = None,shift = 0,self_inhibit=0,weights = None,mxTime = 1000):
 
     """
-    Compute sensitivity of node i to parameter :math:`a_{kl}`. To do this, we need to solve an ODE that arises from the chain rule.
+    Compute sensitivity of node i to parameter :math:`a_{kl}`. To do this, we need to solve an ODE that arises from the chain rule. Computes with 1 ODE solution, which may be sensitive to initial conditions (chosen at random)
 
     :param fnet: network of interactions for the model
     :type fnet: :py:obj:`friendlyNet <friendlyNet.friendlyNet>`
@@ -86,6 +86,47 @@ def get_sensitivity_single_trajectory(fnet,i,k,l,soln = None,shift = 0,self_inhi
         weighted_avg = np.dot(sensitivity.y[i][-min(len(weights),len(sensitivity.y[i])):],weights[-min(len(weights),len(sensitivity.y[i])):])
         return weighted_avg#
     return np.mean(sensitivity.y[i])
+
+def get_sensitivity(fnet,invadernode,target_node,source_node,soln = None,shift = 0,self_inhibit=0,mxTime = 1000,numtrials = 1000,wpts = 40,base_we = 1.5,nj=1):
+    """
+    Compute sensitivity of node i to parameter :math:`a_{kl}`. To do this, we need to solve an ODE that arises from the chain rule. Computes with 1000 ODE solutions with randomly seleced initial conditions
+
+    :param fnet: network of interactions for the model
+    :type fnet: :py:obj:`friendlyNet <friendlyNet.friendlyNet>`
+    :param invadernode: index of node of interest
+    :type invadernode: int/str
+    :param source_node: source node of interaction of interest
+    :type source_node: int/str 
+    :param target_node: target node of interaction of interest
+    :type target_node: int/str
+    :param soln: solution to lotka-volterra system *must use same shift and self_inhibit parameters*
+    :type soln: scipy.integrate.solve_ivp object
+    :param shift: Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be :py:obj:`Adjacency <friendlyNet.friendlyNet.Adjacency>` - ``shift``
+    :type shift: float
+    :param self_inhibit: extent to which the model should include self inhibition - self interaction terms (:math:`a_{ii}`) will be set to -``self_inhibit``
+    :type self_inhibit: float
+    :param wpts: number of time-points in each simulation to average over (will be final time-points). Default 40
+    :type wpts: int
+    :param base_we: base for weights of time-averaging - should be :math:`>1` for increasing weight, equal to 1 for uniform weight on last ``wpt`` time-points. Default 1.5
+    :type base_we: float
+    :param mxTime: time length of simulations
+    :type mxTime: float
+    :param numtrials: Number of simulations to average over
+    :type numtrials: int
+    :param nj: number of trials to run in parallel (using joblib)
+    :type nj: int
+    :return: (possibly weighted) average value of :math:`\partial x_i/\partial a_{kl}` over time points in simulation.
+    :rtype: float
+    """
+
+    weights = np.array([base_we**ex for ex in range(wpts)])
+    weights = weights/sum(weights)
+    i = fnet.NodeNames.index(invadernode)
+    k = fnet.NodeNames.index(source_node)
+    l = fnet.NodeNames.index(target_node)
+    mnsense = sum(Parallel(n_jobs = nj)(delayed(get_sensitivity_single_trajectory)(fnet,i,k,l,mxTime = mxTime,shift = shift,weights = weights,self_inhibit=self_inhibit) for tri in range(numtrials)))/numtrials
+
+    return mnsense
 
 
 def get_all_sensitivity_single_trajectory(fnet,i,shift = 0,self_inhibit=0,weights = None,mxTime = 1000,pars = 'all'):
@@ -180,68 +221,3 @@ def get_all_sensitivity(target_node,fnet,entries = 'all',shift = 0,self_inhibit=
 
 
 
-# def get_sensitivity(target_node,fnet,entry,shift = 0,self_inhibit=0,numtrials = 100,nj=1,mxTime = 1000,wpts = 40,base_we = 1.5):
-
-#     """
-#     Compute sensitivity of a node to parameter :math:`a_{kl}`, and average over simulations. Computes weighted average, using *final* ``wpts`` timepoints with increasing weight. Weight s is computed as :math:`b^s` where :math:`b` is ``base_we`` and then weights are rescaled to sum to 1. 
-
-#     :param target_node: name node of interest (nodes are usually named with str, but can be named with other objects, most commonly int equal to node index.)
-#     :type target_node: str or int
-#     :param fnet: network of interactions for the model
-#     :type fnet: :py:obj:`friendlyNet <friendlyNet.friendlyNet>`
-#     :param entry: names of nodes involved in interation parameter (source,target)
-#     :type entry: tuple[str,str] 
-#     :param shift: Uniform (subtracted) modifier to interactions. Lotka-Volterra parameters will be :py:obj:`Adjacency <friendlyNet.friendlyNet.Adjacency>` - ``shift``
-#     :type shift: float
-#     :param self_inhibit: extent to which the model should include self inhibition - self interaction terms (:math:`a_{ii}`) will be set to -``self_inhibit``
-#     :type self_inhibit: float
-#     :param numtrials: Number of simulations to average over
-#     :type numtrials: int
-#     :param nj: number of trials to run in parallel (using joblib)
-#     :type nj: int
-#     :param mxTime: time length of simulations
-#     :type mxTime: float
-#     :param wpts: number of time-points in each simulation to average over (will be final time-points). Default 40
-#     :type wpts: int
-#     :param base_we: base for weights of time-averaging - should be :math:`>1` for increasing weight, equal to 1 for uniform weight on last ``wpt`` time-points. Default 1.5
-#     :return: Average value of :math:`\partial x_i/\partial a_{kl}` averaged first over time points in each simulation and next over simulations
-#     :rtype: float
-#     """
-
-#     k = fnet.NodeNames.index(entry[0])
-#     l = fnet.NodeNames.index(entry[1])
-#     i = fnet.NodeNames.index(target_node)
-#     weights = np.array([base_we**ex for ex in range(wpts)])
-#     weights = weights/sum(weights)
-#     return np.mean(Parallel(n_jobs = nj)(delayed(get_sensitivity_single_trajectory)(fnet,i,k,l,shift = shift,self_inhibit=self_inhibit,weights = weights,mxTime = mxTime) for tri in range(numtrials)))
-
-
-
-
-
-# def sense_kl_prej(t,ps,X,k,l,prej):
-#     return X[k]*X[l]*np.eye(prej.shape[0])[k] + np.dot(prej,ps)
-
-# def sense_all(t,p,x,net):
-#     N= net.shape[0]
-#     prej = compute_j(x(t),net)
-#     all_together = np.concatenate([sense_kl_prej(t,p[(N**2)*l + N*k:(N**2)*l + (k+1)*N],x(t),k,l,prej) for k in range(N) for l in range(N)])
-#     return all_together
-
-# def get_all_sensitivity_st(fnet,i,mxTime = 1000,shift=0,weights = []):
-#     y0 = np.zeros(fnet.Adjacency.shape[0]**3)
-#     soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift=shift)
-#     all_sensitivity = solve_ivp(sense_all,(0,soln.t[-1]),y0,args = (soln.sol,fnet.Adjacency.T-shift))
-#     #Take weighted average over trajectory, weighting towards end
-#     if len(weights):
-#         weighted_avg = np.dot(all_sensitivity.y[:,-min(len(weights),all_sensitivity.y.shape[1]):],weights[-min(len(weights),len(all_sensitivity.y[i])):])
-#     else:
-#         weighted_avg = np.mean(all_sensitivity.y,axis = 1)
-#     param_senses = weighted_avg.reshape(fnet.Adjacency.shape[0],fnet.Adjacency.shape[0]**2)[i].reshape(fnet.Adjacency.shape).T
-#     return param_senses
-
-# def get_all_sensitivity(target_node,fnet,numtrials = 1000,mxTime=1000,nj = -1,shift=0):
-#     i = fnet.NodeNames.index(target_node)
-#     mnsense = sum(Parallel(n_jobs = nj)(delayed(get_all_sensitivity_st)(fnet,i,mxTime=mxTime,shift=shift) for tri in range(numtrials)))/numtrials
-#     sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
-#     return sensitivities
