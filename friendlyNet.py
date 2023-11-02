@@ -89,7 +89,7 @@ class friendlyNet:
         """
         return s*(1+np.dot(adjc,s))
 
-    def solve_lotka_volterra(self,s0,T,shift=0,bup = 1000,self_inhibit = 0):
+    def solve_lotka_volterra(self,s0,T,shift=0,bup = 1000,self_inhibit = 0,dense_output = False):
 
         """
         Solves the generalized Lotka-Volterra dynamical system, using :py:obj:`Adjacency <friendlyNet.friendlyNet.Adjacency>` for interactions
@@ -116,7 +116,7 @@ class friendlyNet:
         np.fill_diagonal(adjc,-self_inhibit)
         adjc = adjc - shift
         thefun = lambda t,s: self.lotka_volterra_system(t,s,adjc)
-        sln = solve_ivp(thefun,(0,T),s0,dense_output = False,events = blowup)
+        sln = solve_ivp(thefun,(0,T),s0,dense_output = dense_output,events = blowup)
         return sln
 
 

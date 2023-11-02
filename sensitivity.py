@@ -79,7 +79,7 @@ def get_sensitivity_single_trajectory(fnet,i,k,l,soln = None,shift = 0,self_inhi
     if list(weights) == None:
         weights = []
     if soln == None:
-        soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit)
+        soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit,dense_output = True)
     shtadj = fnet.Adjacency.T-shift
     np.fill_diagonal(shtadj,-self_inhibit)
     sensitivity = solve_ivp(sense_kl,(0,soln.t[-1]),np.zeros(fnet.Adjacency.shape[0]),args = (soln.sol,k,l,shtadj))
@@ -157,7 +157,7 @@ def get_all_sensitivity_single_trajectory(fnet,i,shift = 0,self_inhibit=0,weight
     if list(weights) == None:
         weights = []
     all_sensitivity = np.zeros_like(fnet.Adjacency)
-    soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit)
+    soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit,dense_output = True)
     try:
         if pars.lower() == 'all':
             srces = range(all_sensitivity.shape[0])
