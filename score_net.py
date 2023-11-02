@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr,pearsonr,kendalltau
 
-def network_friendliness(experiment,full_net,target_node,models = None, min_ra = 10**-6, odeTrials = None):
+def network_friendliness(experiment,full_net,target_node,models = None, min_ra = 10**-6, odeTrials = None,odetime = 100):
 
     """
 
@@ -67,14 +67,14 @@ def network_friendliness(experiment,full_net,target_node,models = None, min_ra =
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
-        fscores = friendly.score_node(str(target_node),odeTrials = odeTrials,scores=models)
+        fscores = friendly.score_node(str(target_node),odeTrials = odeTrials,scores=models,odetime =odetime)
 
         net_scores.loc[ky] = [fscores[col] for col in net_scores.columns]
 
     return net_scores
 
 
-def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 10**-6, odeTrials = None,track_samples = False):
+def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 10**-6, odeTrials = None,track_samples = False,odetime = 100):
 
     """
 
@@ -134,7 +134,7 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
         friendly = friendlyNet(subgraph.values)
         friendly.NodeNames = nonzero
 
-        fscores = friendly.score_node(str(target_node),odeTrials = odeTrials,scores=models)
+        fscores = friendly.score_node(str(target_node),odeTrials = odeTrials,scores=models,odetime = odetime)
 
         net_scores.loc[ky] = [score] + [fscores[col] for col in net_scores.columns[1:]]
 
@@ -168,7 +168,7 @@ def score_net(experiment,full_net,target_node,scoretype,models = None, min_ra = 
 
         return net_scores,{"Pearson":pearsonval,"PearsonP":pearsonp,"Kendall":kendallval,"KendallP":kendallp,"Spearman":spearmanval,"SpearmanP":spearmanp}
 
-def score_light(experiment,full_net,target_node,scoretype, score_model=None,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False,keepscores = False,KO = None):
+def score_light(experiment,full_net,target_node,scoretype, score_model=None,self_inhibit = 0, min_ra = 10**-6, odeTrials = None,lvshift = 0,cntbu = False,keepscores = False,KO = None,odetime = 100):
 
     """
 
@@ -244,9 +244,9 @@ def score_light(experiment,full_net,target_node,scoretype, score_model=None,self
 
         ##
         if cntbu:
-            rdict,blups = friendly.score_node(target_node,odeTrials = odeTrials,scores=score_model,cntbu = True)
+            rdict,blups = friendly.score_node(target_node,odeTrials = odeTrials,scores=score_model,cntbu = True,odetime = odetime)
         else:
-            rdict = friendly.score_node(target_node,odeTrials = odeTrials,scores=score_model,cntbu = False)
+            rdict = friendly.score_node(target_node,odeTrials = odeTrials,scores=score_model,cntbu = False,odetime = odetime)
 
         for mod in score_model:
             net_test_scores[mod][indx] = rdict[mod]

@@ -397,7 +397,7 @@ class friendlyNet:
 
         return np.real(stationary_distribution)[node]
 
-    def score_node(self,node,scores = None,odeTrials = None,cntbu=False):
+    def score_node(self,node,scores = None,odeTrials = None,cntbu=False,odetime = 100):
 
         """
         Function to score a node using a set of scores. Choose any list of the following:
@@ -434,7 +434,7 @@ class friendlyNet:
         if isinstance(odeTrials,int):
             if "LV" in scores:
                 # print("scoring LV")
-                scr = self.lotka_volterra_score(node,numtrials = odeTrials,cntbu=cntbu)
+                scr = self.lotka_volterra_score(node,numtrials = odeTrials,cntbu=cntbu,mxtime = odetime)
                 if cntbu:
                     all_scores["LV"] = scr[0]
                     all_blowups["LV"] = scr[1]
@@ -442,7 +442,7 @@ class friendlyNet:
                     all_scores["LV"] = scr
             if "InhibitLV" in scores:
                 # print("scoring InhibitLV")
-                scr = self.lotka_volterra_score(node,numtrials = odeTrials,self_inhibit=1,cntbu=cntbu)
+                scr = self.lotka_volterra_score(node,numtrials = odeTrials,self_inhibit=1,cntbu=cntbu,mxtime = odetime)
                 if cntbu:
                     all_scores["InhibitLV"] = scr[0]
                     all_blowups["InhibitLV"] = scr[1]
@@ -450,7 +450,7 @@ class friendlyNet:
                     all_scores["InhibitLV"] = scr
             if "AntLV" in scores:
                 # print("scoring AntLV")
-                scr = self.lotka_volterra_score(node,numtrials = odeTrials,shift = 1,cntbu=cntbu)
+                scr = self.lotka_volterra_score(node,numtrials = odeTrials,shift = 1,cntbu=cntbu,mxtime = odetime)
                 if cntbu:
                     all_scores["AntLV"] = scr[0]
                     all_blowups["AntLV"] = scr[1]
@@ -458,7 +458,7 @@ class friendlyNet:
                     all_scores["AntLV"] = scr
             if "Replicator" in scores:
                 # print("Scoring Replicator")
-                all_scores["Replicator"] = self.replicator_score(node,numtrials = odeTrials)
+                all_scores["Replicator"] = self.replicator_score(node,numtrials = odeTrials,mxtime = odetime)
         else:
             if "LV" in scores:
                 all_scores["LV"] = self.lotka_volterra_score(node,numtrials = self.Adjacency.shape[0])

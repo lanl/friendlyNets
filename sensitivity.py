@@ -75,7 +75,8 @@ def get_sensitivity_single_trajectory(fnet,i,k,l,soln = None,shift = 0,self_inhi
     :rtype: float
     """
 
-    if weights == None:
+    
+    if list(weights) == None:
         weights = []
     if soln == None:
         soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit)
