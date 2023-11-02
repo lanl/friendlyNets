@@ -158,10 +158,11 @@ def get_all_sensitivity_single_trajectory(fnet,i,shift = 0,self_inhibit=0,weight
         weights = []
     all_sensitivity = np.zeros_like(fnet.Adjacency)
     soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit)
-    if pars.lower() == 'all':
-        srces = range(all_sensitivity.shape[0])
-        trgts = range(all_sensitivity.shape[1])
-    else:
+    try:
+        if pars.lower() == 'all':
+            srces = range(all_sensitivity.shape[0])
+            trgts = range(all_sensitivity.shape[1])
+    except:
         srces = [p[0] for p in pars]
         trgts = [p[1] for p in pars]
     for k in srces:
@@ -215,9 +216,10 @@ def get_all_sensitivity(target_node,fnet,entries = 'all',shift = 0,self_inhibit=
     i = fnet.NodeNames.index(target_node)
     pars = [(fnet.NodeNames.index(ent[0]),fnet.NodeNames.index(ent[1])) for ent in entries]
     mnsense = sum(Parallel(n_jobs = nj)(delayed(get_all_sensitivity_single_trajectory)(fnet,i,pars=pars,mxTime = mxTime,shift = shift,weights = weights,self_inhibit=self_inhibit) for tri in range(numtrials)))/numtrials
-    if entries == 'all':
-        sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
-    else:
+    try:
+        if entries == 'all':
+            sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
+    except:
         sensitivities = dict([(entries[i],mnsense[i]) for i in range(len(entries))])
 
 
