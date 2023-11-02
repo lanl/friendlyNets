@@ -154,7 +154,7 @@ def get_all_sensitivity_single_trajectory(fnet,i,shift = 0,self_inhibit=0,weight
     :rtype: array[float]
     """
 
-    if weights == None:
+    if list(weights) == None:
         weights = []
     all_sensitivity = np.zeros_like(fnet.Adjacency)
     soln = fnet.solve_lotka_volterra(np.random.rand(fnet.Adjacency.shape[0]),mxTime,shift = shift,self_inhibit = self_inhibit)
