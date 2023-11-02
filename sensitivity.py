@@ -162,6 +162,9 @@ def get_all_sensitivity_single_trajectory(fnet,i,shift = 0,self_inhibit=0,weight
         if pars.lower() == 'all':
             srces = range(all_sensitivity.shape[0])
             trgts = range(all_sensitivity.shape[1])
+        else:
+            srces = [p[0] for p in pars]
+            trgts = [p[1] for p in pars]
     except:
         srces = [p[0] for p in pars]
         trgts = [p[1] for p in pars]
@@ -219,6 +222,8 @@ def get_all_sensitivity(target_node,fnet,entries = 'all',shift = 0,self_inhibit=
     try:
         if entries == 'all':
             sensitivities = pd.DataFrame(mnsense.T, columns = fnet.NodeNames,index = fnet.NodeNames)
+        else:
+            sensitivities = dict([(entries[i],mnsense[i]) for i in range(len(entries))])
     except:
         sensitivities = dict([(entries[i],mnsense[i]) for i in range(len(entries))])
 
