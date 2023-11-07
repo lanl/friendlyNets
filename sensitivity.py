@@ -45,7 +45,7 @@ def sense_kl(t,ps,x,k,l,net):
     :rtype: array[float]
     """
 
-    return x(t)[k]*x(t)[l]*np.eye(net.shape[0])[k] + np.dot(compute_j(x(t),net),ps)
+    return x(t)[k]*x(t)[l]*np.eye(net.shape[0])[l] + np.dot(compute_j(x(t),net),ps)
 
 def get_sensitivity_single_trajectory(fnet,i,k,l,soln = None,shift = 0,self_inhibit=0,weights = None,mxTime = 1000):
 
